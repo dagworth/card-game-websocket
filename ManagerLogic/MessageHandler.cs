@@ -8,8 +8,8 @@ public static class MessageHandler {
             case "play_card":
                 GameActionExecutor.ExecutePlayCard(JsonSerializer.Deserialize<PlayCard>(message)!);
                 break;
-            case "minions_attack":
-                GameActionExecutor.ExecuteMinionsAttack(JsonSerializer.Deserialize<MinionsAttack>(message)!);
+            case "units_attack":
+                GameActionExecutor.ExecuteUnitsAttack(JsonSerializer.Deserialize<UnitsAttack>(message)!);
                 break;
             case "end_turn":
                 GameActionExecutor.ExecuteEndTurn(JsonSerializer.Deserialize<EndTurn>(message)!);

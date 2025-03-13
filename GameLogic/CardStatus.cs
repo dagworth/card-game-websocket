@@ -10,12 +10,12 @@ public class CardStatus(int card_id, CardData data) {
     public int attack = data.attack;
     public List<Passives> passives = [..data.passives];
 
-    public Action<CardStatus, Game>? OnPlay = data.OnPlay;
-    public Action<CardStatus, Game>? OnDeath = data.OnDeath;
-    public Action<CardStatus, Game>? OnAttack = data.OnAttack;
-    public Action<CardStatus, Game>? OnDraw = data.OnDraw;
+    public Action<Game, CardStatus>? OnSpawn = data.OnSpawn;
+    public Action<Game, CardStatus>? OnDeath = data.OnDeath;
+    public Action<Game, CardStatus>? OnAttack = data.OnAttack;
+    public Action<Game, CardStatus>? OnDraw = data.OnDraw;
     
-    public Action<CardStatus, Game>? on_board_effects = data.on_board_effects;
-    public Action<CardStatus, Game>? in_deck_effects = data.in_deck_effects;
-    public Action<CardStatus, Game>? in_void_effects = data.in_void_effects;
+    public Action<Game, CardStatus>? on_board_effects = data.on_board_effects;
+    public Action<Game, CardStatus>? in_deck_effects = data.in_deck_effects;
+    public Action<Game, CardStatus>? in_void_effects = data.in_void_effects;
 }

@@ -1,0 +1,12 @@
+
+{ "action": "join_waiting_queue", "player_id": 0 }
+
+{ 
+    "action": "play_card",
+    "player_id": 0,
+    "card_id": 0,
+    "targets": [
+        { "target_type": "Minion", "target_id": 0 },
+        { "target_type": "Spell", "target_id": 2 }
+    ]
+}

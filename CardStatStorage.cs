@@ -1,14 +1,14 @@
 public static class CardStatStorage {
     private static readonly Dictionary<string,CardData> data = new Dictionary<string,CardData>{
         {"Bob", new CardData {
-                type = CardTypes.Minion,
+                type = CardTypes.Unit,
                 name = "Bob",
                 description = "on play: he buffs all minions on board by +1/+1",
                 cost = 1,
                 health = 1,
                 attack = 1,
                 passives = [Passives.Charge],
-                OnPlay = (owner, game) => {
+                OnSpawn = (game, owner) => {
                     foreach(CardStatus v in game.GetAllCardsOnBoard()){
                         v.attack += 1;
                         v.health += 1;
@@ -18,14 +18,14 @@ public static class CardStatStorage {
             }
         },
         {"Alice", new CardData {
-                type = CardTypes.Minion,
+                type = CardTypes.Unit,
                 name = "Alice",
                 description = "on attack: she buffs herself by +1/+3",
                 cost = 2,
                 health = 4,
                 attack = 2,
                 passives = [Passives.Deadly],
-                OnAttack = (owner, game) => {
+                OnAttack = (game, owner) => {
                     owner.attack += 1;
                     owner.health += 3;
                     owner.max_health += 3;

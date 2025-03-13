@@ -7,12 +7,12 @@ public class CardData {
     public int attack;
     public List<Passives> passives = [];
 
-    public Action<CardStatus, Game>? OnPlay;
-    public Action<CardStatus, Game>? OnDeath;
-    public Action<CardStatus, Game>? OnAttack;
-    public Action<CardStatus, Game>? OnDraw;
+    public Action<Game, CardStatus>? OnSpawn;
+    public Action<Game, CardStatus>? OnDeath;
+    public Action<Game, CardStatus>? OnAttack;
+    public Action<Game, CardStatus>? OnDraw;
 
-    public Action<CardStatus, Game>? on_board_effects;
-    public Action<CardStatus, Game>? in_deck_effects;
-    public Action<CardStatus, Game>? in_void_effects;
+    public Action<Game, CardStatus>? on_board_effects;
+    public Action<Game, CardStatus>? in_deck_effects;
+    public Action<Game, CardStatus>? in_void_effects;
 }

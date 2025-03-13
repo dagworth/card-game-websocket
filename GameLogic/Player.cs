@@ -1,11 +1,15 @@
-public class Player(int id) {
+public class Player(Game game, int id) {
     //card_id
     public event Action<int>? OnDraw;
 
     //card_id
     public event Action<int>? OnPlay;
 
-    private int Id = id;
+    //card_id
+    public event Action<int>? OnSpawn;
+
+    private int id = id;
+    private Game game = game;
 
     public readonly List<CardStatus> Hand = [];
     public readonly List<CardStatus> Void = [];
@@ -14,7 +18,7 @@ public class Player(int id) {
     public readonly List<CardStatus> Board = [];
 
     private int health = 35;
-    private int mana = 0;
+    private int mana = 100;
     private bool attacked = false;
 
     public CardStatus? DrawCard(int index = 0){
@@ -39,13 +43,20 @@ public class Player(int id) {
         return i;
     }
 
-    public void PlayCard(int card_id, CardTypes target_type, int target_id){
+    public void PlayCard(int card_id, List<PlayerTargets> targets){
         int hand_index = FindIndex(card_id, Hand);
         CardStatus card = Hand[hand_index];
+        Console.WriteLine($"plr {id} played {card.name}");
         ChangeMana(-card.cost);
-        Board.Add(card);
         OnPlay?.Invoke(card.card_id);
         Hand.RemoveAt(hand_index);
+        SpawnCard(card);
+    }
+
+    public void SpawnCard(CardStatus card){
+        Board.Add(card);
+        OnSpawn?.Invoke(card.card_id);
+        card.OnSpawn?.Invoke(game, card);
     }
 
     public void ChangeHealth(int amount){
@@ -65,6 +76,10 @@ public class Player(int id) {
     }
 
     public int GetId(){
-        return Id;
+        return id;
+    }
+
+    public Game GetGame(){
+        return game;
     }
 }

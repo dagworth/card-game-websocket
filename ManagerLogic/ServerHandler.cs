@@ -19,7 +19,7 @@ public static class ServerHandler {
             Console.WriteLine($"message went wrong: {message}");
             return;
         }
-
+        
         if(data.PlayerId != plr_ids[ws]){
             Console.WriteLine($"player isnt who they say they are: {message}");
             return;

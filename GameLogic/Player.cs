@@ -33,7 +33,7 @@ public class Player(Game game, int id) {
         return card;
     }
 
-    public int FindIndex(int id, List<CardStatus> list){
+    public int FindIndex(List<CardStatus> list, int id){
         int i = -1;
         while(++i < list.Count){
             if(list[i].card_id == id){
@@ -44,7 +44,7 @@ public class Player(Game game, int id) {
     }
 
     public void PlayCard(int card_id, List<PlayerTargets> targets){
-        int hand_index = FindIndex(card_id, Hand);
+        int hand_index = FindIndex(Hand, card_id);
         CardStatus card = Hand[hand_index];
         Console.WriteLine($"plr {id} played {card.name}");
         ChangeMana(-card.cost);
@@ -77,6 +77,14 @@ public class Player(Game game, int id) {
 
     public int GetId(){
         return id;
+    }
+
+    public bool DidAttack(){
+        return attacked;
+    }
+
+    public void Attacked(){
+        attacked = true;
     }
 
     public Game GetGame(){

@@ -1,12 +1,27 @@
 
 { "action": "join_waiting_queue", "player_id": 0 }
 
+{ "action": "end_turn", "player_id": 0 }
+
 { 
     "action": "play_card",
-    "player_id": 0,
-    "card_id": 0,
+    "player_id": 1,
+    "card_id": 1,
     "targets": [
-        { "target_type": "Minion", "target_id": 0 },
+        { "target_type": "Unit", "target_id": 0 },
         { "target_type": "Spell", "target_id": 2 }
     ]
+}
+
+{ 
+    "action": "toggle_attack",
+    "player_id": 1,
+    "unit_attacking": 1
+}
+
+{ 
+    "action": "toggle_defend",
+    "player_id": 0,
+    "unit_attacking": 0,
+    "unit_defending": 0
 }

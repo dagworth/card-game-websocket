@@ -18,4 +18,21 @@ public class CardStatus(int card_id, CardData data) {
     public Action<Game, CardStatus>? on_board_effects = data.on_board_effects;
     public Action<Game, CardStatus>? in_deck_effects = data.in_deck_effects;
     public Action<Game, CardStatus>? in_void_effects = data.in_void_effects;
+
+    public void AttackUnits(List<CardStatus> victims){
+        int atk = attack;
+        foreach(CardStatus victim in victims){
+            if(victim.health - atk > 0){
+                victim.health -= atk;
+                atk = 0;
+            } else {
+                victim.health = 0;
+                atk -= victim.health;
+            }
+        }
+    }
+
+    public void AttackPlayer(Player victim){
+        victim.ChangeHealth(-attack);
+    }
 }

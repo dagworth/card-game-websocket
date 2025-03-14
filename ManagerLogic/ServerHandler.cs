@@ -25,7 +25,7 @@ public static class ServerHandler {
             return;
         }
 
-        MessageHandler.ReadMessage(ws, message, data.Action);
+        MessageHandler.ReadMessage(ws, data.PlayerId, message, data.Action);
     }
 
     public static void OnClose(IWebSocketConnection ws){

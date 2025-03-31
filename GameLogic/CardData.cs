@@ -1,5 +1,6 @@
 public class CardData {
     public CardTypes type;
+    public Tribes tribe;
     public string name = "";
     public string description = "";
     public int cost;
@@ -7,12 +8,10 @@ public class CardData {
     public int attack;
     public List<Passives> passives = [];
 
-    public Action<Game, CardStatus>? OnSpawn;
-    public Action<Game, CardStatus>? OnDeath;
-    public Action<Game, CardStatus>? OnAttack;
-    public Action<Game, CardStatus>? OnDraw;
+    public Action<Game, Player, CardStatus>? OnSpawn;
+    public Action<Game, Player, CardStatus>? OnDeath;
+    public Action<Game, Player, CardStatus>? OnAttack;
+    public Action<Game, Player, CardStatus>? OnDraw;
 
-    public Action<Game, CardStatus>? on_board_effects;
-    public Action<Game, CardStatus>? in_deck_effects;
-    public Action<Game, CardStatus>? in_void_effects;
+    public Action<Game, Player, CardStatus>? custom_effects;
 }

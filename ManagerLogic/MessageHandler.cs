@@ -7,22 +7,22 @@ public static class MessageHandler {
         //we r trusting client requests arent stupid for now
         switch(action){
             case "play_card":
-                GameManager.GetPlayer(plr_id).GetGame().ExecutePlayCard(JsonSerializer.Deserialize<PlayCard>(message)!);
+                GameManager.GetPlayer(plr_id).game.actionExecutor.ExecutePlayCard(JsonSerializer.Deserialize<PlayCard>(message)!);
                 break;
             case "toggle_attack":
-                GameManager.GetPlayer(plr_id).GetGame().ExecuteToggleAttack(JsonSerializer.Deserialize<ToggleAttack>(message)!);
+                GameManager.GetPlayer(plr_id).game.actionExecutor.ExecuteToggleAttack(JsonSerializer.Deserialize<ToggleAttack>(message)!);
                 break;
             case "toggle_defend":
-                GameManager.GetPlayer(plr_id).GetGame().ExecuteToggleDefend(JsonSerializer.Deserialize<ToggleDefend>(message)!);
+                GameManager.GetPlayer(plr_id).game.actionExecutor.ExecuteToggleDefend(JsonSerializer.Deserialize<ToggleDefend>(message)!);
                 break;
             case "reverse_toggle_attack":
-                GameManager.GetPlayer(plr_id).GetGame().ExecuteReverseToggleAttack(JsonSerializer.Deserialize<ReverseToggleAttack>(message)!);
+                GameManager.GetPlayer(plr_id).game.actionExecutor.ExecuteReverseToggleAttack(JsonSerializer.Deserialize<ReverseToggleAttack>(message)!);
                 break;
             case "reverse_toggle_defend":
-                GameManager.GetPlayer(plr_id).GetGame().ExecuteReverseToggleDefend(JsonSerializer.Deserialize<ReverseToggleDefend>(message)!);
+                GameManager.GetPlayer(plr_id).game.actionExecutor.ExecuteReverseToggleDefend(JsonSerializer.Deserialize<ReverseToggleDefend>(message)!);
                 break;
             case "end_turn":
-                GameManager.GetPlayer(plr_id).GetGame().ExecuteEndTurn(JsonSerializer.Deserialize<Message>(message)!);
+                GameManager.GetPlayer(plr_id).game.actionExecutor.ExecuteEndTurn(JsonSerializer.Deserialize<Message>(message)!);
                 break;
             case "join_waiting_queue":
                 ServerHandler.AddPlayerToQueue(ws);

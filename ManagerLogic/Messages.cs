@@ -7,12 +7,6 @@ public class Message {
 }
 public class PlayCard : Message {
     [JsonPropertyName("card_id")] public int CardId { get; set; }
-    [JsonPropertyName("targets")] public List<PlayerTargets> Targets { get; set; } = [];
-}
-
-public class PlayerTargets {
-    [JsonPropertyName("target_type")] public CardTypes TargetType { get; set; }
-    [JsonPropertyName("target_id")] public int TargetId { get; set; }
 }
 
 public class ToggleAttack : Message {
@@ -31,4 +25,8 @@ public class ToggleDefend : Message {
 public class ReverseToggleDefend : Message {
     [JsonPropertyName("unit_attacking")] public int UnitAttacking { get; set; }
     [JsonPropertyName("unit_defending")] public int UnitDefending { get; set; }
+}
+
+public class ChosenTargets : Message {
+    [JsonPropertyName("targets")] public List<int> Targets { get; set; } = [];
 }

@@ -8,8 +8,8 @@ public class Player(Game game, int id) {
     //card_id
     public event Action<int>? OnSpawn;
 
-    private int id = id;
-    private Game game = game;
+    public int id { get; private set; } = id;
+    public Game game { get; private set; } = game;
 
     public readonly List<CardStatus> Hand = [];
     public readonly List<CardStatus> Void = [];
@@ -17,9 +17,9 @@ public class Player(Game game, int id) {
 
     public readonly List<CardStatus> Board = [];
 
-    private int health = 35;
-    private int mana = 100;
-    private bool attacked = false;
+    public int health { get; private set; } = 35;
+    public int mana { get; private set; } = 100;
+    public bool attacked { get; private set; } = false;
 
     public CardStatus? DrawCard(int index = 0){
         if(Deck.Count == 0 || Deck.Count-1 < index){
@@ -43,20 +43,21 @@ public class Player(Game game, int id) {
         return i;
     }
 
-    public void PlayCard(int card_id, List<PlayerTargets> targets){
+    public void PlayCard(int card_id){
         int hand_index = FindIndex(Hand, card_id);
         CardStatus card = Hand[hand_index];
         Console.WriteLine($"plr {id} played {card.name}");
         ChangeMana(-card.cost);
         OnPlay?.Invoke(card.card_id);
         Hand.RemoveAt(hand_index);
-        SpawnCard(card);
+        SpawnCard(card_id);
     }
 
-    public void SpawnCard(CardStatus card){
+    public void SpawnCard(int card_id){
+        CardStatus card = game.GetCard(card_id);
         Board.Add(card);
-        OnSpawn?.Invoke(card.card_id);
-        card.OnSpawn?.Invoke(game, card);
+        card.OnSpawn?.Invoke(game, this, card); //cards' OnSpawn should happen before other cards
+        OnSpawn?.Invoke(card_id);
     }
 
     public void ChangeHealth(int amount){
@@ -67,27 +68,7 @@ public class Player(Game game, int id) {
         mana+=amount;
     }
 
-    public int GetHealth(){
-        return health;
-    }
-
-    public int GetMana(){
-        return mana;
-    }
-
-    public int GetId(){
-        return id;
-    }
-
-    public bool DidAttack(){
-        return attacked;
-    }
-
     public void Attacked(){
         attacked = true;
-    }
-
-    public Game GetGame(){
-        return game;
     }
 }

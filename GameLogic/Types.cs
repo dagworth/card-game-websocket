@@ -23,7 +23,6 @@ public enum TargetTypes {
 }
 
 public enum Tribes {
-    None,
     Zombie,
     Skeleton,
     Creeper
@@ -33,5 +32,6 @@ public enum GameState {
     Defending,
     Attacking,
     RegularTurn,
-    PriorityTurn
+    PriorityTurn,
+    PlrChoosing
 }

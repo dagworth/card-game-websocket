@@ -6,21 +6,17 @@
 { 
     "action": "play_card",
     "player_id": 1,
-    "card_id": 1,
-    "targets": [
-        { "target_type": "Unit", "target_id": 0 },
-        { "target_type": "Spell", "target_id": 2 }
-    ]
+    "card_id": 1
 }
 
 { 
-    "action": "toggle_attack",
+    "action": "toggle_atk",
     "player_id": 1,
     "unit_attacking": 1
 }
 
 { 
-    "action": "toggle_defend",
+    "action": "toggle_def",
     "player_id": 0,
     "unit_attacking": 0,
     "unit_defending": 0

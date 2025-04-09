@@ -1,8 +1,10 @@
+using System.Globalization;
+
 public static class CardStatStorage {
     private static readonly Dictionary<string,CardData> data = new Dictionary<string,CardData>{
         {"Bob", new CardData {
                 type = CardTypes.Unit,
-                tribe = Tribes.None,
+                tribes = [Tribes.Zombie],
                 name = "Bob",
                 description = "on play: he buffs all minions on board by +1/+1",
                 cost = 1,
@@ -18,7 +20,7 @@ public static class CardStatStorage {
         },
         {"Alice", new CardData {
                 type = CardTypes.Unit,
-                tribe = Tribes.None,
+                tribes = [Tribes.Skeleton],
                 name = "Alice",
                 description = "on attack: she buffs herself by +1/+3",
                 cost = 2,
@@ -32,7 +34,7 @@ public static class CardStatStorage {
         },
         {"Carol", new CardData {
                 type = CardTypes.Unit,
-                tribe = Tribes.None,
+                tribes = [],
                 name = "Carol",
                 description = "on play: buffs ally units by +1/+22 this turn",
                 cost = 1,
@@ -49,7 +51,7 @@ public static class CardStatStorage {
         },
         {"Dave", new CardData {
                 type = CardTypes.Unit,
-                tribe = Tribes.None,
+                tribes = [Tribes.Creeper],
                 name = "Dave",
                 description = "on enemy sacrifice: gain +1/+1",
                 cost = 1,
@@ -69,7 +71,7 @@ public static class CardStatStorage {
         },
         {"Eve", new CardData {
                 type = CardTypes.Unit,
-                tribe = Tribes.None,
+                tribes = [],
                 name = "Eve",
                 description = "on spawn: choose an allied unit to sacrifice to draw 2 cards",
                 cost = 3,
@@ -77,18 +79,19 @@ public static class CardStatStorage {
                 attack = 3,
                 passives = [],
                 OnSpawn = (game, owner, card) => {
-                    void f (List<int> targets) {
-                        game.SacrificeCard(targets[0]);
-                        owner.DrawCard();
-                        owner.DrawCard();
-                    }
+                    game.QueryPlrTargets(owner.Id,
+                        targets => {
+                            game.MakeCounterableEffect(owner.Id, input => {
+                                game.SacrificeCard(input[0]);
+                                owner.DrawCard();
+                                owner.DrawCard();
+                            }, targets);
+                        },
 
-                    ChooseTargetsParams p = new(){
-                        TargetType = TargetTypes.Unit,
-                        TargetList = [..owner.Board]
-                    };
-
-                    game.PlayerChooseTargets(f,p);
+                        new ChooseTargetsParams([..owner.Board]){
+                            TargetType = TargetTypes.Unit,
+                        }
+                    );
                 }
             }
         }

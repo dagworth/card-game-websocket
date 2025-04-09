@@ -13,20 +13,11 @@ public class ToggleAttack : Message {
     [JsonPropertyName("unit_attacking")] public int UnitAttacking { get; set; }
 }
 
-public class ReverseToggleAttack : Message {
-    [JsonPropertyName("unit_attacking")] public int UnitAttacking { get; set; }
-}
-
 public class ToggleDefend : Message {
     [JsonPropertyName("unit_attacking")] public int UnitAttacking { get; set; }
     [JsonPropertyName("unit_defending")] public int UnitDefending { get; set; }
 }
 
-public class ReverseToggleDefend : Message {
-    [JsonPropertyName("unit_attacking")] public int UnitAttacking { get; set; }
-    [JsonPropertyName("unit_defending")] public int UnitDefending { get; set; }
-}
-
-public class ChosenTargets : Message {
+public class TargetsChoice : Message {
     [JsonPropertyName("targets")] public List<int> Targets { get; set; } = [];
 }

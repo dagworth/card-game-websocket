@@ -3,12 +3,14 @@ using System.Text.Json;
 
 public static class ServerHandler {
     private static IWebSocketConnection? WaitingPlayer = null;
-    private static Dictionary<IWebSocketConnection,int> plr_ids = new();
+    private static readonly Dictionary<IWebSocketConnection,int> plr_ids = [];
+    private static readonly Dictionary<int,IWebSocketConnection> plr_ws = [];
     private static int plr_counter = 0;
 
     public static void OnOpen(IWebSocketConnection ws){
         int id = plr_counter++;
         plr_ids[ws] = id;
+        plr_ws[id] = ws;
         ws.Send(id.ToString());
     }
 
@@ -29,7 +31,7 @@ public static class ServerHandler {
     }
 
     public static void OnClose(IWebSocketConnection ws){
-        Console.WriteLine($"{plr_ids[ws]} plr left");
+        Console.WriteLine($"plr {plr_ids[ws]} disconnected");
     }
 
     public static void AddPlayerToQueue(IWebSocketConnection ws){
@@ -39,5 +41,9 @@ public static class ServerHandler {
         } else {
             WaitingPlayer = ws;
         }
+    }
+
+    public static IWebSocketConnection GetWSConnection(int plr_id){
+        return plr_ws[plr_id];
     }
 }

@@ -7,22 +7,25 @@ public static class MessageHandler {
         //we r trusting client requests arent stupid for now
         switch(action){
             case "play_card":
-                GameManager.GetPlayer(plr_id).game.actionExecutor.ExecutePlayCard(JsonSerializer.Deserialize<PlayCard>(message)!);
+                GameManager.GetPlayer(plr_id).Game.messageActions.ExecutePlayCard(JsonSerializer.Deserialize<PlayCard>(message)!);
                 break;
-            case "toggle_attack":
-                GameManager.GetPlayer(plr_id).game.actionExecutor.ExecuteToggleAttack(JsonSerializer.Deserialize<ToggleAttack>(message)!);
+            case "toggle_atk":
+                GameManager.GetPlayer(plr_id).Game.messageActions.ExecuteToggleAttack(JsonSerializer.Deserialize<ToggleAttack>(message)!);
                 break;
-            case "toggle_defend":
-                GameManager.GetPlayer(plr_id).game.actionExecutor.ExecuteToggleDefend(JsonSerializer.Deserialize<ToggleDefend>(message)!);
+            case "toggle_def":
+                GameManager.GetPlayer(plr_id).Game.messageActions.ExecuteToggleDefend(JsonSerializer.Deserialize<ToggleDefend>(message)!);
                 break;
-            case "reverse_toggle_attack":
-                GameManager.GetPlayer(plr_id).game.actionExecutor.ExecuteReverseToggleAttack(JsonSerializer.Deserialize<ReverseToggleAttack>(message)!);
+            case "r_toggle_atk":
+                GameManager.GetPlayer(plr_id).Game.messageActions.ExecuteReverseToggleAttack(JsonSerializer.Deserialize<ToggleAttack>(message)!);
                 break;
-            case "reverse_toggle_defend":
-                GameManager.GetPlayer(plr_id).game.actionExecutor.ExecuteReverseToggleDefend(JsonSerializer.Deserialize<ReverseToggleDefend>(message)!);
+            case "r_toggle_def":
+                GameManager.GetPlayer(plr_id).Game.messageActions.ExecuteReverseToggleDefend(JsonSerializer.Deserialize<ToggleDefend>(message)!);
                 break;
             case "end_turn":
-                GameManager.GetPlayer(plr_id).game.actionExecutor.ExecuteEndTurn(JsonSerializer.Deserialize<Message>(message)!);
+                GameManager.GetPlayer(plr_id).Game.messageActions.ExecuteEndTurn(JsonSerializer.Deserialize<Message>(message)!);
+                break;
+            case "targets_choice":
+                GameManager.GetPlayer(plr_id).Game.messageActions.ExecuteTargetsChoice(JsonSerializer.Deserialize<TargetsChoice>(message)!);
                 break;
             case "join_waiting_queue":
                 ServerHandler.AddPlayerToQueue(ws);
@@ -31,5 +34,13 @@ public static class MessageHandler {
                 Console.WriteLine($"this message didn't have a valid action {action}");
                 break;
         }
+    }
+
+    public static void AskForTargets(IWebSocketConnection ws, List<int> message){
+        TargetsChoice a = new(){
+            Targets = message
+        };
+
+        ws.Send(JsonSerializer.Serialize(a));
     }
 }

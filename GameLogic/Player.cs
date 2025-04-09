@@ -1,15 +1,12 @@
-public class Player(Game game, int id) {
-    //card_id
-    public event Action<int>? OnDraw;
+using Fleck;
 
-    //card_id
+public class Player(Game game, int id) {
+    
+    public event Action<int>? OnDraw;
     public event Action<int>? OnPlay;
 
-    //card_id
-    public event Action<int>? OnSpawn;
-
-    public int id { get; private set; } = id;
-    public Game game { get; private set; } = game;
+    public int Id { get; private set; } = id;
+    public Game Game { get; private set; } = game;
 
     public readonly List<CardStatus> Hand = [];
     public readonly List<CardStatus> Void = [];
@@ -17,9 +14,9 @@ public class Player(Game game, int id) {
 
     public readonly List<CardStatus> Board = [];
 
-    public int health { get; private set; } = 35;
-    public int mana { get; private set; } = 100;
-    public bool attacked { get; private set; } = false;
+    public int Health { get; private set; } = 35;
+    public int Mana { get; private set; } = 100;
+    public bool Attacked { get; private set; } = false;
 
     public CardStatus? DrawCard(int index = 0){
         if(Deck.Count == 0 || Deck.Count-1 < index){
@@ -46,29 +43,22 @@ public class Player(Game game, int id) {
     public void PlayCard(int card_id){
         int hand_index = FindIndex(Hand, card_id);
         CardStatus card = Hand[hand_index];
-        Console.WriteLine($"plr {id} played {card.name}");
+        Console.WriteLine($"plr {Id} played {card.name}");
         ChangeMana(-card.cost);
         OnPlay?.Invoke(card.card_id);
         Hand.RemoveAt(hand_index);
-        SpawnCard(card_id);
-    }
-
-    public void SpawnCard(int card_id){
-        CardStatus card = game.GetCard(card_id);
-        Board.Add(card);
-        card.OnSpawn?.Invoke(game, this, card); //cards' OnSpawn should happen before other cards
-        OnSpawn?.Invoke(card_id);
+        Game.SpawnCard(card_id);
     }
 
     public void ChangeHealth(int amount){
-        health+=amount;
+        Health+=amount;
     }
 
     public void ChangeMana(int amount){
-        mana+=amount;
+        Mana+=amount;
     }
 
-    public void Attacked(){
-        attacked = true;
+    public void ExecutedAttack(){
+        Attacked = true;
     }
 }

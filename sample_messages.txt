@@ -1,7 +1,7 @@
 
 { "action": "join_waiting_queue", "player_id": 0 }
 
-{ "action": "end_turn", "player_id": 0 }
+{ "action": "end_turn", "player_id": 1 }
 
 { 
     "action": "play_card",

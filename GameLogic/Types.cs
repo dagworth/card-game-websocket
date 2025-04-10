@@ -27,11 +27,3 @@ public enum Tribes {
     Skeleton,
     Creeper
 }
-
-public enum GameState {
-    Defending,
-    Attacking,
-    RegularTurn,
-    PriorityTurn,
-    PlrChoosing
-}

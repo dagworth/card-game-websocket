@@ -7,11 +7,11 @@ public static class PrintState{
 
         Console.Write("\n\ndescription: ");
 
-        if(game.Game_State == GameState.Defending){
+        if(game.GetGameState() is DefendingState){
             Console.Write($"waiting for plr {game.GetOtherPlayer(game.Plr_Turn).Id} to defend");
-        } else if(game.Game_State == GameState.Attacking){
+        } else if(game.GetGameState() is AttackingState){
             Console.Write($"waiting for plr {game.Plr_Turn} to attack");
-        } else if(game.Game_State == GameState.RegularTurn){
+        } else if(game.GetGameState() is RegularState){
             Console.Write($"waiting for plr {game.Plr_Turn} to play cards");
         }
 

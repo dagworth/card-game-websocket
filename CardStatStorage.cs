@@ -79,7 +79,7 @@ public static class CardStatStorage {
                 attack = 3,
                 passives = [],
                 OnSpawn = (game, owner, card) => {
-                    game.QueryPlrTargets(owner.Id,
+                    game.QueryTargets(owner.Id,
                         targets => {
                             game.MakeCounterableEffect(owner.Id, input => {
                                 game.SacrificeCard(input[0]);

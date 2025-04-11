@@ -53,19 +53,21 @@ public static class CardStatStorage {
                 type = CardTypes.Unit,
                 tribes = [Tribes.Creeper],
                 name = "Dave",
-                description = "on enemy sacrifice: gain +1/+1",
+                //description = "on enemy sacrifice: gain +1/+1",
+                description = "on spawn: sacrifice Dave",
                 cost = 1,
                 health = 2,
                 attack = 6,
                 passives = [Passives.Charge],
-                custom_effects = (game, owner, card) => {
-                    //after temporary stuff
-
-                    // game.OnSacrifice += (sacrificed_card_id) => {
-                    //     if(game.GetCard(sacrificed_card_id).plr_id != owner.id){
-                    //         card.ChangeStats(1,1);
-                    //     }
-                    // };
+                // custom_effects = (game, owner, card) => {
+                //     game.OnSacrifice += (sacrificed_card_id) => {
+                //         if(game.GetCard(sacrificed_card_id).plr_id != owner.id){
+                //             card.ChangeStats(1,1);
+                //         }
+                //     };
+                // }
+                OnSpawn = (game, owner, card) => {
+                    game.SacrificeCard(card.card_id);
                 }
             }
         },
@@ -81,17 +83,42 @@ public static class CardStatStorage {
                 OnSpawn = (game, owner, card) => {
                     game.QueryTargets(owner.Id,
                         targets => {
-                            game.MakeCounterableEffect(owner.Id, input => {
-                                game.SacrificeCard(input[0]);
+                            game.MakeCounterableEffect(owner.Id, () => {
+                                game.SacrificeCard(targets[0]);
                                 owner.DrawCard();
                                 owner.DrawCard();
-                            }, targets);
+                            });
                         },
 
                         new ChooseTargetsParams([..owner.Board]){
                             TargetType = TargetTypes.Unit,
                         }
                     );
+                }
+            }
+        },
+        {"Haunting Scream", new CardData {
+                type = CardTypes.Spell,
+                name = "Haunting Scream",
+                description = "choose a unit that costs 5 or less from your void. Bring it back from the void and give it flying and charge. Sacrifice it at the end of the turn",
+                cost = 3,
+                OnPlay = (game, owner, card, t) => {
+                    game.MakeCounterableEffect(owner.Id, () => {
+                        game.QueryTargets(owner.Id,
+                            targets => {
+                                CardStatus guy = game.GetCard(targets[0]);
+                                Console.Write($"{guy.name} {guy.card_id}");
+                                game.ReturnFromVoid(targets[0]);
+                                guy.passives.Add(Passives.Charge);
+                                guy.passives.Add(Passives.Flying);
+                            },
+
+                            new ChooseTargetsParams([..owner.Void]){
+                                TargetType = TargetTypes.Unit,
+                                TargetMaxCost = 5,
+                            }
+                        );
+                    });
                 }
             }
         }

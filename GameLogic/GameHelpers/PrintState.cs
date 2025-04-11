@@ -1,3 +1,5 @@
+//purely to debug
+
 public static class PrintState{
     public static void Print(Game game){
         Console.Write($"plr {game.Plr_Turn} turn");
@@ -13,6 +15,10 @@ public static class PrintState{
             Console.Write($"waiting for plr {game.Plr_Turn} to attack");
         } else if(game.GetGameState() is RegularState){
             Console.Write($"waiting for plr {game.Plr_Turn} to play cards");
+        } else if(game.GetGameState() is ChoosingState a){
+            Console.Write($"waiting for plr {a.plr_choosing} to choose thing");
+        } else if(game.GetGameState() is PriorityState b){
+            Console.Write($"waiting for plr {b.plr_priority} to priority choose");
         }
 
         Console.Write($"\n\n{game.Plr1.Id} hand: ");

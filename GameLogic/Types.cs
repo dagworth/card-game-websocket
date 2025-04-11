@@ -2,7 +2,8 @@ using System.Text.Json.Serialization;
 
 public enum Passives {
     Deadly,
-    Charge
+    Charge,
+    Flying
 }
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
@@ -23,6 +24,7 @@ public enum TargetTypes {
 }
 
 public enum Tribes {
+    None, //should never be used on a card
     Zombie,
     Skeleton,
     Creeper

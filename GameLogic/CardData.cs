@@ -9,6 +9,7 @@ public class CardData {
     public List<Tribes> tribes = [];
     public List<Passives> passives = [];
 
+    public Action<Game, Player, CardStatus, List<int>>? OnPlay;
     public Action<Game, Player, CardStatus>? OnSpawn;
     public Action<Game, Player, CardStatus>? OnDeath;
     public Action<Game, Player, CardStatus>? OnAttack;

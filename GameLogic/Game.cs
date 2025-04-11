@@ -19,16 +19,15 @@ public class Game {
     
     private IGameState Game_State;
     
-    public void MakeCounterableEffect(int plr_id, Action<List<int>> func, List<int> input){
+    public void MakeCounterableEffect(int plr_id, Action func){
         CardEffect effect = new CardEffect(
             plr_id,
             null, //change the ownership of the card effect later, this doesnt matter usually
-            func,
-            input
+            func
         );
 
         if(Game_State is PriorityState same_state){
-            same_state.AddEffect(effect);
+            same_state.AddEffect(effect, true);
         } else {
             PriorityState new_state = new PriorityState(
                 this,
@@ -36,8 +35,8 @@ public class Game {
                 Game_State
             );
 
+            new_state.AddEffect(effect, false);
             SetGameState(new_state);
-            new_state.AddEffect(effect);
         }
     }
 
@@ -74,7 +73,7 @@ public class Game {
 
     public void SetGameState(IGameState state){
         Game_State = state;
-        Game_State.StateStarted();
+        state.StartState();
     }
 
     public IGameState GetGameState(){
@@ -83,7 +82,7 @@ public class Game {
 
     public Game(int game_id, int plr1_id, int plr2_id, List<string> deck1, List<string> deck2){
         Id = game_id;
-        Game_State = new RegularState(this);
+        Game_State = new RegularState(this, false);
 
         Plr1 = new Player(this, plr1_id);
         Plr2 = new Player(this, plr2_id);
@@ -102,7 +101,7 @@ public class Game {
             Plr2.Deck.Add(CreateCard(deck2[i], plr2_id));
         }
 
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < 5; i++){
             Plr1.DrawCard();
             Plr2.DrawCard();
         }

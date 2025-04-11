@@ -3,15 +3,18 @@ public class AttackingState(Game game) : IGameState {
     private readonly int plr_attacking = game.Plr_Turn;
     private readonly Dictionary<int,List<int>> attacking_units = [];
 
-    public void StateStarted(){}
-
-    public bool CanPlayCard(CardStatus card){
-        return false;
-    }
+    public void StartState(){}
 
     public void EndTurn(){
-        game.SetGameState(new DefendingState(game, attacking_units));
+        game.MakeCounterableEffect(
+            plr_attacking,
+            () => {
+                game.SetGameState(new DefendingState(game, attacking_units));
+            }
+        );
     }
+
+    public bool CanPlayCard(CardStatus card){ return false; }
 
     public void ToogleAttack(ToggleAttack data){
         if(plr_attacking != data.PlayerId) return;
@@ -28,7 +31,7 @@ public class AttackingState(Game game) : IGameState {
         attacking_units.Remove(data.UnitAttacking);
 
         if(attacking_units.Count == 0){
-            game.SetGameState(new RegularState(game));
+            game.SetGameState(new RegularState(game, false));
         }
     }
 }

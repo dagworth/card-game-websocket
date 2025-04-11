@@ -1,5 +1,5 @@
 public interface IGameState {
-    void StateStarted();
+    void StartState();
     bool CanPlayCard(CardStatus card);
     void EndTurn();
 }

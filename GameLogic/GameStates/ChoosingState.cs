@@ -6,13 +6,12 @@ public class ChoosingState(Game game, int plr_id, IGameState old_state, Action<L
     private List<int> plr_choice_pool = choice_pool;
     private Action<List<int>> plr_choice_effect = effect;
 
-    public void StateStarted(){}
+    public void StartState(){}
+    public void EndTurn(){}
 
     public bool CanPlayCard(CardStatus card){
         return false;
     }
-
-    public void EndTurn(){}
 
     public void GotTargets(TargetsChoice data){
         if(plr_choosing == data.PlayerId){
@@ -28,6 +27,10 @@ public class ChoosingState(Game game, int plr_id, IGameState old_state, Action<L
 
             game.SetGameState(old_state);
             plr_choice_effect.Invoke(data.Targets);
+            //this needs to be in this order
+            //because of the case of needing to choose when in a priority turn
+            //which has an effect that adds a counterable effect
+            //the priority state has to be in place before that happens
         }
     }
 }

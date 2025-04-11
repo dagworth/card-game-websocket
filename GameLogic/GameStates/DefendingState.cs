@@ -3,19 +3,12 @@ public class DefendingState : IGameState {
     private readonly int plr_defending;
     private readonly Dictionary<int,List<int>> attacking_units;
     private int defending_units = 0;
-    private bool defended = false;
 
     public DefendingState(Game game, Dictionary<int,List<int>> attacking_units){
         this.game = game;
         plr_defending = game.Plr_Turn;
         this.attacking_units = attacking_units;
 
-        if(game.GetPlayer(plr_defending).Board.Count == 0){
-            EndTurn();
-        }
-    }
-
-    public void StateStarted(){
         Player plr = game.GetPlayer(plr_defending);
         if(plr.Board.Count == 0) EndTurn();
 
@@ -30,6 +23,8 @@ public class DefendingState : IGameState {
         if(!can_play_a_card) EndTurn();
     }
 
+    public void StartState(){}
+
     public bool CanPlayCard(CardStatus card){
         Player plr = game.GetPlayer(plr_defending);
         if(plr_defending != card.plr_id) return false;
@@ -42,13 +37,9 @@ public class DefendingState : IGameState {
     }
 
     public void EndTurn(){
-        if(!defended){
-            defended = true;
-            Console.WriteLine("defended");
-            HandleAttackPhase();
-        }
-        Console.WriteLine("back to regular");
-        game.SetGameState(new RegularState(game));
+        HandleAttackPhase();
+        Console.WriteLine("defending state did this");
+        game.SetGameState(new RegularState(game, true));
     }
 
     public void ToggleDefend(ToggleDefend data){
@@ -81,13 +72,12 @@ public class DefendingState : IGameState {
     public void HandleAttackPhase(){
         game.MakeCounterableEffect(
             plr_defending,
-            (list) => {
+            () => {
                 Console.WriteLine("attacked");
                 foreach(KeyValuePair<int,List<int>> pair in attacking_units){
                     game.GetCard(pair.Key).AttackEnemies([..pair.Value.Select(game.GetCard)]);
                 }
-            },
-            []
+            }
         );
     }
 }

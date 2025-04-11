@@ -45,9 +45,12 @@ public class Player(Game game, int id) {
         CardStatus card = Hand[hand_index];
         Console.WriteLine($"plr {Id} played {card.name}");
         ChangeMana(-card.cost);
-        OnPlay?.Invoke(card.card_id);
         Hand.RemoveAt(hand_index);
-        Game.SpawnCard(card_id);
+        if(card.type == CardTypes.Unit){
+            Game.SpawnCard(card_id);
+        }
+        card.OnPlay?.Invoke(Game,this,card,[]); //plz fix onplay targetting
+        OnPlay?.Invoke(card.card_id);
     }
 
     public void ChangeHealth(int amount){

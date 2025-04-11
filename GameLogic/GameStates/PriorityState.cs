@@ -1,38 +1,33 @@
-public readonly struct CardEffect(int plr_id, CardStatus? trigger, Action<List<int>> effect, List<int> input){
+public readonly struct CardEffect(int plr_id, CardStatus? trigger, Action effect){
     public readonly int plr_id = plr_id;
     public readonly CardStatus? Trigger = trigger;
-    public readonly Action<List<int>> Effect = effect;
-    public readonly List<int> Input = input;
+    public readonly Action Effect = effect;
 }
 
-public class PriorityState(Game game, int plr_id, IGameState old_state) : IGameState {
-    private readonly Game game = game;
-    private int plr_priority = plr_id;
-    private readonly IGameState old_state = old_state;
+public class PriorityState : IGameState {
+    private readonly Game game;
+    public int plr_priority; //public to debug
+    private readonly IGameState next_state;
     private readonly List<CardEffect> on_hold_card_effects = [];
 
-    public void StateStarted(){
-        Check();
+    public PriorityState(Game game, int plr_priority, IGameState next_state){
+        this.game = game;
+        this.plr_priority = plr_priority;
+        this.next_state = next_state;
     }
 
-    public void Check(){
-        bool can = false;
-        Player plr = game.GetPlayer(plr_priority);
-        for(int i = 0; i < plr.Hand.Count; i++){
-            if(plr.Hand[i].cost > plr.Mana) continue;
-            if(plr.Hand[i].type > CardTypes.FastSpell) continue;
-            
-            can = true;
-            break;
+    public void StartState(){
+        CheckLegalPlays();
+    }
+
+    public void EndTurn(){
+        //if opponent did not respond to our effect (this is not optimal but good for now)
+        if(on_hold_card_effects.Count == 0 || on_hold_card_effects.Last().plr_id != plr_priority){
+            game.SetGameState(next_state); //this is so that if a choosing comes up in the card effects, this wont effect it
+            DoCardEffects();
+        }  else {
+            plr_priority = game.GetOtherPlayer(plr_priority).Id;
         }
-
-        if(!can) EndTurn();
-    }
-
-    public void AddEffect(CardEffect effect){
-        on_hold_card_effects.Add(effect);
-        plr_priority = game.GetOtherPlayer(plr_priority).Id;
-        Check();
     }
 
     public bool CanPlayCard(CardStatus card){
@@ -43,27 +38,32 @@ public class PriorityState(Game game, int plr_id, IGameState old_state) : IGameS
         return true;
     }
 
-    public void EndTurn(){
-        if(on_hold_card_effects.Count == 0){
-            game.SetGameState(old_state);
-            return;
-        }
-
-        if(on_hold_card_effects.Last().plr_id != plr_priority){
-            DoCardEffects();
-            Console.WriteLine("back to defend");
-            game.SetGameState(old_state);
-        }  else {
-            plr_priority = game.GetOtherPlayer(plr_priority).Id;
-        }
-    }
-
     public void DoCardEffects(){
         while(on_hold_card_effects.Count > 0){
             int i = on_hold_card_effects.Count-1;
             CardEffect a = on_hold_card_effects[i];
-            a.Effect.Invoke(a.Input);
-            on_hold_card_effects.RemoveAt(on_hold_card_effects.Count-1);
+            a.Effect.Invoke();
+            on_hold_card_effects.RemoveAt(i);
         }
+    }
+
+    public void CheckLegalPlays(){
+        bool can = false;
+        Player plr = game.GetPlayer(plr_priority);
+        for(int i = 0; i < plr.Hand.Count; i++){
+            if(plr.Hand[i].cost > plr.Mana) continue;
+            if(plr.Hand[i].type != CardTypes.FastSpell) continue;
+            
+            can = true;
+            break;
+        }
+
+        if(!can) EndTurn();
+    }
+
+    public void AddEffect(CardEffect effect, bool progress){
+        on_hold_card_effects.Add(effect);
+        plr_priority = game.GetOtherPlayer(plr_priority).Id;
+        if(progress) CheckLegalPlays();
     }
 }

@@ -1,8 +1,11 @@
-public class RegularState(Game game) : IGameState {
-    private Game game = game;
+public class RegularState(Game game, bool attacked) : IGameState {
+    private readonly Game game = game;
+    private bool attacked = attacked;
 
-    public void StateStarted(){
-        
+    public void StartState(){}
+
+    public void EndTurn(){
+        game.ChangeTurn();
     }
     
     public bool CanPlayCard(CardStatus card){
@@ -14,11 +17,8 @@ public class RegularState(Game game) : IGameState {
         return true;
     }
 
-    public void EndTurn(){
-        game.ChangeTurn();
-    }
-
     public void ToogleAttack(ToggleAttack data){
+        if(attacked) return;
         AttackingState a = new AttackingState(game);
         game.SetGameState(a);
         a.ToogleAttack(data);

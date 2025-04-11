@@ -25,6 +25,7 @@ public class Player(Game game, int id) {
         }
         CardStatus card = Deck[index];
         Deck.RemoveAt(index);
+        card.location = CardLocations.Hand;
         Hand.Add(card);
         OnDraw?.Invoke(card.card_id);
         return card;
@@ -47,7 +48,10 @@ public class Player(Game game, int id) {
         ChangeMana(-card.cost);
         Hand.RemoveAt(hand_index);
         if(card.type == CardTypes.Unit){
-            Game.SpawnCard(card_id);
+            Game.events.SpawnCard(card_id);
+        } else {
+            card.location = CardLocations.Void;
+            Void.Add(card);
         }
         card.OnPlay?.Invoke(Game,this,card,[]); //plz fix onplay targetting
         OnPlay?.Invoke(card.card_id);

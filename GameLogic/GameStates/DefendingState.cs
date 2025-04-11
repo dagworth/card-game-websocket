@@ -9,7 +9,7 @@ public class DefendingState : IGameState {
         plr_defending = game.Plr_Turn;
         this.attacking_units = attacking_units;
 
-        Player plr = game.GetPlayer(plr_defending);
+        Player plr = game.plrs.GetPlayer(plr_defending);
         if(plr.Board.Count == 0) EndTurn();
 
         bool can_play_a_card = false;
@@ -26,7 +26,7 @@ public class DefendingState : IGameState {
     public void StartState(){}
 
     public bool CanPlayCard(CardStatus card){
-        Player plr = game.GetPlayer(plr_defending);
+        Player plr = game.plrs.GetPlayer(plr_defending);
         if(plr_defending != card.plr_id) return false;
         if(defending_units != 0) return false;
         if(card.type != CardTypes.FastSpell) return false;
@@ -45,7 +45,7 @@ public class DefendingState : IGameState {
     public void ToggleDefend(ToggleDefend data){
         if(plr_defending == data.PlayerId) return; //if ur the defender
 
-        Player plr = game.GetOtherPlayer(plr_defending);
+        Player plr = game.plrs.GetOtherPlayer(plr_defending);
         if(plr.FindIndex(plr.Board, data.UnitDefending) == -1) return; //check the unit is on board
         if(!attacking_units.ContainsKey(data.UnitAttacking)) return; //the specified unit getting defended is not attacking
 
@@ -75,7 +75,7 @@ public class DefendingState : IGameState {
             () => {
                 Console.WriteLine("attacked");
                 foreach(KeyValuePair<int,List<int>> pair in attacking_units){
-                    game.GetCard(pair.Key).AttackEnemies([..pair.Value.Select(game.GetCard)]);
+                    game.cards.GetCard(pair.Key).AttackEnemies([..pair.Value.Select(game.cards.GetCard)]);
                 }
             }
         );

@@ -5,6 +5,7 @@ public class CardStatus(int card_id, Game game, int plr_id, CardData data) {
     public Game game = game;
     public int plr_id = plr_id;
     public CardTypes type = data.type;
+    public CardLocations location = CardLocations.Deck;
     public string name = data.name;
     public int cost = data.cost;
     public int health = data.health;
@@ -13,8 +14,6 @@ public class CardStatus(int card_id, Game game, int plr_id, CardData data) {
 
     public List<Tribes> tribes = data.tribes;
     public List<Passives> passives = [..data.passives];
-
-    public List<EventHandler> eventHandlers = [];
 
     public Action<Game, Player, CardStatus, List<int>>? OnPlay = data.OnPlay;
     public Action<Game, Player, CardStatus>? OnSpawn = data.OnSpawn;
@@ -28,7 +27,7 @@ public class CardStatus(int card_id, Game game, int plr_id, CardData data) {
         int atk = attack;
 
         if(victims.Count == 0){
-            game.GetOtherPlayer(plr_id).ChangeHealth(-atk);
+            game.plrs.GetOtherPlayer(plr_id).ChangeHealth(-atk);
             return;
         }
 

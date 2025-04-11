@@ -19,7 +19,7 @@ public class AttackingState(Game game) : IGameState {
     public void ToogleAttack(ToggleAttack data){
         if(plr_attacking != data.PlayerId) return;
 
-        Player plr = game.GetPlayer(plr_attacking);
+        Player plr = game.plrs.GetPlayer(plr_attacking);
         if(plr.FindIndex(plr.Board, data.UnitAttacking) == -1) return;
 
         attacking_units[data.UnitAttacking] = [];

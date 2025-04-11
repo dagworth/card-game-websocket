@@ -26,14 +26,14 @@ public class PriorityState : IGameState {
             game.SetGameState(next_state); //this is so that if a choosing comes up in the card effects, this wont effect it
             DoCardEffects();
         }  else {
-            plr_priority = game.GetOtherPlayer(plr_priority).Id;
+            plr_priority = game.plrs.GetOtherPlayer(plr_priority).Id;
         }
     }
 
     public bool CanPlayCard(CardStatus card){
         if(plr_priority != card.plr_id) return false;
         if(card.type != CardTypes.FastSpell) return false;
-        if(card.cost > game.GetPlayer(plr_priority).Mana) return false;
+        if(card.cost > game.plrs.GetPlayer(plr_priority).Mana) return false;
 
         return true;
     }
@@ -49,7 +49,7 @@ public class PriorityState : IGameState {
 
     public void CheckLegalPlays(){
         bool can = false;
-        Player plr = game.GetPlayer(plr_priority);
+        Player plr = game.plrs.GetPlayer(plr_priority);
         for(int i = 0; i < plr.Hand.Count; i++){
             if(plr.Hand[i].cost > plr.Mana) continue;
             if(plr.Hand[i].type != CardTypes.FastSpell) continue;
@@ -63,7 +63,7 @@ public class PriorityState : IGameState {
 
     public void AddEffect(CardEffect effect, bool progress){
         on_hold_card_effects.Add(effect);
-        plr_priority = game.GetOtherPlayer(plr_priority).Id;
+        plr_priority = game.plrs.GetOtherPlayer(plr_priority).Id;
         if(progress) CheckLegalPlays();
     }
 }

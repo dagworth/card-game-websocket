@@ -31,9 +31,9 @@ public class PriorityState : IGameState {
     }
 
     public bool CanPlayCard(CardStatus card){
-        if(plr_priority != card.plr_id) return false;
-        if(card.type != CardTypes.FastSpell) return false;
-        if(card.cost > game.plrs.GetPlayer(plr_priority).Mana) return false;
+        if(plr_priority != card.Plr_Id) return false;
+        if(card.Type != CardTypes.FastSpell) return false;
+        if(card.Cost > game.plrs.GetPlayer(plr_priority).Mana) return false;
 
         return true;
     }
@@ -51,8 +51,8 @@ public class PriorityState : IGameState {
         bool can = false;
         Player plr = game.plrs.GetPlayer(plr_priority);
         for(int i = 0; i < plr.Hand.Count; i++){
-            if(plr.Hand[i].cost > plr.Mana) continue;
-            if(plr.Hand[i].type != CardTypes.FastSpell) continue;
+            if(plr.Hand[i].Cost > plr.Mana) continue;
+            if(plr.Hand[i].Type != CardTypes.FastSpell) continue;
             
             can = true;
             break;

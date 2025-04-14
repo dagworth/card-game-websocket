@@ -10,9 +10,9 @@ public class RegularState(Game game, bool attacked) : IGameState {
     
     public bool CanPlayCard(CardStatus card){
         Player plr = game.plrs.GetPlayer(game.Plr_Turn);
-        if(game.Plr_Turn != card.plr_id) return false;
-        if(card.cost > plr.Mana) return false;
-        if(plr.FindIndex(plr.Hand, card.card_id) == -1) return false;
+        if(game.Plr_Turn != card.Plr_Id) return false;
+        if(card.Cost > plr.Mana) return false;
+        if(plr.FindIndex(plr.Hand, card.Id) == -1) return false;
 
         return true;
     }

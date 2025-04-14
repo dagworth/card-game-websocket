@@ -27,11 +27,11 @@ public class DefendingState : IGameState {
 
     public bool CanPlayCard(CardStatus card){
         Player plr = game.plrs.GetPlayer(plr_defending);
-        if(plr_defending != card.plr_id) return false;
+        if(plr_defending != card.Plr_Id) return false;
         if(defending_units != 0) return false;
-        if(card.type != CardTypes.FastSpell) return false;
-        if(card.cost > plr.Mana) return false;
-        if(plr.FindIndex(plr.Hand, card.card_id) == -1) return false;
+        if(card.Type != CardTypes.FastSpell) return false;
+        if(card.Cost > plr.Mana) return false;
+        if(plr.FindIndex(plr.Hand, card.Id) == -1) return false;
 
         return true;
     }
@@ -72,6 +72,7 @@ public class DefendingState : IGameState {
     public void HandleAttackPhase(){
         game.MakeCounterableEffect(
             plr_defending,
+            null,
             () => {
                 Console.WriteLine("attacked");
                 foreach(KeyValuePair<int,List<int>> pair in attacking_units){

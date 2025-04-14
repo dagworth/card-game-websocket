@@ -23,32 +23,32 @@ public static class PrintState{
 
         Console.Write($"\n\n{game.plrs.Plr1.Id} hand: ");
         foreach(CardStatus card in game.plrs.Plr1.Hand){
-            Console.Write($"({card.name} {card.attack}/{card.health} id: {card.card_id}) ");
+            Console.Write($"({card.Name} {card.Attack}/{card.Health} id: {card.Id}) ");
         }
 
         Console.Write($"\n{game.plrs.Plr1.Id} board: ");
         foreach(CardStatus card in game.plrs.Plr1.Board){
-            Console.Write($"({card.name} {card.attack}/{card.health} id: {card.card_id}) ");
+            Console.Write($"({card.Name} {card.Attack}/{card.Health} id: {card.Id}) ");
         }
 
         Console.Write($"\n{game.plrs.Plr1.Id} void: ");
         foreach(CardStatus card in game.plrs.Plr1.Void){
-            Console.Write($"({card.name} {card.attack}/{card.health} id: {card.card_id}) ");
+            Console.Write($"({card.Name} {card.Attack}/{card.Health} id: {card.Id}) ");
         }
 
         Console.Write($"\n\n{game.plrs.Plr2.Id} hand: ");
         foreach(CardStatus card in game.plrs.Plr2.Hand){
-            Console.Write($"({card.name} {card.attack}/{card.health} id: {card.card_id}) ");
+            Console.Write($"({card.Name} {card.Attack}/{card.Health} id: {card.Id}) ");
         }
 
         Console.Write($"\n{game.plrs.Plr2.Id} board: ");
         foreach(CardStatus card in game.plrs.Plr2.Board){
-            Console.Write($"({card.name} {card.attack}/{card.health} id: {card.card_id}) ");
+            Console.Write($"({card.Name} {card.Attack}/{card.Health} id: {card.Id}) ");
         }
 
         Console.Write($"\n{game.plrs.Plr2.Id} void: ");
         foreach(CardStatus card in game.plrs.Plr2.Void){
-            Console.Write($"({card.name} {card.attack}/{card.health} id: {card.card_id}) ");
+            Console.Write($"({card.Name} {card.Attack}/{card.Health} id: {card.Id}) ");
         }
     }
 }

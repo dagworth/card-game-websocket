@@ -20,6 +20,13 @@ public enum CardTypes {
     Unit,
 }
 
+public enum Delays {
+    EndTurn,
+    EndOppTurn,
+    StartTurn,
+    StartOppTurn
+}
+
 public enum TargetTypes {
     Spell,
     Unit,

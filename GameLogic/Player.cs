@@ -25,16 +25,16 @@ public class Player(Game game, int id) {
         }
         CardStatus card = Deck[index];
         Deck.RemoveAt(index);
-        card.location = CardLocations.Hand;
+        card.SetLocation(CardLocations.Hand);
         Hand.Add(card);
-        OnDraw?.Invoke(card.card_id);
+        OnDraw?.Invoke(card.Id);
         return card;
     }
 
     public int FindIndex(List<CardStatus> list, int id){
         int i = -1;
         while(++i < list.Count){
-            if(list[i].card_id == id){
+            if(list[i].Id == id){
                 return i;
             }
         }
@@ -44,17 +44,17 @@ public class Player(Game game, int id) {
     public void PlayCard(int card_id){
         int hand_index = FindIndex(Hand, card_id);
         CardStatus card = Hand[hand_index];
-        Console.WriteLine($"plr {Id} played {card.name}");
-        ChangeMana(-card.cost);
+        Console.WriteLine($"plr {Id} played {card.Name}");
+        ChangeMana(-card.Cost);
         Hand.RemoveAt(hand_index);
-        if(card.type == CardTypes.Unit){
+        if(card.Type == CardTypes.Unit){
             Game.events.SpawnCard(card_id);
         } else {
-            card.location = CardLocations.Void;
+            card.SetLocation(CardLocations.Void);
             Void.Add(card);
         }
         card.OnPlay?.Invoke(Game,this,card,[]); //plz fix onplay targetting
-        OnPlay?.Invoke(card.card_id);
+        OnPlay?.Invoke(card.Id);
     }
 
     public void ChangeHealth(int amount){
@@ -63,9 +63,5 @@ public class Player(Game game, int id) {
 
     public void ChangeMana(int amount){
         Mana+=amount;
-    }
-
-    public void ExecutedAttack(){
-        Attacked = true;
     }
 }

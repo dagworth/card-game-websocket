@@ -8,6 +8,7 @@ public class AttackingState(Game game) : IGameState {
     public void EndTurn(){
         game.MakeCounterableEffect(
             plr_attacking,
+            null,
             () => {
                 game.SetGameState(new DefendingState(game, attacking_units));
             }

@@ -16,7 +16,7 @@ public static class CardStatStorage {
                     a.AddRange(game.plrs.Plr1.Board);
                     a.AddRange(game.plrs.Plr2.Board);
                     foreach(CardStatus v in a){
-                        v.ChangeStats(1,1);
+                        v.MakeBuff(1,1);
                     }
                 }
             }
@@ -31,7 +31,7 @@ public static class CardStatStorage {
                 attack = 2,
                 passives = [Passives.Deadly],
                 OnAttack = (game, owner, card) => {
-                    card.ChangeStats(1,3);
+                    card.MakeBuff(1,3);
                 }
             }
         },
@@ -45,9 +45,8 @@ public static class CardStatStorage {
                 attack = 6,
                 passives = [Passives.Charge],
                 OnSpawn = (game, owner, card) => {
-                    //will do this after targetting
                     foreach(CardStatus v in owner.Board){
-                        v.ChangeStats(1,22);
+                        v.MakeBuff(1,22);
                     }
                 }
             }
@@ -63,9 +62,9 @@ public static class CardStatStorage {
                 passives = [Passives.Charge],
                 custom_effects = (game, owner, card) => {
                     game.events.OnSacrifice += (sacrificed_card_id) => {
-                        if(card.location == CardLocations.Board){
-                            if(game.cards.GetCard(sacrificed_card_id).plr_id != owner.Id){
-                                card.ChangeStats(1,1);
+                        if(card.Location == CardLocations.Board){
+                            if(game.cards.GetCard(sacrificed_card_id).Plr_Id != owner.Id){
+                                card.MakeBuff(1,1);
                             }
                         }
                     };
@@ -84,7 +83,7 @@ public static class CardStatStorage {
                 OnSpawn = (game, owner, card) => {
                     game.QueryTargets(owner.Id,
                         targets => {
-                            game.MakeCounterableEffect(owner.Id, () => {
+                            game.MakeCounterableEffect(owner.Id, card, () => {
                                 game.events.SacrificeCard(targets[0]);
                                 owner.DrawCard();
                                 owner.DrawCard();
@@ -104,14 +103,13 @@ public static class CardStatStorage {
                 description = "choose a unit that costs 5 or less from your void. Bring it back from the void and give it flying and charge. Sacrifice it at the end of the turn",
                 cost = 3,
                 OnPlay = (game, owner, card, t) => {
-                    game.MakeCounterableEffect(owner.Id, () => {
+                    game.MakeCounterableEffect(owner.Id, card, () => {
                         game.QueryTargets(owner.Id,
                             targets => {
                                 CardStatus guy = game.cards.GetCard(targets[0]);
-                                Console.Write($"{guy.name} {guy.card_id}");
-                                game.events.ReturnFromVoid(targets[0]);
-                                guy.passives.Add(Passives.Charge);
-                                guy.passives.Add(Passives.Flying);
+                                game.events.BringOutVoid(targets[0]);
+                                guy.GivePassive(Passives.Charge);
+                                guy.GivePassive(Passives.Flying);
                             },
 
                             new ChooseTargetsParams([..owner.Void]){

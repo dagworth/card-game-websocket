@@ -1,16 +1,16 @@
-public readonly struct CardEffect(int plr_id, CardStatus? trigger, Action effect){
+public readonly struct CardEffect(int plr_id, CardEntity? trigger, Action effect){
     public readonly int plr_id = plr_id;
-    public readonly CardStatus? Trigger = trigger;
+    public readonly CardEntity? Trigger = trigger;
     public readonly Action Effect = effect;
 }
 
 public class PriorityState : IGameState {
-    private readonly Game game;
+    private readonly GameEntity game;
     public int plr_priority; //public to debug
     private readonly IGameState next_state;
     private readonly List<CardEffect> on_hold_card_effects = [];
 
-    public PriorityState(Game game, int plr_priority, IGameState next_state){
+    public PriorityState(GameEntity game, int plr_priority, IGameState next_state){
         this.game = game;
         this.plr_priority = plr_priority;
         this.next_state = next_state;
@@ -30,10 +30,13 @@ public class PriorityState : IGameState {
         }
     }
 
-    public bool CanPlayCard(CardStatus card){
+    public bool CanPlayCard(CardEntity card){
+        PlayerEntity plr = game.plrs.GetPlayer(plr_priority);
+
         if(plr_priority != card.Plr_Id) return false;
+        if(plr.Hand.Contains(card)) return false;
         if(card.Type != CardTypes.FastSpell) return false;
-        if(card.Cost > game.plrs.GetPlayer(plr_priority).Mana) return false;
+        if(card.Stats.Cost > plr.Mana) return false;
 
         return true;
     }
@@ -49,9 +52,9 @@ public class PriorityState : IGameState {
 
     public void CheckLegalPlays(){
         bool can = false;
-        Player plr = game.plrs.GetPlayer(plr_priority);
+        PlayerEntity plr = game.plrs.GetPlayer(plr_priority);
         for(int i = 0; i < plr.Hand.Count; i++){
-            if(plr.Hand[i].Cost > plr.Mana) continue;
+            if(plr.Hand[i].Stats.Cost > plr.Mana) continue;
             if(plr.Hand[i].Type != CardTypes.FastSpell) continue;
             
             can = true;

@@ -11,52 +11,45 @@ public static class MessageHandler {
             return;
         }
 
-        Game game = GameManager.GetPlayer(plr_id).Game;
+        GameEntity game = GameManager.GetPlayer(plr_id).Game;
 
         if(action.Equals("play_card")){
-            PlayCard data = JsonSerializer.Deserialize<PlayCard>(message)!;
-            game.PlayerPlayCard(data);
+            game.PlayerPlayCard(JsonSerializer.Deserialize<PlayCard>(message)!);
         }
 
         else if(action.Equals("toggle_atk")){
-            ToggleAttack data = JsonSerializer.Deserialize<ToggleAttack>(message)!;
             if(game.Game_State is AttackingState a){
-                a.ToogleAttack(data);
+                a.ToogleAttack(JsonSerializer.Deserialize<ToggleAttack>(message)!);
             } else if(game.Game_State is RegularState b){
-                b.ToogleAttack(data);
+                b.ToogleAttack(JsonSerializer.Deserialize<ToggleAttack>(message)!);
             }
         }
 
         else if(action.Equals("cancel_atk")){
-            ToggleAttack data = JsonSerializer.Deserialize<ToggleAttack>(message)!;
             if(game.Game_State is AttackingState a){
-                a.CancelAttack(data);
+                a.CancelAttack(JsonSerializer.Deserialize<ToggleAttack>(message)!);
             }
         }
 
         else if(action.Equals("toggle_def")){
-            ToggleDefend data = JsonSerializer.Deserialize<ToggleDefend>(message)!;
             if(game.Game_State is DefendingState a){
-                a.ToggleDefend(data);
+                a.ToggleDefend(JsonSerializer.Deserialize<ToggleDefend>(message)!);
             }
         }
 
         else if(action.Equals("cancel_def")){
-            ToggleDefend data = JsonSerializer.Deserialize<ToggleDefend>(message)!;
             if(game.Game_State is DefendingState a){
-                a.CancelDefend(data);
+                a.CancelDefend(JsonSerializer.Deserialize<ToggleDefend>(message)!);
             }
         }
 
         else if(action.Equals("end_turn")){
-            Message data = JsonSerializer.Deserialize<Message>(message)!;
-            game.Game_State.EndTurn();
+            game.PlayerEndTurn();
         }
 
         else if(action.Equals("targets_choice")){
-            TargetsChoice data = JsonSerializer.Deserialize<TargetsChoice>(message)!;
             if(game.Game_State is ChoosingState a){
-                a.GotTargets(data);
+                a.GotTargets(JsonSerializer.Deserialize<TargetsChoice>(message)!);
             }
         }
     }

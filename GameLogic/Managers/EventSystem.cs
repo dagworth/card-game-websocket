@@ -1,5 +1,5 @@
-public class EventSystem(Game game){
-    public Game game = game;
+public class EventSystem(GameEntity game){
+    public GameEntity game = game;
 
     public event Action<int>? OnSacrifice;
     public event Action<int>? OnOutVoid;
@@ -9,8 +9,8 @@ public class EventSystem(Game game){
     public event Action<int>? OnSpawn;
 
     public void SpawnCard(int card_id){
-        CardStatus card = game.cards.GetCard(card_id);
-        Player plr = game.plrs.GetPlayer(card.Plr_Id);
+        CardEntity card = game.cards.GetCard(card_id);
+        PlayerEntity plr = game.plrs.GetPlayer(card.Plr_Id);
 
         card.SetLocation(CardLocations.Board);
         plr.Board.Add(card);
@@ -19,11 +19,10 @@ public class EventSystem(Game game){
     }
 
     public void KillCard(int card_id){
-        CardStatus card = game.cards.GetCard(card_id);
-        Player plr = game.plrs.GetPlayer(card.Plr_Id);
+        CardEntity card = game.cards.GetCard(card_id);
+        PlayerEntity plr = game.plrs.GetPlayer(card.Plr_Id);
 
-        int board_id = plr.FindIndex(plr.Board, card_id);
-        plr.Board.RemoveAt(board_id);
+        plr.Board.Remove(card);
 
         SendToVoid(card_id);
         OnDeath?.Invoke(card_id);
@@ -35,8 +34,8 @@ public class EventSystem(Game game){
     }
 
     public void SendToVoid(int card_id){
-        CardStatus card = game.cards.GetCard(card_id);
-        Player plr = game.plrs.GetPlayer(card.Plr_Id);
+        CardEntity card = game.cards.GetCard(card_id);
+        PlayerEntity plr = game.plrs.GetPlayer(card.Plr_Id);
         
         card.SetLocation(CardLocations.Void);
         plr.Void.Add(card);
@@ -44,12 +43,11 @@ public class EventSystem(Game game){
         OnInVoid?.Invoke(card_id);
     }
 
-    public CardStatus BringOutVoid(int card_id){
-        CardStatus card = game.cards.GetCard(card_id);
-        Player plr = game.plrs.GetPlayer(card.Plr_Id);
+    public CardEntity BringOutVoid(int card_id){
+        CardEntity card = game.cards.GetCard(card_id);
+        PlayerEntity plr = game.plrs.GetPlayer(card.Plr_Id);
 
-        int void_id = plr.FindIndex(plr.Void, card_id);
-        plr.Void.RemoveAt(void_id);
+        plr.Void.Remove(card);
 
         OnOutVoid?.Invoke(card_id);
         return card;

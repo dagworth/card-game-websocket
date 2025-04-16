@@ -1,15 +1,15 @@
 public class DefendingState : IGameState {
-    private readonly Game game;
+    private readonly GameEntity game;
     private readonly int plr_defending;
     private readonly Dictionary<int,List<int>> attacking_units;
     private int defending_units = 0;
 
-    public DefendingState(Game game, Dictionary<int,List<int>> attacking_units){
+    public DefendingState(GameEntity game, Dictionary<int,List<int>> attacking_units){
         this.game = game;
         plr_defending = game.Plr_Turn;
         this.attacking_units = attacking_units;
 
-        Player plr = game.plrs.GetPlayer(plr_defending);
+        PlayerEntity plr = game.plrs.GetPlayer(plr_defending);
         if(plr.Board.Count == 0) EndTurn();
 
         bool can_play_a_card = false;
@@ -25,28 +25,27 @@ public class DefendingState : IGameState {
 
     public void StartState(){}
 
-    public bool CanPlayCard(CardStatus card){
-        Player plr = game.plrs.GetPlayer(plr_defending);
+    public bool CanPlayCard(CardEntity card){
+        PlayerEntity plr = game.plrs.GetPlayer(plr_defending);
         if(plr_defending != card.Plr_Id) return false;
         if(defending_units != 0) return false;
         if(card.Type != CardTypes.FastSpell) return false;
-        if(card.Cost > plr.Mana) return false;
-        if(plr.FindIndex(plr.Hand, card.Id) == -1) return false;
+        if(card.Stats.Cost > plr.Mana) return false;
+        if(plr.Hand.Contains(card)) return false;
 
         return true;
     }
 
     public void EndTurn(){
         HandleAttackPhase();
-        Console.WriteLine("defending state did this");
         game.SetGameState(new RegularState(game, true));
     }
 
     public void ToggleDefend(ToggleDefend data){
         if(plr_defending == data.PlayerId) return; //if ur the defender
 
-        Player plr = game.plrs.GetOtherPlayer(plr_defending);
-        if(plr.FindIndex(plr.Board, data.UnitDefending) == -1) return; //check the unit is on board
+        PlayerEntity plr = game.plrs.GetOtherPlayer(plr_defending);
+        if(!plr.Board.Contains(game.cards.GetCard(data.UnitDefending))) return; //check the unit is on board
         if(!attacking_units.ContainsKey(data.UnitAttacking)) return; //the specified unit getting defended is not attacking
 
         defending_units++;
@@ -74,11 +73,23 @@ public class DefendingState : IGameState {
             plr_defending,
             null,
             () => {
-                Console.WriteLine("attacked");
                 foreach(KeyValuePair<int,List<int>> pair in attacking_units){
-                    game.cards.GetCard(pair.Key).AttackEnemies([..pair.Value.Select(game.cards.GetCard)]);
+                    AttackEnemies(game.cards.GetCard(pair.Key), [..pair.Value.Select(game.cards.GetCard)]);
                 }
             }
         );
+    }
+
+    public void AttackEnemies(CardEntity card, List<CardEntity> victims){
+        int atk = card.Stats.Attack;
+
+        if(victims.Count == 0){
+            game.plrs.GetOtherPlayer(card.Plr_Id).ChangeHealth(-atk);
+            return;
+        }
+
+        foreach(CardEntity victim in victims){
+            atk = card.AttackCard(victim, atk);
+        }
     }
 }

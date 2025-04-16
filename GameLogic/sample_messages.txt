@@ -6,7 +6,8 @@
 { 
     "action": "play_card",
     "player_id": 1,
-    "card_id": 2
+    "card_id": 2,
+    "targets": [2]
 }
 
 { 

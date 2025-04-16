@@ -5,8 +5,10 @@ public class Message {
     [JsonPropertyName("action")] public string Action { get; set; } = "";
     [JsonPropertyName("player_id")] public int PlayerId { get; set; }
 }
+
 public class PlayCard : Message {
     [JsonPropertyName("card_id")] public int CardId { get; set; }
+    [JsonPropertyName("targets")] public List<int> Targets { get; set; } = [];
 }
 
 public class ToggleAttack : Message {

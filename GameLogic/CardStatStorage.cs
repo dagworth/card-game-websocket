@@ -2,51 +2,61 @@ using System.Globalization;
 
 public static class CardStatStorage {
     private static readonly Dictionary<string,CardData> data = new Dictionary<string,CardData>{
-        {"Bob", new CardData {
-                type = CardTypes.Unit,
-                tribes = [Tribes.Zombie],
-                name = "Bob",
-                description = "on play: he buffs all minions on board by +1/+1",
-                cost = 1,
-                health = 1,
-                attack = 1,
-                passives = [Passives.Charge],
-                OnSpawn = (game, owner, card) => {
-                    List<CardStatus> a = [];
-                    a.AddRange(game.plrs.Plr1.Board);
-                    a.AddRange(game.plrs.Plr2.Board);
-                    foreach(CardStatus v in a){
-                        v.MakeBuff(1,1);
-                    }
-                }
-            }
-        },
         {"Alice", new CardData {
                 type = CardTypes.Unit,
                 tribes = [Tribes.Skeleton],
-                name = "Alice",
                 description = "on attack: she buffs herself by +1/+3",
                 cost = 2,
                 health = 4,
                 attack = 2,
                 passives = [Passives.Deadly],
                 OnAttack = (game, owner, card) => {
-                    card.MakeBuff(1,3);
+                    card.AddPermBuff(new Buff(){
+                        Attack = 1,
+                        Health = 3
+                    });
+                }
+            }
+        },
+        {"Bob", new CardData {
+                type = CardTypes.Unit,
+                tribes = [Tribes.Zombie],
+                description = "on play: he buffs all minions on board by +1/+1",
+                cost = 1,
+                health = 1,
+                attack = 1,
+                passives = [Passives.Charge],
+                OnSpawn = (game, owner, card) => {
+                    List<CardEntity> a = [];
+                    a.AddRange(game.plrs.Plr1.Board);
+                    a.AddRange(game.plrs.Plr2.Board);
+                    foreach(CardEntity v in a){
+                        v.AddPermBuff(new Buff(){
+                            Attack = 1,
+                            Health = 1
+                        });
+                    }
                 }
             }
         },
         {"Carol", new CardData {
                 type = CardTypes.Unit,
                 tribes = [],
-                name = "Carol",
-                description = "on play: buffs ally units by +1/+22 this turn",
+                description = "on play: buffs allied units by +1/+22 this turn",
                 cost = 1,
                 health = 2,
                 attack = 6,
                 passives = [Passives.Charge],
                 OnSpawn = (game, owner, card) => {
-                    foreach(CardStatus v in owner.Board){
-                        v.MakeBuff(1,22);
+                    for(int i = owner.Board.Count - 1; i >= 0; i--){
+                        Buff b = owner.Board[i].AddTempBuff(new Buff(){
+                            Attack = 1,
+                            Health = 1
+                        });
+
+                        game.MakeDelayedEffect(owner.Id, Delays.EndTurn, () => {
+                            b.RemoveBuff();
+                        });
                     }
                 }
             }
@@ -54,7 +64,6 @@ public static class CardStatStorage {
         {"Dave", new CardData {
                 type = CardTypes.Unit,
                 tribes = [Tribes.Creeper],
-                name = "Dave",
                 description = "on enemy sacrifice: gain +1/+1",
                 cost = 1,
                 health = 2,
@@ -64,7 +73,10 @@ public static class CardStatStorage {
                     game.events.OnSacrifice += (sacrificed_card_id) => {
                         if(card.Location == CardLocations.Board){
                             if(game.cards.GetCard(sacrificed_card_id).Plr_Id != owner.Id){
-                                card.MakeBuff(1,1);
+                                card.AddPermBuff(new Buff(){
+                                    Attack = 1,
+                                    Health = 1
+                                });
                             }
                         }
                     };
@@ -74,7 +86,6 @@ public static class CardStatStorage {
         {"Eve", new CardData {
                 type = CardTypes.Unit,
                 tribes = [],
-                name = "Eve",
                 description = "on spawn: choose an allied unit to sacrifice to draw 2 cards",
                 cost = 3,
                 health = 1,
@@ -97,19 +108,45 @@ public static class CardStatStorage {
                 }
             }
         },
+        {"Freddy", new CardData {
+                type = CardTypes.Unit,
+                tribes = [Tribes.Skeleton],
+                description = "on spawn: all enemy units get -2/-2 until the start of your next turn",
+                cost = 3,
+                health = 1,
+                attack = 3,
+                passives = [],
+                OnSpawn = (game, owner, card) => {
+                    List<CardEntity> other = game.plrs.GetOtherPlayer(owner).Board;
+                    for(int i = other.Count - 1; i >= 0; i--){
+                        Buff b = other[i].AddTempBuff(new Buff(){
+                            Attack = -2,
+                            Health = -2
+                        });
+
+                        game.MakeDelayedEffect(owner.Id, Delays.StartTurn, () => {
+                            b.RemoveBuff();
+                        });
+                    }
+                }
+            }
+        },
         {"Haunting Scream", new CardData {
                 type = CardTypes.Spell,
-                name = "Haunting Scream",
                 description = "choose a unit that costs 5 or less from your void. Bring it back from the void and give it flying and charge. Sacrifice it at the end of the turn",
                 cost = 3,
                 OnPlay = (game, owner, card, t) => {
                     game.MakeCounterableEffect(owner.Id, card, () => {
                         game.QueryTargets(owner.Id,
                             targets => {
-                                CardStatus guy = game.cards.GetCard(targets[0]);
+                                CardEntity guy = game.cards.GetCard(targets[0]);
                                 game.events.BringOutVoid(targets[0]);
-                                guy.GivePassive(Passives.Charge);
-                                guy.GivePassive(Passives.Flying);
+                                guy.AddPermBuff(new Buff(){
+                                    passives = [Passives.Flying, Passives.Charge]
+                                });
+                                game.MakeDelayedEffect(owner.Id, Delays.EndTurn, () => {
+                                    game.events.SacrificeCard(guy.Id);
+                                });
                             },
 
                             new ChooseTargetsParams([..owner.Void]){
@@ -118,6 +155,15 @@ public static class CardStatStorage {
                             }
                         );
                     });
+                }
+            }
+        },
+        {"Torch", new CardData {
+                type = CardTypes.Spell,
+                description = "deal 3 damage",
+                cost = 1,
+                OnPlay = (game, owner, card, t) => {
+                    
                 }
             }
         }

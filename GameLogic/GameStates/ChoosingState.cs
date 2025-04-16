@@ -1,5 +1,5 @@
-public class ChoosingState(Game game, int plr_id, IGameState old_state, Action<List<int>> effect, List<int> choice_pool) : IGameState {
-    private readonly Game game = game;
+public class ChoosingState(GameEntity game, int plr_id, IGameState old_state, Action<List<int>> effect, List<int> choice_pool) : IGameState {
+    private readonly GameEntity game = game;
     public int plr_choosing = plr_id;
     private readonly IGameState old_state = old_state;
 
@@ -9,7 +9,7 @@ public class ChoosingState(Game game, int plr_id, IGameState old_state, Action<L
     public void StartState(){}
     public void EndTurn(){}
 
-    public bool CanPlayCard(CardStatus card){
+    public bool CanPlayCard(CardEntity card){
         return false;
     }
 

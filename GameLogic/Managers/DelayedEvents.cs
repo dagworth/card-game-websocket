@@ -3,8 +3,8 @@ struct DelayedEffect(int id, Action effect) {
     public readonly Action Effect = effect;
 }
 
-public class DelayedEvents(Game game) {
-    private readonly Game game = game;
+public class DelayedEvents(GameEntity game) {
+    private readonly GameEntity game = game;
 
     //if i ever make a delayed effect with more than 5 turns, shoot me
     private readonly List<List<DelayedEffect>> StartTurn = [[],[],[],[],[]];
@@ -20,7 +20,7 @@ public class DelayedEvents(Game game) {
         list.Add([]);
     }
 
-    public void AddEffect(int plr_id, Action func, Delays type, int cycles){
+    public void AddEffect(int plr_id, Delays type, Action func, int cycles){
         switch(type){
             case Delays.EndTurn:
                 EndTurn[cycles].Add(new DelayedEffect(
@@ -35,6 +35,7 @@ public class DelayedEvents(Game game) {
                 ));
                 break;
             case Delays.StartTurn:
+                Console.WriteLine($"made startturn delay for {plr_id}");
                 StartTurn[cycles].Add(new DelayedEffect(
                     plr_id,
                     func
@@ -50,6 +51,7 @@ public class DelayedEvents(Game game) {
     }
 
     public void DoStartTurnEffects(int plr_id){
+        Console.WriteLine($"do the start turn stuff");
         DoList(StartTurn, plr_id);
     }
 

@@ -1,5 +1,5 @@
-public class AttackingState(Game game) : IGameState {
-    private readonly Game game = game;
+public class AttackingState(GameEntity game) : IGameState {
+    private readonly GameEntity game = game;
     private readonly int plr_attacking = game.Plr_Turn;
     private readonly Dictionary<int,List<int>> attacking_units = [];
 
@@ -15,13 +15,13 @@ public class AttackingState(Game game) : IGameState {
         );
     }
 
-    public bool CanPlayCard(CardStatus card){ return false; }
+    public bool CanPlayCard(CardEntity card){ return false; }
 
     public void ToogleAttack(ToggleAttack data){
         if(plr_attacking != data.PlayerId) return;
 
-        Player plr = game.plrs.GetPlayer(plr_attacking);
-        if(plr.FindIndex(plr.Board, data.UnitAttacking) == -1) return;
+        PlayerEntity plr = game.plrs.GetPlayer(plr_attacking);
+        if(!plr.Board.Contains(game.cards.GetCard(data.UnitAttacking))) return;
 
         attacking_units[data.UnitAttacking] = [];
     }

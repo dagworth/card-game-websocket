@@ -11,40 +11,45 @@ public class ChooseTargetsParams(int plr_id, List<TargetTypes> stuff){
 
     public void Filter(int game_id){
         List<CardEntity> list = GetList(game_id);
-
-        for(int i = 0; i < list.Count; i++){
-            if(TargetMaxCost != -1 && list[i].Stats.Cost > TargetMaxCost){
+        List<int> temp_misc_list = [];
+        
+        if (stuff.Contains(TargetTypes.YourPlayer) || stuff.Contains(TargetTypes.Allies))
+            temp_misc_list.Add(-1);
+            
+        if (stuff.Contains(TargetTypes.EnemyPlayer) || stuff.Contains(TargetTypes.Enemies))
+            temp_misc_list.Add(-2);
+        
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (TargetMaxCost != -1 && list[i].Stats.Cost > TargetMaxCost) {
                 list.RemoveAt(i--);
                 continue;
             }
 
-            if(TargetMinCost != -1 && list[i].Stats.Cost < TargetMinCost){
+            if (TargetMinCost != -1 && list[i].Stats.Cost < TargetMinCost) {
                 list.RemoveAt(i--);
                 continue;
             }
 
-            if(TargetTribe != Tribes.None){
-                if(!list[i].Tribes.Contains(TargetTribe)){
+            if (TargetTribe != Tribes.None) {
+                if (!list[i].Tribes.Contains(TargetTribe)) {
                     list.RemoveAt(i--);
                     continue;
                 }
             }
         }
 
-        TargetList = [..list.Select(x => x.Id)];
+        TargetList = [..list.Select(x => x.Id), ..temp_misc_list];
     }
 
-    private List<CardEntity> GetList(int game_id)
-    {
+    private List<CardEntity> GetList(int game_id) {
         GameEntity game = GameManager.GetGame(game_id);
         PlayerEntity plr = game.plrs.GetPlayer(plr_id);
         PlayerEntity other_plr = game.plrs.GetOtherPlayer(plr_id);
 
         List<CardEntity> list = [];
-        foreach (TargetTypes t in stuff)
-        {
-            switch (t)
-            {
+        foreach (TargetTypes t in stuff) {
+            switch (t) {
                 case TargetTypes.YourUnitsInHand:
                     foreach (CardEntity card in plr.Hand)
                     {

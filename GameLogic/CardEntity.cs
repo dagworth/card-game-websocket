@@ -1,6 +1,6 @@
 using System;
 
-public class CardEntity(GameEntity game, int plr_id, int card_id, string name, CardData data) {
+public class CardEntity(GameEntity game, int plr_id, int card_id, string name, CardData data) : Damageable {
     private readonly GameEntity game = game;
 
     public readonly int Id = card_id;
@@ -36,10 +36,8 @@ public class CardEntity(GameEntity game, int plr_id, int card_id, string name, C
             atk += buff.Attack;
             hp += buff.Health;
             cost += buff.Cost;
-            foreach (Passives passive in buff.passives)
-            {
-                if (!p.Contains(passive))
-                {
+            foreach(Passives passive in buff.passives){
+                if (!p.Contains(passive)){
                     p.Add(passive);
                 }
             }

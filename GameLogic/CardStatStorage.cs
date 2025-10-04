@@ -129,6 +129,28 @@ public static class CardStatStorage {
         }
     }
 },
+{"Gary", new CardData {
+        type = CardTypes.Unit,
+        tribes = [Tribes.Creeper],
+        description = "on spawn: choose an enemy to take 3 damage",
+        cost = 3,
+        health = 1,
+        attack = 3,
+        passives = [],
+        OnSpawn = (game, owner, card) => {
+            game.QueryTargets(owner.Id,
+                targets => {
+                    game.MakeCounterableEffect(owner.Id, card, () => {
+                        Damageable guy = game.GetTarget(owner.Id, targets[0]);
+                        guy.TakeDamage(3);
+                    });
+                },
+
+                new ChooseTargetsParams(owner.Id, [TargetTypes.Enemies])
+            );
+        }
+    }
+},
 {"Haunting Scream", new CardData {
         type = CardTypes.Spell,
         description = "choose a unit that costs 5 or less from your void. Bring it back from the void and give it flying and charge. Sacrifice it at the end of the turn",

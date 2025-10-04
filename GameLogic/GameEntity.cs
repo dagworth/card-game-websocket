@@ -12,16 +12,24 @@ public class GameEntity {
     public int Plr_Turn { get; private set; }
     public IGameState Game_State {get; private set; }
 
-    public void ChangeTurn(){
+    public void ChangeTurn() {
         Plr_Turn = plrs.GetOtherPlayer(Plr_Turn).Id;
     }
 
-    public void SetGameState(IGameState state){
+    public void SetGameState(IGameState state) {
         Game_State = state;
         state.StartState();
     }
 
-    public GameEntity(int game_id, int plr1_id, int plr2_id, List<string> deck1, List<string> deck2){
+    public Damageable GetTarget(int owner_id, int target_id) {
+        if (target_id == -1) return plrs.GetPlayer(owner_id);
+        if (target_id == -2) return plrs.GetOtherPlayer(owner_id);
+        
+        return cards.GetCard(target_id);
+    }
+
+    public GameEntity(int game_id, int plr1_id, int plr2_id, List<string> deck1, List<string> deck2)
+    {
         Id = game_id;
         Game_State = new RegularState(this, false);
         Plr_Turn = plr1_id;
@@ -35,14 +43,14 @@ public class GameEntity {
         Console.WriteLine("game made");
     }
 
-    public void MakeCounterableEffect(int plr_id, CardEntity? owner, Action func){
+    public void MakeCounterableEffect(int plr_id, CardEntity? owner, Action func) {
         CardEffect effect = new CardEffect(
             plr_id,
             owner,
             func
         );
 
-        if(Game_State is PriorityState same_state){
+        if(Game_State is PriorityState same_state) {
             same_state.AddEffect(effect, true);
         } else {
             PriorityState new_state = new PriorityState(
@@ -56,11 +64,11 @@ public class GameEntity {
         }
     }
 
-    public void MakeDelayedEffect(int plr_id, Delays delay_type, Action func, int cycles = 0){
+    public void MakeDelayedEffect(int plr_id, Delays delay_type, Action func, int cycles = 0) {
         delayed.AddEffect(plr_id, delay_type, func, cycles);
     }
 
-    public void QueryTargets(int plr_id, Action<List<int>> func, ChooseTargetsParams info){
+    public void QueryTargets(int plr_id, Action<List<int>> func, ChooseTargetsParams info) {
         //this is here so that the variables in params dont have to be in constructor
         //ease of use for future me
         //and can be changed whenever before filtering
@@ -76,15 +84,15 @@ public class GameEntity {
         MessageHandler.AskForTargets(ServerHandler.GetWSConnection(plr_id), info.TargetList);
     }
 
-    public void PlayerPlayCard(PlayCard data){
+    public void PlayerPlayCard(PlayCard data) {
         PlayerEntity plr = plrs.GetPlayer(data.PlayerId);
         CardEntity card = cards.GetCard(data.CardId);
-        if(Game_State.CanPlayCard(card)){
+        if(Game_State.CanPlayCard(card)) {
             plr.PlayCard(data.CardId, data.Targets);
         }
     }
 
-    public void PlayerEndTurn(){
+    public void PlayerEndTurn() {
         Game_State.EndTurn();
     }
 }

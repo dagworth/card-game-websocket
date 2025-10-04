@@ -1,6 +1,6 @@
 using Fleck;
 
-public class PlayerEntity(GameEntity game, int id) {
+public class PlayerEntity(GameEntity game, int id) : Damageable {
     
     public event Action<int>? OnDraw;
     public event Action<int>? OnPlay;
@@ -46,8 +46,14 @@ public class PlayerEntity(GameEntity game, int id) {
         OnPlay?.Invoke(card.Id);
     }
 
-    public void ChangeHealth(int amount){
-        Health+=amount;
+    public void TakeDamage(int amount)
+    {
+        Health -= amount;
+    }
+
+    public void ChangeHealth(int amount)
+    {
+        Health += amount;
     }
 
     public void ChangeMana(int amount){

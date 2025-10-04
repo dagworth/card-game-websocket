@@ -8,8 +8,8 @@ public static class GameManager {
     public static GameEntity CreateGame(int plr1_id, int plr2_id){
         int game_id = counter++;
 
-        List<string> deck1 = ["Haunting Scream","Dave","Eve","Bob","Carol","Alice","Bob","Carol","Alice","Bob","Bob","Alice","Bob","Bob","Alice","Bob","Bob","Alice"];
-        List<string> deck2 = ["Freddy","Dave","Carol","Bob","Carol","Alice","Bob","Carol","Alice","Bob","Bob","Alice","Bob","Bob","Alice","Bob"];
+        List<string> deck1 = ["Haunting Scream","Dave","Gary","Bob","Carol","Alice","Bob","Carol","Alice","Bob","Bob","Alice","Bob","Bob","Alice","Bob","Bob","Alice"];
+        List<string> deck2 = ["Freddy","Gary","Carol","Bob","Carol","Alice","Bob","Carol","Alice","Bob","Bob","Alice","Bob","Bob","Alice","Bob"];
 
         GameEntity clone = new GameEntity(game_id, plr1_id, plr2_id, deck1, deck2);
         games[game_id] = clone;

@@ -28,13 +28,30 @@ public enum Delays {
 }
 
 public enum TargetTypes {
-    Spell,
-    Unit,
+    YourUnitsInHand,
+    EnemyUnitsInHand,
 
-    Player, //no targetlist
+    YourSpellsInHand,
+    EnemySpellsInHand,
 
-    Enemy, //Unit but includes Player
-    Ally //same as Enemy
+    YourUnitsInVoid,
+    EnemyUnitsInVoid,
+
+    YourSpellsInVoid,
+    EnemySpellsInVoid,
+
+    YourUnits,
+    EnemyUnits,
+
+    YourPlayer,
+    EnemyPlayer,
+
+    Enemies,
+    Allies,
+    Anything,
+
+    PlayedFastSpell,
+    PlayedSpell
 }
 
 public enum Tribes {

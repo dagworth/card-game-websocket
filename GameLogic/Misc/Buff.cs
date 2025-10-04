@@ -1,8 +1,11 @@
 public class Buff {
     public CardEntity? card;
     public int Cost;
+    public int Cost_Fixed;
     public int Attack;
+    public int Attack_Fixed;
     public int Health;
+    public int Health_Fixed;
     public List<Passives> passives = [];
 
     public void RemoveBuff(){

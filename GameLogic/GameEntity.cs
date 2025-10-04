@@ -61,7 +61,11 @@ public class GameEntity {
     }
 
     public void QueryTargets(int plr_id, Action<List<int>> func, ChooseTargetsParams info){
-        info.Filter();
+        //this is here so that the variables in params dont have to be in constructor
+        //ease of use for future me
+        //and can be changed whenever before filtering
+        info.Filter(Id);
+
         SetGameState(new ChoosingState(
             this,
             plr_id,

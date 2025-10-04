@@ -35,8 +35,11 @@ public class CardEntity(GameEntity game, int plr_id, int card_id, string name, C
         foreach(Buff buff in buffs){
             atk += buff.Attack;
             hp += buff.Health;
-            foreach(Passives passive in buff.passives){
-                if(!p.Contains(passive)){
+            cost += buff.Cost;
+            foreach (Passives passive in buff.passives)
+            {
+                if (!p.Contains(passive))
+                {
                     p.Add(passive);
                 }
             }

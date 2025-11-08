@@ -1,7 +1,7 @@
 using Fleck;
 
 static class Program {
-    private static WebSocketServer server = new WebSocketServer("ws://0.0.0.0:8181");
+    private static WebSocketServer server = new WebSocketServer("ws://127.0.0.1:8181");
     
     static void Main() {
         server.Start(ws => {

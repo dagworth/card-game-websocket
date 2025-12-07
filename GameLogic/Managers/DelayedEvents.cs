@@ -51,7 +51,6 @@ public class DelayedEvents(GameEntity game) {
     }
 
     public void DoStartTurnEffects(int plr_id){
-        Console.WriteLine($"do the start turn stuff");
         DoList(StartTurn, plr_id);
     }
 

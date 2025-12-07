@@ -10,7 +10,7 @@ public class Buff {
     [JsonPropertyName("health_fixed")] public int Health_Fixed { get; set; }
     [JsonPropertyName("passives")] public List<Passives> passives { get; set; } = [];
 
-    public void RemoveBuff(){
+    public void Remove(){
         if(card == null){
             Console.WriteLine("you fucked up (buff was attached to nobody)");
         }

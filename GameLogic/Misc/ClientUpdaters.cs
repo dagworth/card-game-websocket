@@ -1,8 +1,9 @@
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 
-[JsonDerivedType(typeof(CardLocationUpdater), "CLU")]
-[JsonDerivedType(typeof(StatUpdater), "SU")]
+[JsonDerivedType(typeof(CardLocationUpdater), "cardlocationupdater")]
+[JsonDerivedType(typeof(StatUpdater), "statupdater")]
+[JsonDerivedType(typeof(TurnUpdater), "turnupdator")]
 
 public class ClientUpdater
 {
@@ -20,4 +21,10 @@ public class StatUpdater(Buff buff, bool inverse) : ClientUpdater
 {
     [JsonPropertyName("buff")] public Buff Buff { get; set; } = buff;
     [JsonPropertyName("inverse")] public bool Inverse { get; set; } = inverse;
+}
+
+public class TurnUpdater(int plr_id) : ClientUpdater
+{
+    [JsonPropertyName("turn")] public string Turn { get; set; } = "";
+    [JsonPropertyName("plr_id")] public int Plr_Id { get; set; } = plr_id;
 }

@@ -55,7 +55,7 @@ public static class CardStatStorage {
                 });
 
                 game.MakeDelayedEffect(owner.Id, Delays.EndTurn, () => {
-                    b.RemoveBuff();
+                    b.Remove();
                 });
             }
         }
@@ -123,7 +123,7 @@ public static class CardStatStorage {
                 });
 
                 game.MakeDelayedEffect(owner.Id, Delays.StartTurn, () => {
-                    b.RemoveBuff();
+                    b.Remove();
                 });
             }
         }

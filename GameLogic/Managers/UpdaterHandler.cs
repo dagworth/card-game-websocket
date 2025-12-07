@@ -12,6 +12,13 @@ public class UpdaterHandler(GameEntity game)
         events.Add(clone);
     }
 
+    public void EndTurn(int plr_id, int anim = 0)
+    {
+        TurnUpdater clone = new(plr_id);
+        clone.Action = "turn ended";
+        events.Add(clone);
+    }
+
     private bool DupeBuff(Buff buff)
     {
         if (applied_buffs.Contains(buff))

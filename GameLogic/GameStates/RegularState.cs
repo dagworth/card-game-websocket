@@ -5,7 +5,9 @@ public class RegularState(GameEntity game, bool attacked) : IGameState {
     public void StartState(){}
 
     public void EndTurn(){
+        game.updater.EndTurn(game.Plr_Turn);
         game.delayed.DoEndTurnEffects(game.Plr_Turn);
+        game.updater.UpdateClients();
         game.MakeCounterableEffect(
             game.Plr_Turn,
             null,
@@ -13,6 +15,7 @@ public class RegularState(GameEntity game, bool attacked) : IGameState {
         );
         game.ChangeTurn();
         game.delayed.DoStartTurnEffects(game.Plr_Turn);
+        game.updater.UpdateClients();
     }
     
     public bool CanPlayCard(CardEntity card){

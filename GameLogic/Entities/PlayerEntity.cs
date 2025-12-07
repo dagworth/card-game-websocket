@@ -1,6 +1,6 @@
 using Fleck;
 
-public class PlayerEntity(GameEntity game, int id) : Damageable {
+public class PlayerEntity(GameEntity game, int id) : IDamageable {
     
     public event Action<int>? OnDraw;
     public event Action<int>? OnPlay;

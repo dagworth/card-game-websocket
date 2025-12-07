@@ -1,6 +1,8 @@
 using System;
 
-public class CardEntity(GameEntity game, int plr_id, int card_id, string name, CardData data) : Damageable {
+public class CardEntity(GameEntity game, int plr_id, int card_id, string name, CardData data)
+    : IDamageable
+{
     private readonly GameEntity game = game;
 
     public readonly int Id = card_id;
@@ -13,7 +15,7 @@ public class CardEntity(GameEntity game, int plr_id, int card_id, string name, C
     public string Name { get; private set; } = name;
     public string Desc { get; private set; } = data.description;
 
-    public readonly List<Tribes> Tribes = [..data.tribes];
+    public readonly List<Tribes> Tribes = [.. data.tribes];
 
     public CardStats Stats = new CardStats();
     private CardStats perm_stats = new CardStats(data);
@@ -23,21 +25,25 @@ public class CardEntity(GameEntity game, int plr_id, int card_id, string name, C
     public Action<GameEntity, PlayerEntity, CardEntity>? OnDeath = data.OnDeath;
     public Action<GameEntity, PlayerEntity, CardEntity>? OnAttack = data.OnAttack;
     public Action<GameEntity, PlayerEntity, CardEntity>? OnDraw = data.OnDraw;
-    
+
     public Action<GameEntity, PlayerEntity, CardEntity>? custom_effects = data.custom_effects;
 
-    public void UpdateStats(){
+    public void UpdateStats()
+    {
         int cost = perm_stats.Cost;
         int hp = perm_stats.Health;
         int atk = perm_stats.Attack;
-        List<Passives> p = [..perm_stats.passives];
+        List<Passives> p = [.. perm_stats.passives];
 
-        foreach(Buff buff in buffs){
+        foreach (Buff buff in buffs)
+        {
             atk += buff.Attack;
             hp += buff.Health;
             cost += buff.Cost;
-            foreach(Passives passive in buff.passives){
-                if (!p.Contains(passive)){
+            foreach (Passives passive in buff.passives)
+            {
+                if (!p.Contains(passive))
+                {
                     p.Add(passive);
                 }
             }
@@ -48,57 +54,75 @@ public class CardEntity(GameEntity game, int plr_id, int card_id, string name, C
         Stats.Attack = atk;
         Stats.passives = p;
 
-        if(Type == CardTypes.Unit) CheckIfDead();
+        if (Type == CardTypes.Unit)
+            CheckIfDead();
     }
 
-    public Buff AddTempBuff(Buff buff){
+    public Buff AddTempBuff(Buff buff)
+    {
+        game.updater.ChangeStats(buff, 0); //0 for no animation for now
         buff.card = this;
         buffs.Add(buff);
         UpdateStats();
         return buff;
     }
 
-    public void RemoveTempBuff(Buff buff){
+    public void RemoveTempBuff(Buff buff)
+    {
+        game.updater.ChangeStats(buff, 0); //0 for no animation for now
         buffs.Remove(buff);
         UpdateStats();
     }
 
-    public void AddPermBuff(Buff buff){
+    public void AddPermBuff(Buff buff)
+    {
+        game.updater.ChangeStats(buff, 0); //0 for no animation for now
         perm_stats.Cost += buff.Cost;
         perm_stats.Health += buff.Health;
         perm_stats.Attack += buff.Attack;
-        foreach(Passives p in buff.passives){
-            if(!perm_stats.passives.Contains(p)){
+        foreach (Passives p in buff.passives)
+        {
+            if (!perm_stats.passives.Contains(p))
+            {
                 perm_stats.passives.Add(p);
             }
         }
+
         UpdateStats();
     }
 
-    public void TakeDamage(int damage){
+    public void TakeDamage(int damage)
+    {
         Stats.Damaged += damage;
     }
 
-    public void CheckIfDead(){
-        if(Stats.Damaged >= Stats.Health) game.events.KillCard(Id);
+    public void CheckIfDead()
+    {
+        if (Stats.Damaged >= Stats.Health)
+            game.events.KillCard(Id);
     }
 
-    public void SetLocation(CardLocations loc){
+    public void SetLocation(CardLocations loc)
+    {
         Location = loc;
     }
-    
+
     //returns how much attack is left
-    public int AttackCard(CardEntity victim, int atk){
+    public int AttackCard(CardEntity victim, int atk)
+    {
         TakeDamage(victim.Stats.Attack);
 
-        if(victim.Stats.Health - atk >= 0){
+        if (victim.Stats.Health - atk >= 0)
+        {
             victim.TakeDamage(atk);
             atk = 0;
-        } else {
+        }
+        else
+        {
             victim.TakeDamage(victim.Stats.Health);
             atk -= victim.Stats.Health;
         }
-        
+
         return atk;
     }
 }

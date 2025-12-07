@@ -31,6 +31,7 @@ public class ChoosingState(GameEntity game, int plr_id, IGameState old_state, Ac
             //because of the case of needing to choose when in a priority turn
             //which has an effect that adds a counterable effect
             //the priority state has to be in place before that happens
+            game.updater.UpdateClients();
         }
     }
 }

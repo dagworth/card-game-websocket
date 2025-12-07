@@ -1,0 +1,6 @@
+[*]
+indent_style = space
+indent_size = 4
+
+[*.cs]
+csharpier_brace_style = 1tbs

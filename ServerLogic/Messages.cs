@@ -23,3 +23,7 @@ public class ToggleDefend : Message {
 public class TargetsChoice : Message {
     [JsonPropertyName("targets")] public List<int> Targets { get; set; } = [];
 }
+
+public class ClientUpdateMessage(List<ClientUpdater> events) : Message {
+    [JsonPropertyName("events")] public List<ClientUpdater> Events { get; set; } = events;
+}

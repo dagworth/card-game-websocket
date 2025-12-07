@@ -141,7 +141,7 @@ public static class CardStatStorage {
             game.QueryTargets(owner.Id,
                 targets => {
                     game.MakeCounterableEffect(owner.Id, card, () => {
-                        Damageable guy = game.GetTarget(owner.Id, targets[0]);
+                        IDamageable guy = game.GetTarget(owner.Id, targets[0]);
                         guy.TakeDamage(3);
                     });
                 },

@@ -1,30 +1,38 @@
 using System.Buffers;
 using Fleck;
 
-public class GameEntity {
+public class GameEntity
+{
     public readonly EventSystem events;
     public readonly CardManager cards;
     public readonly PlayerManager plrs;
 
     public readonly DelayedEvents delayed;
 
+    public readonly UpdaterHandler updater;
+
     public int Id { get; private set; }
     public int Plr_Turn { get; private set; }
-    public IGameState Game_State {get; private set; }
+    public IGameState Game_State { get; private set; }
 
-    public void ChangeTurn() {
+    public void ChangeTurn()
+    {
         Plr_Turn = plrs.GetOtherPlayer(Plr_Turn).Id;
     }
 
-    public void SetGameState(IGameState state) {
+    public void SetGameState(IGameState state)
+    {
         Game_State = state;
         state.StartState();
     }
 
-    public Damageable GetTarget(int owner_id, int target_id) {
-        if (target_id == -1) return plrs.GetPlayer(owner_id);
-        if (target_id == -2) return plrs.GetOtherPlayer(owner_id);
-        
+    public IDamageable GetTarget(int owner_id, int target_id)
+    {
+        if (target_id == -1)
+            return plrs.GetPlayer(owner_id);
+        if (target_id == -2)
+            return plrs.GetOtherPlayer(owner_id);
+
         return cards.GetCard(target_id);
     }
 
@@ -38,61 +46,60 @@ public class GameEntity {
         events = new EventSystem(this);
         cards = new CardManager(this);
         plrs = new PlayerManager(this, plr1_id, plr2_id);
+        updater = new UpdaterHandler(this);
 
         plrs.Start(deck1, deck2);
         Console.WriteLine("game made");
     }
 
-    public void MakeCounterableEffect(int plr_id, CardEntity? owner, Action func) {
-        CardEffect effect = new CardEffect(
-            plr_id,
-            owner,
-            func
-        );
+    public void MakeCounterableEffect(int plr_id, CardEntity? owner, Action func)
+    {
+        CardEffect effect = new CardEffect(plr_id, owner, func);
 
-        if(Game_State is PriorityState same_state) {
+        if (Game_State is PriorityState same_state)
+        {
             same_state.AddEffect(effect, true);
-        } else {
-            PriorityState new_state = new PriorityState(
-                this,
-                plr_id,
-                Game_State
-            );
+        }
+        else
+        {
+            PriorityState new_state = new PriorityState(this, plr_id, Game_State);
 
             new_state.AddEffect(effect, false);
             SetGameState(new_state);
         }
     }
 
-    public void MakeDelayedEffect(int plr_id, Delays delay_type, Action func, int cycles = 0) {
+    public void MakeDelayedEffect(int plr_id, Delays delay_type, Action func, int cycles = 0)
+    {
         delayed.AddEffect(plr_id, delay_type, func, cycles);
     }
 
-    public void QueryTargets(int plr_id, Action<List<int>> func, ChooseTargetsParams info) {
+    public void QueryTargets(int plr_id, Action<List<int>> func, ChooseTargetsParams info)
+    {
         //this is here so that the variables in params dont have to be in constructor
         //ease of use for future me
         //and can be changed whenever before filtering
         info.Filter(Id);
 
-        SetGameState(new ChoosingState(
-            this,
-            plr_id,
-            Game_State,
-            func,
-            info.TargetList
-        ));
+        SetGameState(new ChoosingState(this, plr_id, Game_State, func, info.TargetList));
         MessageHandler.AskForTargets(ServerHandler.GetWSConnection(plr_id), info.TargetList);
     }
 
-    public void PlayerPlayCard(PlayCard data) {
+    public void PlayerPlayCard(PlayCard data)
+    {
         PlayerEntity plr = plrs.GetPlayer(data.PlayerId);
         CardEntity card = cards.GetCard(data.CardId);
-        if(Game_State.CanPlayCard(card)) {
+
+        if (Game_State.CanPlayCard(card))
+        {
+            updater.ChangeCardLocation(CardLocations.Board,CardLocations.Hand,data.CardId);
             plr.PlayCard(data.CardId, data.Targets);
+            updater.UpdateClients();
         }
     }
 
-    public void PlayerEndTurn() {
+    public void PlayerEndTurn()
+    {
         Game_State.EndTurn();
     }
 }

@@ -69,4 +69,9 @@ public static class MessageHandler {
 
         ws.Send(JsonSerializer.Serialize(a));
     }
+
+    public static void UpdateClient(IWebSocketConnection ws, ClientUpdateMessage message)
+    {
+        ws.Send(JsonSerializer.Serialize(message));
+    }
 }

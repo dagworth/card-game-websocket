@@ -5,7 +5,7 @@ public static class ServerHandler {
     private static IWebSocketConnection? WaitingPlayer = null;
     private static readonly Dictionary<IWebSocketConnection,int> plr_ids = [];
     private static readonly Dictionary<int,IWebSocketConnection> plr_ws = [];
-    private static int plr_counter = 0;
+    private static int plr_counter = 10;
 
     public static void OnOpen(IWebSocketConnection ws){
         int id = plr_counter++;

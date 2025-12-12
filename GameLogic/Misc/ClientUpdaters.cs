@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 [JsonDerivedType(typeof(CardLocationUpdater), "cardlocationupdater")]
 [JsonDerivedType(typeof(StatUpdater), "statupdater")]
 [JsonDerivedType(typeof(TurnUpdater), "turnupdator")]
+[JsonDerivedType(typeof(DamageUpdater), "damageupdator")]
 
 public class ClientUpdater
 {
@@ -21,6 +22,11 @@ public class StatUpdater(Buff buff, bool inverse) : ClientUpdater
 {
     [JsonPropertyName("buff")] public Buff Buff { get; set; } = buff;
     [JsonPropertyName("inverse")] public bool Inverse { get; set; } = inverse;
+}
+
+public class DamageUpdater(int damage) : ClientUpdater
+{
+    [JsonPropertyName("damage")] public int Damage { get; set; } = damage;
 }
 
 public class TurnUpdater(int plr_id) : ClientUpdater

@@ -36,20 +36,20 @@ public class GameEntity
         return cards.GetCard(target_id);
     }
 
-    public GameEntity(int game_id, int plr1_id, int plr2_id, List<string> deck1, List<string> deck2)
+    public GameEntity(int game_id, int plr0_id, int plr1_id, List<string> deck0, List<string> deck1)
     {
         Id = game_id;
         Game_State = new RegularState(this, false);
-        Plr_Turn = plr1_id;
+        Plr_Turn = plr0_id;
 
         delayed = new DelayedEvents(this);
         events = new EventSystem(this);
         cards = new CardManager(this);
-        plrs = new PlayerManager(this, plr1_id, plr2_id);
+        plrs = new PlayerManager(this, plr0_id, plr1_id);
         updater = new UpdaterHandler(this);
 
-        plrs.Start(deck1, deck2);
-        Console.WriteLine("game made");
+        plrs.Start(deck0, deck1);
+        Console.WriteLine($"game made with {plr0_id} and {plr1_id}");
     }
 
     public void MakeCounterableEffect(int plr_id, CardEntity? owner, Action func)
@@ -94,7 +94,7 @@ public class GameEntity
         {
             updater.ChangeCardLocation(CardLocations.Board,CardLocations.Hand,data.CardId);
             plr.PlayCard(data.CardId, data.Targets);
-            updater.UpdateClients();
+            updater.UpdateClients("played card");
         }
     }
 

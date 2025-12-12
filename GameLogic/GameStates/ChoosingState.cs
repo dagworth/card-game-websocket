@@ -26,12 +26,15 @@ public class ChoosingState(GameEntity game, int plr_id, IGameState old_state, Ac
             if(!valid) return;
 
             game.SetGameState(old_state);
+            //Console.WriteLine("before targetting effect");
             plr_choice_effect.Invoke(data.Targets);
+            //Console.WriteLine("after targetting effect");
             //this needs to be in this order
             //because of the case of needing to choose when in a priority turn
             //which has an effect that adds a counterable effect
             //the priority state has to be in place before that happens
-            game.updater.UpdateClients();
+            game.updater.UpdateClients("choose targets");
+            //Console.WriteLine("updated clients with targetting effect");
         }
     }
 }

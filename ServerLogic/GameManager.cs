@@ -5,13 +5,13 @@ public static class GameManager {
     private static readonly Dictionary<int,GameEntity> games = [];
     private static readonly Dictionary<int,PlayerEntity> plrs = [];
 
-    public static GameEntity CreateGame(int plr1_id, int plr2_id){
+    public static GameEntity CreateGame(int plr0_id, int plr1_id){
         int game_id = counter++;
 
-        List<string> deck1 = ["Haunting Scream","Dave","Gary","Bob","Carol","Alice","Bob","Carol","Alice","Bob","Bob","Alice","Bob","Bob","Alice","Bob","Bob","Alice"];
-        List<string> deck2 = ["Freddy","Gary","Carol","Bob","Carol","Alice","Bob","Carol","Alice","Bob","Bob","Alice","Bob","Bob","Alice","Bob"];
+        List<string> deck0 = ["Haunting Scream","Dave","Gary","Bob","Carol","Alice","Bob","Carol","Alice","Bob","Bob","Alice","Bob","Bob","Alice","Bob","Bob","Alice"];
+        List<string> deck1 = ["Freddy","Gary","Carol","Bob","Carol","Alice","Bob","Carol","Alice","Bob","Bob","Alice","Bob","Bob","Alice","Bob"];
 
-        GameEntity clone = new GameEntity(game_id, plr1_id, plr2_id, deck1, deck2);
+        GameEntity clone = new GameEntity(game_id, plr0_id, plr1_id, deck0, deck1);
         games[game_id] = clone;
         return clone;
     }

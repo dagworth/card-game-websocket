@@ -60,7 +60,7 @@ public class CardEntity(GameEntity game, int plr_id, int card_id, string name, C
 
     public Buff AddTempBuff(Buff buff)
     {
-        game.updater.ChangeStats(buff, 0); //0 for no animation for now
+        game.updater.ChangeStats(buff, 0);
         buff.card = this;
         buffs.Add(buff);
         UpdateStats();
@@ -69,14 +69,14 @@ public class CardEntity(GameEntity game, int plr_id, int card_id, string name, C
 
     public void RemoveTempBuff(Buff buff)
     {
-        game.updater.ChangeStats(buff, 0); //0 for no animation for now
+        game.updater.ChangeStats(buff, 0);
         buffs.Remove(buff);
         UpdateStats();
     }
 
     public void AddPermBuff(Buff buff)
     {
-        game.updater.ChangeStats(buff, 0); //0 for no animation for now
+        game.updater.ChangeStats(buff, 0);
         perm_stats.Cost += buff.Cost;
         perm_stats.Health += buff.Health;
         perm_stats.Attack += buff.Attack;
@@ -93,7 +93,10 @@ public class CardEntity(GameEntity game, int plr_id, int card_id, string name, C
 
     public void TakeDamage(int damage)
     {
+        game.updater.TookDamage(damage, 0);
+        //Console.WriteLine($"{Name} took {damage} damage");
         Stats.Damaged += damage;
+        UpdateStats();
     }
 
     public void CheckIfDead()

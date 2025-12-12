@@ -28,8 +28,8 @@ public static class CardStatStorage {
         passives = [Passives.Charge],
         OnSpawn = (game, owner, card) => {
             List<CardEntity> a = [];
+            a.AddRange(game.plrs.Plr0.Board);
             a.AddRange(game.plrs.Plr1.Board);
-            a.AddRange(game.plrs.Plr2.Board);
             foreach(CardEntity v in a){
                 v.AddPermBuff(new Buff(){
                     Attack = 1,

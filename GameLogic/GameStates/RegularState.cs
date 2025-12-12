@@ -2,12 +2,15 @@ public class RegularState(GameEntity game, bool attacked) : IGameState {
     private readonly GameEntity game = game;
     private bool attacked = attacked;
 
-    public void StartState(){}
+    public void StartState()
+    {
+        
+    }
 
     public void EndTurn(){
         game.updater.EndTurn(game.Plr_Turn);
         game.delayed.DoEndTurnEffects(game.Plr_Turn);
-        game.updater.UpdateClients();
+        game.updater.UpdateClients("end turn");
         game.MakeCounterableEffect(
             game.Plr_Turn,
             null,
@@ -15,7 +18,7 @@ public class RegularState(GameEntity game, bool attacked) : IGameState {
         );
         game.ChangeTurn();
         game.delayed.DoStartTurnEffects(game.Plr_Turn);
-        game.updater.UpdateClients();
+        game.updater.UpdateClients("start turn");
     }
     
     public bool CanPlayCard(CardEntity card){

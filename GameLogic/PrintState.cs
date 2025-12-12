@@ -4,8 +4,8 @@ public static class PrintState{
     public static void Print(GameEntity game){
         Console.Write($"plr {game.Plr_Turn} turn");
 
-        Console.Write($"\n\n{game.plrs.Plr1.Id}: {game.plrs.Plr1.Health} hp, {game.plrs.Plr1.Mana} mana");
-        Console.Write($"\n{game.plrs.Plr2.Id}: {game.plrs.Plr2.Health} hp, {game.plrs.Plr2.Mana} mana");
+        Console.Write($"\n\n{game.plrs.Plr0.Id}: {game.plrs.Plr0.Health} hp, {game.plrs.Plr0.Mana} mana");
+        Console.Write($"\n{game.plrs.Plr1.Id}: {game.plrs.Plr1.Health} hp, {game.plrs.Plr1.Mana} mana");
 
         Console.Write("\n\ndescription: ");
 
@@ -21,9 +21,24 @@ public static class PrintState{
             Console.Write($"waiting for plr {b.plr_priority} to priority choose");
         }
 
+        Console.Write($"\n\n{game.plrs.Plr0.Id} hand: ");
+        foreach(CardEntity card in game.plrs.Plr0.Hand){
+            Console.Write($"({card.Name} {card.Stats.Attack}/{card.Stats.Health} id: {card.Id} plr id: {card.Plr_Id}) ");
+        }
+
+        Console.Write($"\n{game.plrs.Plr0.Id} board: ");
+        foreach(CardEntity card in game.plrs.Plr0.Board){
+            Console.Write($"({card.Name} {card.Stats.Attack}/{card.Stats.Health} id: {card.Id}) ");
+        }
+
+        Console.Write($"\n{game.plrs.Plr0.Id} void: ");
+        foreach(CardEntity card in game.plrs.Plr0.Void){
+            Console.Write($"({card.Name} {card.Stats.Attack}/{card.Stats.Health} id: {card.Id}) ");
+        }
+
         Console.Write($"\n\n{game.plrs.Plr1.Id} hand: ");
         foreach(CardEntity card in game.plrs.Plr1.Hand){
-            Console.Write($"({card.Name} {card.Stats.Attack}/{card.Stats.Health} id: {card.Id}) ");
+            Console.Write($"({card.Name} {card.Stats.Attack}/{card.Stats.Health} id: {card.Id} plr id: {card.Plr_Id}) ");
         }
 
         Console.Write($"\n{game.plrs.Plr1.Id} board: ");
@@ -33,21 +48,6 @@ public static class PrintState{
 
         Console.Write($"\n{game.plrs.Plr1.Id} void: ");
         foreach(CardEntity card in game.plrs.Plr1.Void){
-            Console.Write($"({card.Name} {card.Stats.Attack}/{card.Stats.Health} id: {card.Id}) ");
-        }
-
-        Console.Write($"\n\n{game.plrs.Plr2.Id} hand: ");
-        foreach(CardEntity card in game.plrs.Plr2.Hand){
-            Console.Write($"({card.Name} {card.Stats.Attack}/{card.Stats.Health} id: {card.Id}) ");
-        }
-
-        Console.Write($"\n{game.plrs.Plr2.Id} board: ");
-        foreach(CardEntity card in game.plrs.Plr2.Board){
-            Console.Write($"({card.Name} {card.Stats.Attack}/{card.Stats.Health} id: {card.Id}) ");
-        }
-
-        Console.Write($"\n{game.plrs.Plr2.Id} void: ");
-        foreach(CardEntity card in game.plrs.Plr2.Void){
             Console.Write($"({card.Name} {card.Stats.Attack}/{card.Stats.Health} id: {card.Id}) ");
         }
     }

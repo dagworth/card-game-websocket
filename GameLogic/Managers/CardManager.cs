@@ -15,4 +15,14 @@ public class CardManager(GameEntity game){
     public CardEntity GetCard(int card_id){
         return Cards[card_id];
     }
+
+    public void DoToAllCards(Action<CardEntity> func){
+        int count = 0;
+        foreach (KeyValuePair<int, CardEntity> a in Cards)
+        {
+            count++;
+            func.Invoke(a.Value);
+        }
+        Console.WriteLine("count " + count);
+    }
 }

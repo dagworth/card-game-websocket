@@ -87,8 +87,8 @@ public class UpdaterHandler(GameEntity game)
             if(updater.Value == game.plrs.Plr0.Id) clone0.Events.Add(updater.Key);
             if(updater.Value == game.plrs.Plr1.Id) clone1.Events.Add(updater.Key);
         }
-        MessageHandler.UpdateClient(ServerHandler.GetWSConnection(game.plrs.Plr0.Id), clone0);
-        MessageHandler.UpdateClient(ServerHandler.GetWSConnection(game.plrs.Plr1.Id), clone1);
+        if(clone0.Events.Count > 0) MessageHandler.UpdateClient(ServerHandler.GetWSConnection(game.plrs.Plr0.Id), clone0);
+        if(clone1.Events.Count > 0) MessageHandler.UpdateClient(ServerHandler.GetWSConnection(game.plrs.Plr1.Id), clone1);
         events = [];
     }
 }

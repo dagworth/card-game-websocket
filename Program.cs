@@ -26,11 +26,7 @@ public static class Program {
 
             original.WriteLine("test done");
 
-            while(true){
-                string? input = Console.ReadLine();
-                if(input == "exit") break;
-                PrintState.Print(GameManager.GetGame(0));
-            }
+            PrintState.Print(GameManager.GetGame(0));
 
             original.WriteLine("exiting");
             Console.SetOut(original);
@@ -97,9 +93,5 @@ public static class Program {
         send(plr1, $"{{ \"action\": \"targets_choice\", \"player_id\": {plr1_id} , \"targets\": [4] }}");
         await Task.Delay(100);
         send(plr1, $"{{ \"action\": \"end_turn\", \"player_id\": {plr1_id} }}");
-
-        await Task.Delay(100);
-
-        PrintState.Print(GameManager.GetGame(0));
     }
 }

@@ -17,7 +17,9 @@ public class GameEntity
 
     public void ChangeTurn()
     {
-        Plr_Turn = plrs.GetOtherPlayer(Plr_Turn).Id;
+        PlayerEntity new_turn = plrs.GetOtherPlayer(Plr_Turn);
+        Plr_Turn = new_turn.Id;
+        new_turn.DrawCard();
     }
 
     public void SetGameState(IGameState state)

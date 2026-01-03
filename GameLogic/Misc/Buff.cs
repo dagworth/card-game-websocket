@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-public class Buff {
+public class Buff() {
     public CardEntity? card;
     [JsonPropertyName("cost")] public int Cost { get; set; }
     [JsonPropertyName("cost_fixed")] public int Cost_Fixed { get; set; }

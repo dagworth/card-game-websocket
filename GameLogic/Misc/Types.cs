@@ -2,24 +2,24 @@ using System.Text.Json.Serialization;
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum Passives {
-    Deadly,
-    Charge,
-    Flying
+    Charge = 0,
+    Flying = 1,
+    Deadly = 2
 }
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum CardLocations {
-    Hand,
-    Deck,
-    Void,
-    Board
+    Hand = 0,
+    Deck = 1,
+    Void = 2,
+    Board = 3
 }
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum CardTypes {
-    Spell,
-    FastSpell,
-    Unit,
+    Unit = 0,
+    Spell = 1,
+    FastSpell = 2
 }
 
 public enum Delays {
@@ -57,8 +57,8 @@ public enum TargetTypes {
 }
 
 public enum Tribes {
-    None, //should never be used on a card
-    Zombie,
-    Skeleton,
-    Creeper
+    None = 0, //should never be used on a card
+    Zombie = 1,
+    Skeleton = 2,
+    Creeper = 3
 }

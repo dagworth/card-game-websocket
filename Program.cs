@@ -1,25 +1,39 @@
 using Fleck;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Net.WebSockets;
 using System.Text;
+using System.IO;
 
-static class Program {
-    private static WebSocketServer server = new WebSocketServer("ws://127.0.0.1:8181");
+public static class Program {
+    private static WebSocketServer server = new("ws://127.0.0.1:8181");
     
     static void Main() {
-        server.Start(ws => {
-            ws.OnOpen = () => ServerHandler.OnOpen(ws);
-            ws.OnMessage = message => ServerHandler.OnMessage(ws, message);
-            ws.OnClose = () => ServerHandler.OnClose(ws);
-        });
+        var original = Console.Out;
+        using (var file = File.CreateText("log.txt"))
+        {
+            Console.SetOut(file);
 
-        Console.WriteLine("server started");
+            server.Start(ws => {
+                ws.OnOpen = () => ServerHandler.OnOpen(ws);
+                ws.OnMessage = message => ServerHandler.OnMessage(ws, message);
+                ws.OnClose = () => ServerHandler.OnClose(ws);
+            });
 
-        Task.Run(async () => await test());
+            original.WriteLine("tests starting");
 
-        while(true){
-            Console.ReadLine();
-            PrintState.Print(GameManager.GetGame(0));
+            test().Wait();
+
+            original.WriteLine("test done");
+
+            while(true){
+                string? input = Console.ReadLine();
+                if(input == "exit") break;
+                PrintState.Print(GameManager.GetGame(0));
+            }
+
+            original.WriteLine("exiting");
+            Console.SetOut(original);
         }
     }
 
@@ -57,7 +71,7 @@ static class Program {
                 if(id == 1 && plr1_id == -1)
                     if (int.TryParse(message, out int number))
                         plr1_id = number;
-                //Console.WriteLine($"plr{id} recieved: {message}");
+                Console.WriteLine($"plr{id} recieved: {message}");
             }
         }
 
@@ -83,5 +97,9 @@ static class Program {
         send(plr1, $"{{ \"action\": \"targets_choice\", \"player_id\": {plr1_id} , \"targets\": [4] }}");
         await Task.Delay(100);
         send(plr1, $"{{ \"action\": \"end_turn\", \"player_id\": {plr1_id} }}");
+
+        await Task.Delay(100);
+
+        PrintState.Print(GameManager.GetGame(0));
     }
 }

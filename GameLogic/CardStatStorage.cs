@@ -11,7 +11,7 @@ public static class CardStatStorage {
         attack = 2,
         passives = [Passives.Deadly],
         OnAttack = (game, owner, card) => {
-            card.AddPermBuff(new Buff(){
+            card.AddPermBuff(new Buff {
                 Attack = 1,
                 Health = 3
             });
@@ -31,7 +31,7 @@ public static class CardStatStorage {
             a.AddRange(game.plrs.Plr0.Board);
             a.AddRange(game.plrs.Plr1.Board);
             foreach(CardEntity v in a){
-                v.AddPermBuff(new Buff(){
+                v.AddPermBuff(new Buff{
                     Attack = 1,
                     Health = 1
                 });
@@ -49,7 +49,7 @@ public static class CardStatStorage {
         passives = [Passives.Charge],
         OnSpawn = (game, owner, card) => {
             for(int i = owner.Board.Count - 1; i >= 0; i--){
-                Buff b = owner.Board[i].AddTempBuff(new Buff(){
+                Buff b = owner.Board[i].AddTempBuff(new Buff{
                     Attack = 1,
                     Health = 1
                 });
@@ -73,7 +73,7 @@ public static class CardStatStorage {
             game.events.OnSacrifice += (sacrificed_card_id) => {
                 if(card.Location == CardLocations.Board){
                     if(game.cards.GetCard(sacrificed_card_id).Plr_Id != owner.Id){
-                        card.AddPermBuff(new Buff(){
+                        card.AddPermBuff(new Buff{
                             Attack = 1,
                             Health = 1
                         });
@@ -117,7 +117,7 @@ public static class CardStatStorage {
         OnSpawn = (game, owner, card) => {
             List<CardEntity> other = game.plrs.GetOtherPlayer(owner).Board;
             for(int i = other.Count - 1; i >= 0; i--){
-                Buff b = other[i].AddTempBuff(new Buff(){
+                Buff b = other[i].AddTempBuff(new Buff{
                     Attack = -2,
                     Health = -2
                 });
@@ -161,7 +161,7 @@ public static class CardStatStorage {
                     targets => {
                         CardEntity guy = game.cards.GetCard(targets[0]);
                         game.events.BringOutVoid(targets[0]);
-                        guy.AddPermBuff(new Buff(){
+                        guy.AddPermBuff(new Buff{
                             passives = [Passives.Flying, Passives.Charge]
                         });
                         game.MakeDelayedEffect(owner.Id, Delays.EndTurn, () => {

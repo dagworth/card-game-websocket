@@ -28,6 +28,8 @@ public class PlayerManager {
             Plr0.DrawCard();
             Plr1.DrawCard();
         }
+
+        game.updater.UpdateClients("game start");
     }
 
     public PlayerEntity GetPlayer(int plr_id){

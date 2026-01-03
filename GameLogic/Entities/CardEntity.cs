@@ -1,24 +1,25 @@
 using System;
+using System.Text.Json.Serialization;
 
 public class CardEntity(GameEntity game, int plr_id, int card_id, string name, CardData data)
     : IDamageable
 {
     private readonly GameEntity game = game;
 
-    public readonly int Id = card_id;
-    public readonly int Plr_Id = plr_id; //temp readonly
+    [JsonPropertyName("card_id")] public int Id { get; private set; } = card_id;
+    [JsonIgnore] public readonly int Plr_Id = plr_id; //temp readonly
 
     private readonly List<Buff> buffs = [];
 
-    public CardTypes Type { get; private set; } = data.type;
-    public CardLocations Location { get; private set; } = CardLocations.Deck;
-    public string Name { get; private set; } = name;
-    public string Desc { get; private set; } = data.description;
+    [JsonPropertyName("type")] public CardTypes Type { get; private set; } = data.type;
+    [JsonPropertyName("location")] public CardLocations Location { get; private set; } = CardLocations.Deck;
+    [JsonPropertyName("name")] public string Name { get; private set; } = name;
+    [JsonIgnore] public string Desc { get; private set; } = data.description;
 
     public readonly List<Tribes> Tribes = [.. data.tribes];
 
-    public CardStats Stats = new CardStats();
-    private CardStats perm_stats = new CardStats(data);
+    [JsonPropertyName("stats")] public CardStats Stats { get; private set; } = new();
+    private CardStats perm_stats = new(data);
 
     public Action<GameEntity, PlayerEntity, CardEntity, List<int>>? OnPlay = data.OnPlay; //targetting part should be ignored for now
     public Action<GameEntity, PlayerEntity, CardEntity>? OnSpawn = data.OnSpawn;
@@ -60,8 +61,8 @@ public class CardEntity(GameEntity game, int plr_id, int card_id, string name, C
 
     public Buff AddTempBuff(Buff buff)
     {
-        game.updater.ChangeStats(buff, 0);
         buff.card = this;
+        game.updater.ChangeStats(buff, Id, 0);
         buffs.Add(buff);
         UpdateStats();
         return buff;
@@ -69,14 +70,17 @@ public class CardEntity(GameEntity game, int plr_id, int card_id, string name, C
 
     public void RemoveTempBuff(Buff buff)
     {
-        game.updater.ChangeStats(buff, 0);
+        game.updater.ChangeStats(buff, Id, 0);
         buffs.Remove(buff);
         UpdateStats();
     }
 
     public void AddPermBuff(Buff buff)
     {
+        buff.card = this;
         game.updater.ChangeStats(buff, 0);
+
+        //manually change stuff for buff, update if needed
         perm_stats.Cost += buff.Cost;
         perm_stats.Health += buff.Health;
         perm_stats.Attack += buff.Attack;

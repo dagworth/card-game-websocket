@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 [JsonDerivedType(typeof(StatUpdater), "statupdater")]
 [JsonDerivedType(typeof(TurnUpdater), "turnupdator")]
 [JsonDerivedType(typeof(DamageUpdater), "damageupdator")]
+[JsonDerivedType(typeof(NewCardUpdater), "newcardupdator")]
 
 public class ClientUpdater
 {
@@ -18,10 +19,16 @@ public class CardLocationUpdater(CardLocations new_loc, CardLocations starting_l
     [JsonPropertyName("prev")] public CardLocations Prev { get; set; } = starting_loc;
 }
 
-public class StatUpdater(Buff buff, bool inverse) : ClientUpdater
+public class StatUpdater(Buff buff, int card_id, bool inverse) : ClientUpdater
 {
     [JsonPropertyName("buff")] public Buff Buff { get; set; } = buff;
+    [JsonPropertyName("card_id")] public int Card_Id { get; set; } = card_id;
     [JsonPropertyName("inverse")] public bool Inverse { get; set; } = inverse;
+}
+
+public class NewCardUpdater(CardEntity card) : ClientUpdater
+{
+    [JsonPropertyName("card")] public CardEntity card { get; set; } = card;
 }
 
 public class DamageUpdater(int damage) : ClientUpdater

@@ -26,6 +26,7 @@ public class PlayerEntity(GameEntity game, int id) : IDamageable {
         CardEntity card = Deck[index];
         Deck.RemoveAt(index);
         card.SetLocation(CardLocations.Hand);
+        Game.updater.NewCard(card);
         Hand.Add(card);
         OnDraw?.Invoke(card.Id);
         return card;

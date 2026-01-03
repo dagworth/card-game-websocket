@@ -1,30 +1,48 @@
 public class UpdaterHandler(GameEntity game)
 {
     public GameEntity game = game;
-    public List<ClientUpdater> events = [];
+    public Dictionary<ClientUpdater,int> events = [];
 
     public List<Buff> applied_buffs = [];
 
-    public void ChangeStats(Buff buff, int anim = 0)
+    //this updater is different depending on where the change happens and who can see
+    //there is no card_id in buff as buff only references the entity
+    public void ChangeStats(Buff buff, int card_id, int anim = 0)
     {
-        StatUpdater clone = new(buff, DupeBuff(buff));
         //buff is already dead (not attached to card) when here
+        StatUpdater clone = new(buff, card_id, DupeBuff(buff));
+        CardEntity card = buff.card!;
         clone.Action = "card buff change";
-        events.Add(clone);
+        if(card.Location == CardLocations.Hand) {
+            events[clone] = card.Plr_Id; //only person who has in hand can see change
+        } else if (card.Location == CardLocations.Board || card.Location == CardLocations.Void) {
+            events[clone] = -1; //both see board and void
+        } else if (card.Location == CardLocations.Deck) {
+            //do not update cus u cant see deck prob
+        }
     }
 
     public void TookDamage(int damage, int anim = 0)
     {
         DamageUpdater clone = new(damage);
         clone.Action = "damage change";
-        events.Add(clone);
+        events[clone] = -1;
+    }
+
+    //this updater is different depending on where the change happens and who can see
+    //plr_id is the player that needs this card information
+    public void NewCard(CardEntity card, int anim = 0)
+    {
+        NewCardUpdater clone = new(card);
+        clone.Action = "new card";
+        events[clone] = card.Plr_Id;
     }
 
     public void EndTurn(int plr_id, int anim = 0)
     {
         TurnUpdater clone = new(plr_id);
         clone.Action = "turn ended";
-        events.Add(clone);
+        events[clone] = -1;
     }
 
     private bool DupeBuff(Buff buff)
@@ -42,25 +60,35 @@ public class UpdaterHandler(GameEntity game)
     {
         CardLocationUpdater clone = new(new_loc, start, card_id);
         clone.Action = $"card location change for {card_id}";
-        events.Add(clone);
+        events[clone] = -1;
     }
 
-    public void print(string be)
+    // public void print(string be)
+    // {
+    //     Console.Write($"new actions {be}: ");
+    //     int i = 0;
+    //     foreach(KeyValuePair<ClientUpdater,int> a in events){
+    //         Console.Write($"action {++i}: {a.Action} ");
+    //     }
+    //     Console.WriteLine();
+    // }
+
+    public void UpdateClients(string update_type = "none")
     {
-        Console.Write($"new actions {be}: ");
-        int i = 0;
-        foreach(ClientUpdater a in events){
-            Console.Write($"action {++i}: {a.Action} ");
+        //print(update_type);
+        ClientUpdateMessage clone0 = new();
+        ClientUpdateMessage clone1 = new();
+        foreach(KeyValuePair<ClientUpdater,int> updater in events){
+            if(updater.Value == -1) {
+                clone0.Events.Add(updater.Key);
+                clone1.Events.Add(updater.Key);
+            }
+
+            if(updater.Value == game.plrs.Plr0.Id) clone0.Events.Add(updater.Key);
+            if(updater.Value == game.plrs.Plr1.Id) clone1.Events.Add(updater.Key);
         }
-        Console.WriteLine();
-    }
-
-    public void UpdateClients(string update_type)
-    {
-        print(update_type);
-        ClientUpdateMessage clone = new(events);
-        MessageHandler.UpdateClient(ServerHandler.GetWSConnection(game.plrs.Plr0.Id), clone);
-        MessageHandler.UpdateClient(ServerHandler.GetWSConnection(game.plrs.Plr1.Id), clone);
+        MessageHandler.UpdateClient(ServerHandler.GetWSConnection(game.plrs.Plr0.Id), clone0);
+        MessageHandler.UpdateClient(ServerHandler.GetWSConnection(game.plrs.Plr1.Id), clone1);
         events = [];
     }
 }

@@ -1,9 +1,11 @@
-public struct CardStats{
-    public int Cost;
-    public int Health;
-    public int Damaged;
-    public int Attack;
-    public List<Passives> passives;
+using System.Text.Json.Serialization;
+
+public class CardStats{
+    [JsonPropertyName("cost")] public int Cost { get; set; }
+    [JsonPropertyName("health")] public int Health { get; set; }
+    [JsonPropertyName("damaged")] public int Damaged { get; set; }
+    [JsonPropertyName("attack")] public int Attack { get; set; }
+    [JsonPropertyName("passives")] public List<Passives> passives { get; set; }
 
     public CardStats(CardData data){
         Cost = data.cost;

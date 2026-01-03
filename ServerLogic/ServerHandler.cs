@@ -11,11 +11,11 @@ public static class ServerHandler {
         int id = plr_counter++;
         plr_ids[ws] = id;
         plr_ws[id] = ws;
-        ws.Send(id.ToString());
+        ws.Send(JsonSerializer.Serialize(new InformId(){Id = id}));
     }
 
     public static void OnMessage(IWebSocketConnection ws, string message){
-        Message? data = JsonSerializer.Deserialize<Message>(message);
+        RecievedMessage? data = JsonSerializer.Deserialize<RecievedMessage>(message);
 
         if(data == null){
             Console.WriteLine($"message went wrong: {message}");

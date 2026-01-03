@@ -61,12 +61,14 @@ public static class Program {
             {
                 var result = await ws.ReceiveAsync(buffer, CancellationToken.None);
                 string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                if(id == 0 && plr0_id == -1)
-                    if (int.TryParse(message, out int number))
-                        plr0_id = number;
-                if(id == 1 && plr1_id == -1)
-                    if (int.TryParse(message, out int number))
-                        plr1_id = number;
+                if(id == 0 && plr0_id == -1){
+                    InformId a = JsonSerializer.Deserialize<InformId>(message)!;
+                    plr0_id = a.Id;
+                }
+                if(id == 1 && plr1_id == -1) {
+                    InformId a = JsonSerializer.Deserialize<InformId>(message)!;
+                    plr1_id = a.Id;
+                }
                 Console.WriteLine($"plr{id} recieved: {message}");
             }
         }

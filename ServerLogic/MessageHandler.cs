@@ -63,7 +63,7 @@ public static class MessageHandler {
     }
 
     public static void AskForTargets(IWebSocketConnection ws, List<int> message){
-        TargetsChoice a = new(){
+        TargetOptions a = new(){
             Targets = message
         };
 

@@ -17,6 +17,7 @@ public class GameEntity
 
     public void ChangeTurn()
     {
+        Console.WriteLine($"{Plr_Turn} turn ends");
         PlayerEntity new_turn = plrs.GetOtherPlayer(Plr_Turn);
         Plr_Turn = new_turn.Id;
         new_turn.DrawCard();

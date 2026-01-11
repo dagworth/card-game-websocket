@@ -1,6 +1,0 @@
-@card_game_websocket_HostAddress = http://localhost:5250
-
-GET {{card_game_websocket_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

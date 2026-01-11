@@ -11,6 +11,7 @@ bin/
 obj
 
 .vscode
+notes.txt
 
 # dotenv files
 .env

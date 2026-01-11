@@ -3,8 +3,14 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+# Godot 4+ specific ignores
+.godot/
+/android/
+
 bin/
-obj/
+obj
+
+.vscode
 
 # dotenv files
 .env

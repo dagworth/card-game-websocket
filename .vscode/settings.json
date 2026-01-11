@@ -1,9 +1,0 @@
-{
-    "godotTools.editorPath.godot4": "c:\\Users\\Larry\\Downloads\\Godot_v4.5-stable_mono_win64\\Godot_v4.5-stable_mono_win64\\Godot_v4.5-stable_mono_win64.exe",
-    "editor.formatOnType": false,
-    "editor.formatOnSave": false,
-    "files.exclude": {
-        "**/.cs.uid": true,
-        "**/*.cs.uid": true
-    }
-}

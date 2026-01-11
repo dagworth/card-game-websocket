@@ -1,4 +1,6 @@
 //purely to debug
+using server.GameLogic.Entities;
+using server.GameLogic.GameStates;
 
 public static class PrintState {
     public static void Print(GameEntity game) {

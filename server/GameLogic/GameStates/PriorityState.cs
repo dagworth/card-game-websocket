@@ -1,3 +1,8 @@
+namespace server.GameLogic.GameStates;
+
+using server.GameLogic.Entities;
+using server.GameLogic.Interfaces;
+
 public readonly struct CardEffect(int plr_id, CardEntity? trigger, Action effect) {
     public readonly int plr_id = plr_id;
     public readonly CardEntity? Trigger = trigger;

@@ -1,3 +1,9 @@
+namespace server.GameLogic.GameStates;
+
+using server.GameLogic.Entities;
+using server.GameLogic.Interfaces;
+using shared;
+
 public class ChoosingState(GameEntity game, int plr_id, IGameState old_state, Action<List<int>> effect, List<int> choice_pool) : IGameState {
     private readonly GameEntity game = game;
     public int plr_choosing = plr_id;

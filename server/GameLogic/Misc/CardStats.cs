@@ -1,3 +1,7 @@
+namespace server.GameLogic.Misc;
+
+using server.GameLogic.Entities;
+
 using System.Text.Json.Serialization;
 
 public class CardStats {

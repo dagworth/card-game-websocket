@@ -1,3 +1,7 @@
+namespace server.GameLogic.Managers;
+
+using server.GameLogic.Entities;
+
 struct DelayedEffect(int id, Action effect) {
     public readonly int plr_id = id;
     public readonly Action Effect = effect;

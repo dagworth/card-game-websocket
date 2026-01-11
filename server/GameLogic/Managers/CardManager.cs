@@ -1,3 +1,8 @@
+namespace server.GameLogic.Managers;
+
+using server.GameLogic.Entities;
+using server.GameLogic.Misc;
+
 public class CardManager(GameEntity game) {
     public GameEntity game = game;
     public readonly Dictionary<int, CardEntity> Cards = [];

@@ -1,8 +1,12 @@
+namespace server.GameLogic.Entities;
+
+using server.GameLogic.Interfaces;
+using server.GameLogic.Misc;
+
 using System;
 using System.Text.Json.Serialization;
 
-public class CardEntity(GameEntity game, int plr_id, int card_id, string name, CardData data)
-    : IDamageable {
+public class CardEntity(GameEntity game, int plr_id, int card_id, string name, CardData data) : IDamageable {
     private readonly GameEntity game = game;
 
     [JsonPropertyName("card_id")] public int Id { get; private set; } = card_id;

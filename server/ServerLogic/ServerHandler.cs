@@ -1,3 +1,7 @@
+namespace server.ServerLogic;
+
+using shared;
+
 using Fleck;
 using System.Text.Json;
 

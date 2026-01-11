@@ -1,3 +1,9 @@
+namespace server.GameLogic.GameStates;
+
+using server.GameLogic.Entities;
+using server.GameLogic.Interfaces;
+using shared;
+
 public class DefendingState : IGameState {
     private readonly GameEntity game;
     private readonly int plr_defending;

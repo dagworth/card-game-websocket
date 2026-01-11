@@ -1,3 +1,8 @@
+namespace server.GameLogic.Misc;
+
+using server.GameLogic.Entities;
+using server.ServerLogic;
+
 public class ChooseTargetsParams(int plr_id, List<TargetTypes> stuff) {
     public int plr_id = plr_id;
     public List<int> TargetList { get; set; } = [];

@@ -1,10 +1,10 @@
 using Fleck;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Net.WebSockets;
 using System.Text;
-using System.IO;
-using System.ComponentModel;
+
+using server.ServerLogic;
+using shared;
 
 public static class Program {
     private static WebSocketServer server = new("ws://127.0.0.1:8181");
@@ -16,7 +16,7 @@ public static class Program {
             ws.OnClose = () => ServerHandler.OnClose(ws);
         });
 
-        //Test().Wait();
+        Test().Wait();
 
         while (true) {
             string? input = Console.ReadLine();

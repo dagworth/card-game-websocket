@@ -1,3 +1,8 @@
+namespace server.GameLogic.Managers;
+
+using server.GameLogic.Entities;
+using server.ServerLogic;
+
 public class PlayerManager {
     public GameEntity game;
     public PlayerEntity Plr0 { get; private set; }

@@ -1,3 +1,7 @@
+namespace server.GameLogic.Misc;
+
+using server.GameLogic.Entities;
+
 public class CardData {
     public CardTypes type;
     public string description = "";

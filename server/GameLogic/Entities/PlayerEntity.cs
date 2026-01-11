@@ -1,4 +1,6 @@
-using Fleck;
+namespace server.GameLogic.Entities;
+
+using server.GameLogic.Interfaces;
 
 public class PlayerEntity(GameEntity game, int id) : IDamageable {
 

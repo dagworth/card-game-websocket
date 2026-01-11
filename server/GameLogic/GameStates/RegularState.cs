@@ -1,3 +1,9 @@
+namespace server.GameLogic.GameStates;
+
+using server.GameLogic.Entities;
+using server.GameLogic.Interfaces;
+using shared;
+
 public class RegularState(GameEntity game, bool attacked) : IGameState {
     private readonly GameEntity game = game;
     private bool attacked = attacked;

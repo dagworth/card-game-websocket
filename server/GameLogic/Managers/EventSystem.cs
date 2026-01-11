@@ -1,3 +1,7 @@
+namespace server.GameLogic.Managers;
+
+using server.GameLogic.Entities;
+
 public class EventSystem(GameEntity game) {
     public GameEntity game = game;
 

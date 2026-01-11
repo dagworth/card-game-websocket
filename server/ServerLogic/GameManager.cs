@@ -1,4 +1,6 @@
-using Fleck;
+namespace server.ServerLogic;
+
+using server.GameLogic.Entities;
 
 public static class GameManager {
     private static int counter = 0;

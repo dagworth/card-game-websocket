@@ -1,4 +1,7 @@
-using System.Globalization;
+namespace server.GameLogic.Misc;
+
+using server.GameLogic.Entities;
+using server.GameLogic.Interfaces;
 
 public static class CardStatStorage {
     private static readonly Dictionary<string, CardData> data = new Dictionary<string, CardData>{

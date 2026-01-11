@@ -1,3 +1,9 @@
+namespace server.GameLogic.GameStates;
+
+using server.GameLogic.Entities;
+using server.GameLogic.Interfaces;
+using shared;
+
 public class AttackingState(GameEntity game) : IGameState {
     private readonly GameEntity game = game;
     private readonly int plr_attacking = game.Plr_Turn;

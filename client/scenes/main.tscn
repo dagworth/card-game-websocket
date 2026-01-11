@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://ynwxqahsy1g0"]
+
+[ext_resource type="Script" uid="uid://nehrbqh5jqav" path="res://scripts/ButtonController.cs" id="1_o5qli"]
+
+[node name="Main" type="Node2D"]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Hand" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="EndTurn" type="Button" parent="UI"]
+offset_left = 1692.0
+offset_top = 619.0
+offset_right = 1819.0
+offset_bottom = 659.0
+text = "end turn"
+
+[node name="JoinQueue" type="Button" parent="UI"]
+offset_left = 1459.0
+offset_top = 630.0
+offset_right = 1586.0
+offset_bottom = 670.0
+text = "join queue"
+
+[node name="ButtonController" type="Node" parent="."]
+script = ExtResource("1_o5qli")

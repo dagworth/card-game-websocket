@@ -7,12 +7,12 @@ public class DelayedEvents(GameEntity game) {
     private readonly GameEntity game = game;
 
     //if i ever make a delayed effect with more than 5 turns, shoot me
-    private readonly List<List<DelayedEffect>> StartTurn = [[],[],[],[],[]];
-    private readonly List<List<DelayedEffect>> EndTurn = [[],[],[],[],[]];
+    private readonly List<List<DelayedEffect>> StartTurn = [[], [], [], [], []];
+    private readonly List<List<DelayedEffect>> EndTurn = [[], [], [], [], []];
 
-    private static void DoList(List<List<DelayedEffect>> list, int plr_id){
-        foreach(DelayedEffect d in list[0]){
-            if(d.plr_id == plr_id){
+    private static void DoList(List<List<DelayedEffect>> list, int plr_id) {
+        foreach (DelayedEffect d in list[0]) {
+            if (d.plr_id == plr_id) {
                 d.Effect.Invoke();
             }
         }
@@ -20,8 +20,8 @@ public class DelayedEvents(GameEntity game) {
         list.Add([]);
     }
 
-    public void AddEffect(int plr_id, Delays type, Action func, int cycles){
-        switch(type){
+    public void AddEffect(int plr_id, Delays type, Action func, int cycles) {
+        switch (type) {
             case Delays.EndTurn:
                 EndTurn[cycles].Add(new DelayedEffect(
                     plr_id,
@@ -50,11 +50,11 @@ public class DelayedEvents(GameEntity game) {
         }
     }
 
-    public void DoStartTurnEffects(int plr_id){
+    public void DoStartTurnEffects(int plr_id) {
         DoList(StartTurn, plr_id);
     }
 
-    public void DoEndTurnEffects(int plr_id){
+    public void DoEndTurnEffects(int plr_id) {
         DoList(EndTurn, plr_id);
     }
 }

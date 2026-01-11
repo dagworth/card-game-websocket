@@ -1,7 +1,7 @@
 using System.Globalization;
 
 public static class CardStatStorage {
-    private static readonly Dictionary<string,CardData> data = new Dictionary<string,CardData>{
+    private static readonly Dictionary<string, CardData> data = new Dictionary<string, CardData>{
 {"Alice", new CardData {
         type = CardTypes.Unit,
         tribes = [Tribes.Skeleton],
@@ -188,12 +188,12 @@ public static class CardStatStorage {
 }
     };
 
-    public static CardData GetCardData(string card_name){
-        if(data.ContainsKey(card_name)){
+    public static CardData GetCardData(string card_name) {
+        if (data.ContainsKey(card_name)) {
             return data[card_name];
         } else {
             Console.WriteLine($"'{card_name}' card data doesnt exist dumbo");
             return new CardData();
         }
-    } 
+    }
 }

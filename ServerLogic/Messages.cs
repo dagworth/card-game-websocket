@@ -25,7 +25,7 @@ public class TargetsChoice : RecievedMessage {
 }
 
 public class TargetOptions {
-    public string action { get; set; } = "targetschoice";
+    public string action { get; set; } = "choosetargets";
     [JsonPropertyName("targets")] public List<int> Targets { get; set; } = [];
 }
 

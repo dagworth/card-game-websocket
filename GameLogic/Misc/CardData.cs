@@ -4,7 +4,7 @@ public class CardData {
     public int cost;
     public int health;
     public int attack;
-    
+
     public List<Tribes> tribes = [];
     public List<Passives> passives = [];
 
@@ -16,5 +16,5 @@ public class CardData {
 
     public Action<GameEntity, PlayerEntity, CardEntity>? custom_effects;
 
-    public ChooseTargetsParams? OnPlayTargettingParams;
+    public ChooseTargetsParams? OnPlayTargettingParams; //to do
 }

@@ -1,7 +1,7 @@
 using Fleck;
 
 public class PlayerEntity(GameEntity game, int id) : IDamageable {
-    
+
     public event Action<int>? OnDraw;
     public event Action<int>? OnPlay;
 
@@ -18,8 +18,8 @@ public class PlayerEntity(GameEntity game, int id) : IDamageable {
     public int Mana { get; private set; } = 100;
     public bool Attacked { get; private set; } = false;
 
-    public CardEntity? DrawCard(int index = 0){
-        if(Deck.Count == 0 || Deck.Count-1 < index){
+    public CardEntity? DrawCard(int index = 0) {
+        if (Deck.Count == 0 || Deck.Count - 1 < index) {
             Console.WriteLine("ran out of cards");
             return null;
         }
@@ -32,32 +32,30 @@ public class PlayerEntity(GameEntity game, int id) : IDamageable {
         return card;
     }
 
-    public void PlayCard(int card_id, List<int> targets){
+    public void PlayCard(int card_id, List<int> targets) {
         CardEntity card = Game.cards.GetCard(card_id);
         Console.WriteLine($"plr {Id} played {card.Name}");
         ChangeMana(-card.Stats.Cost);
         Hand.Remove(card);
-        if(card.Type == CardTypes.Unit){
+        if (card.Type == CardTypes.Unit) {
             Game.events.SpawnCard(card_id);
         } else {
             card.SetLocation(CardLocations.Void);
             Void.Add(card);
         }
-        card.OnPlay?.Invoke(Game,this,card,targets); //plz fix onplay targetting
+        card.OnPlay?.Invoke(Game, this, card, targets); //plz fix onplay targetting
         OnPlay?.Invoke(card.Id);
     }
 
-    public void TakeDamage(int amount)
-    {
+    public void TakeDamage(int amount) {
         Health -= amount;
     }
 
-    public void ChangeHealth(int amount)
-    {
+    public void ChangeHealth(int amount) {
         Health += amount;
     }
 
-    public void ChangeMana(int amount){
-        Mana+=amount;
+    public void ChangeMana(int amount) {
+        Mana += amount;
     }
 }

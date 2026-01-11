@@ -4,39 +4,40 @@ using System.Text.Json.Serialization;
 using System.Net.WebSockets;
 using System.Text;
 using System.IO;
+using System.ComponentModel;
 
 public static class Program {
     private static WebSocketServer server = new("ws://127.0.0.1:8181");
-    
+
     static void Main() {
-        var original = Console.Out;
-        using (var file = File.CreateText("log.txt"))
-        {
-            Console.SetOut(file);
+        server.Start(ws => {
+            ws.OnOpen = () => ServerHandler.OnOpen(ws);
+            ws.OnMessage = message => ServerHandler.OnMessage(ws, message);
+            ws.OnClose = () => ServerHandler.OnClose(ws);
+        });
 
-            server.Start(ws => {
-                ws.OnOpen = () => ServerHandler.OnOpen(ws);
-                ws.OnMessage = message => ServerHandler.OnMessage(ws, message);
-                ws.OnClose = () => ServerHandler.OnClose(ws);
-            });
+        //Test().Wait();
 
-            original.WriteLine("tests starting");
-
-            test().Wait();
-
-            original.WriteLine("test done");
-
+        while (true) {
+            string? input = Console.ReadLine();
             PrintState.Print(GameManager.GetGame(0));
-
-            original.WriteLine("exiting");
-            Console.SetOut(original);
         }
     }
 
-    private static async Task test()
-    {
-        void send(ClientWebSocket client, string message)
-        {
+    private static async Task Test() {
+        TextWriter original = Console.Out;
+        TextWriter file = File.CreateText("log.txt");
+        Console.SetOut(file);
+        original.WriteLine("tests starting");
+        await simulate_clients();
+        PrintState.Print(GameManager.GetGame(0));
+        Console.SetOut(original);
+        file.Close();
+        original.WriteLine("test done, file closed");
+    }
+
+    private static async Task simulate_clients() {
+        void send(ClientWebSocket client, string message) {
             client.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(message)), WebSocketMessageType.Text, true, CancellationToken.None);
         }
         int plr0_id = -1;
@@ -54,18 +55,16 @@ public static class Program {
 
         await Task.Delay(250);
 
-        async Task PrintMessages(ClientWebSocket ws, int id)
-        {
+        async Task PrintMessages(ClientWebSocket ws, int id) {
             var buffer = new byte[1024];
-            while (true)
-            {
+            while (true) {
                 var result = await ws.ReceiveAsync(buffer, CancellationToken.None);
                 string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                if(id == 0 && plr0_id == -1){
+                if (id == 0 && plr0_id == -1) {
                     InformId a = JsonSerializer.Deserialize<InformId>(message)!;
                     plr0_id = a.Id;
                 }
-                if(id == 1 && plr1_id == -1) {
+                if (id == 1 && plr1_id == -1) {
                     InformId a = JsonSerializer.Deserialize<InformId>(message)!;
                     plr1_id = a.Id;
                 }

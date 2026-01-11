@@ -1,4 +1,4 @@
-public class EventSystem(GameEntity game){
+public class EventSystem(GameEntity game) {
     public GameEntity game = game;
 
     public event Action<int>? OnSacrifice;
@@ -8,7 +8,7 @@ public class EventSystem(GameEntity game){
     public event Action<int>? OnAttack;
     public event Action<int>? OnSpawn;
 
-    public void SpawnCard(int card_id){
+    public void SpawnCard(int card_id) {
         CardEntity card = game.cards.GetCard(card_id);
         PlayerEntity plr = game.plrs.GetPlayer(card.Plr_Id);
 
@@ -19,7 +19,7 @@ public class EventSystem(GameEntity game){
         OnSpawn?.Invoke(card_id);
     }
 
-    public void KillCard(int card_id){
+    public void KillCard(int card_id) {
         CardEntity card = game.cards.GetCard(card_id);
         PlayerEntity plr = game.plrs.GetPlayer(card.Plr_Id);
 
@@ -31,19 +31,19 @@ public class EventSystem(GameEntity game){
         OnDeath?.Invoke(card_id);
     }
 
-    public void SacrificeCard(int card_id){
+    public void SacrificeCard(int card_id) {
         CardEntity card = game.cards.GetCard(card_id);
         //Console.WriteLine($"sacrifice {card.Name}");
         KillCard(card_id);
         OnSacrifice?.Invoke(card_id);
     }
 
-    public void SendToVoid(int card_id){
+    public void SendToVoid(int card_id) {
         CardEntity card = game.cards.GetCard(card_id);
         PlayerEntity plr = game.plrs.GetPlayer(card.Plr_Id);
 
         game.updater.ChangeCardLocation(CardLocations.Void, card.Location, card_id, 0);
-        
+
         card.SetLocation(CardLocations.Void);
         plr.Void.Add(card);
 
@@ -52,7 +52,7 @@ public class EventSystem(GameEntity game){
         OnInVoid?.Invoke(card_id);
     }
 
-    public CardEntity BringOutVoid(int card_id){
+    public CardEntity BringOutVoid(int card_id) {
         CardEntity card = game.cards.GetCard(card_id);
         PlayerEntity plr = game.plrs.GetPlayer(card.Plr_Id);
 
@@ -66,5 +66,9 @@ public class EventSystem(GameEntity game){
 
         OnOutVoid?.Invoke(card_id);
         return card;
+    }
+
+    public void InvokeOnAttack(int card_id) {
+        game.events.OnAttack?.Invoke(card_id);
     }
 }

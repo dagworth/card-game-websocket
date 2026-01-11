@@ -6,24 +6,24 @@ public class ChoosingState(GameEntity game, int plr_id, IGameState old_state, Ac
     private List<int> plr_choice_pool = choice_pool;
     private Action<List<int>> plr_choice_effect = effect;
 
-    public void StartState(){}
-    public void EndTurn(){}
+    public void StartState() { }
+    public void EndTurn() { }
 
-    public bool CanPlayCard(CardEntity card){
+    public bool CanPlayCard(CardEntity card) {
         return false;
     }
 
-    public void GotTargets(TargetsChoice data){
-        if(plr_choosing == data.PlayerId){
+    public void GotTargets(TargetsChoice data) {
+        if (plr_choosing == data.PlayerId) {
             bool valid = true;
-            foreach (int c in data.Targets){
-                if(!plr_choice_pool.Contains(c)){
+            foreach (int c in data.Targets) {
+                if (!plr_choice_pool.Contains(c)) {
                     valid = false;
                     break;
                 }
             }
 
-            if(!valid) return;
+            if (!valid) return;
 
             game.SetGameState(old_state);
             //Console.WriteLine("before targetting effect");

@@ -15,11 +15,14 @@ public static class ServerHandler {
         int id = plr_counter++;
         plr_ids[ws] = id;
         plr_ws[id] = ws;
-        ws.Send(JsonSerializer.Serialize(new InformId() { Id = id }));
+        ws.Send(JsonSerializer.Serialize(new InformId() {
+            Id = id,
+            Action = "informid"
+        }));
     }
 
     public static void OnMessage(IWebSocketConnection ws, string message) {
-        RecievedMessage? data = JsonSerializer.Deserialize<RecievedMessage>(message);
+        ClientToServerMessage? data = JsonSerializer.Deserialize<ClientToServerMessage>(message);
 
         if (data == null) {
             Console.WriteLine($"message went wrong: {message}");

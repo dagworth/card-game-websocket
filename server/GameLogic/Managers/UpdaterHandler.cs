@@ -15,7 +15,7 @@ public class UpdaterHandler(GameEntity game) {
     //buff is already dead (not attached to card) when here, so we need card_id to get passed
     public void ChangeStats(Buff buff, int card_id, int anim = 0) {
         BuffDTO buffdto = new(buff.Cost, buff.Cost_Fixed, buff.Attack, buff.Attack_Fixed, buff.Health, buff.Health_Fixed, buff.passives);
-        StatUpdater clone = new(buffdto, card_id, DupeBuff(buff));
+        StatUpdater clone = new(card_id, buffdto, DupeBuff(buff));
         CardEntity card = buff.card!;
         clone.Action = "card buff change";
         if (card.Location == CardLocations.Hand) {
@@ -59,7 +59,7 @@ public class UpdaterHandler(GameEntity game) {
     }
 
     public void ChangeCardLocation(CardLocations new_loc, CardLocations start, int card_id, int anim = 0) {
-        CardLocationUpdater clone = new(new_loc, start, card_id);
+        CardLocationUpdater clone = new(card_id, new_loc, start);
         clone.Action = $"card location change for {card_id}";
         events[clone] = -1;
     }
@@ -76,8 +76,12 @@ public class UpdaterHandler(GameEntity game) {
 
     public void UpdateClients(string update_type = "none") {
         //print(update_type);
-        ClientUpdateMessage clone0 = new();
-        ClientUpdateMessage clone1 = new();
+        ClientUpdateMessage clone0 = new() {
+            Action = "clientupdate"
+        };
+        ClientUpdateMessage clone1 = new() {
+            Action = "clientupdate"
+        };
         foreach (KeyValuePair<ClientUpdater, int> updater in events) {
             if (updater.Value == -1) {
                 clone0.Events.Add(updater.Key);

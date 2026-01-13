@@ -1,5 +1,7 @@
-using System.Runtime.CompilerServices;
+namespace shared;
+
 using System.Text.Json.Serialization;
+using shared.DTOs;
 
 [JsonDerivedType(typeof(CardLocationUpdater), "cardlocationupdater")]
 [JsonDerivedType(typeof(StatUpdater), "statupdater")]
@@ -11,13 +13,13 @@ public class ClientUpdater {
     [JsonPropertyName("action")] public string Action { get; set; } = "";
 }
 
-public class CardLocationUpdater(CardLocations new_loc, CardLocations starting_loc, int card_id) : ClientUpdater {
+public class CardLocationUpdater(int card_id, CardLocations new_loc, CardLocations starting_loc) : ClientUpdater {
     [JsonPropertyName("card_id")] public int Card_Id { get; set; } = card_id;
     [JsonPropertyName("now")] public CardLocations Now { get; set; } = new_loc;
     [JsonPropertyName("prev")] public CardLocations Prev { get; set; } = starting_loc;
 }
 
-public class StatUpdater(BuffDTO buff, int card_id, bool inverse) : ClientUpdater {
+public class StatUpdater(int card_id, BuffDTO buff, bool inverse) : ClientUpdater {
     [JsonPropertyName("buff")] public BuffDTO Buff { get; set; } = buff;
     [JsonPropertyName("card_id")] public int Card_Id { get; set; } = card_id;
     [JsonPropertyName("inverse")] public bool Inverse { get; set; } = inverse;

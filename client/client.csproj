@@ -3,9 +3,12 @@
     <TargetFramework>net8.0</TargetFramework>
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net9.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
-    <RootNamespace>card_game_test</RootNamespace>
+    <RootNamespace>client</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="WebSocketSharp" Version="1.0.3-rc11" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\shared\shared.csproj" />
   </ItemGroup>
 </Project>

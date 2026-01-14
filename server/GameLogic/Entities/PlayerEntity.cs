@@ -34,7 +34,7 @@ public class PlayerEntity(GameEntity game, int id) : IDamageable {
         return card;
     }
 
-    public void PlayCard(int card_id, List<int> targets) {
+    public void PlayCard(int card_id) {
         CardEntity card = Game.cards.GetCard(card_id);
         Console.WriteLine($"plr {Id} played {card.Name}");
         ChangeMana(-card.Stats.Cost);
@@ -45,7 +45,7 @@ public class PlayerEntity(GameEntity game, int id) : IDamageable {
             card.SetLocation(CardLocations.Void);
             Void.Add(card);
         }
-        card.OnPlay?.Invoke(Game, this, card, targets); //plz fix onplay targetting
+        card.OnPlay?.Invoke(Game, this, card);
         OnPlay?.Invoke(card.Id);
     }
 

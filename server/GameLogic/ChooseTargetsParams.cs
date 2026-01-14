@@ -1,4 +1,4 @@
-namespace server.GameLogic.Misc;
+namespace server.GameLogic;
 
 using server.GameLogic.Entities;
 using server.ServerLogic;

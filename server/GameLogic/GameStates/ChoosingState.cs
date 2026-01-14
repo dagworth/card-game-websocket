@@ -29,7 +29,11 @@ public class ChoosingState(GameEntity game, int plr_id, IGameState old_state, Ac
                 }
             }
 
-            if (!valid) return;
+            if (!valid) {
+                Console.WriteLine("chosen stuff is invalid.. ignoring effect");
+                game.SetGameState(old_state);
+                return;
+            }
 
             game.SetGameState(old_state);
             //Console.WriteLine("before targetting effect");

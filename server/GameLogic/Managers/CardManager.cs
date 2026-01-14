@@ -1,7 +1,6 @@
 namespace server.GameLogic.Managers;
 
 using server.GameLogic.Entities;
-using server.GameLogic.Misc;
 
 public class CardManager(GameEntity game) {
     public GameEntity game = game;
@@ -10,7 +9,9 @@ public class CardManager(GameEntity game) {
 
     public CardEntity CreateCard(string card_name, int plr_id) {
         int id = card_id_counter++;
-        CardEntity new_card = new CardEntity(game, plr_id, id, card_name, CardStatStorage.GetCardData(card_name));
+        CardEntity new_card = new(game, plr_id, id, card_name, new shared.DTOs.CardDataDTO() {
+            health = 10
+        });
         new_card.UpdateStats();
         Cards[id] = new_card;
         new_card.custom_effects?.Invoke(game, game.plrs.GetPlayer(plr_id), new_card);

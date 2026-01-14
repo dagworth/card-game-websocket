@@ -4,17 +4,20 @@ using shared;
 
 using Fleck;
 using System.Text.Json;
+using System.Collections.Concurrent;
 
 public static class ServerHandler {
     private static IWebSocketConnection? WaitingPlayer = null;
-    private static readonly Dictionary<IWebSocketConnection, int> plr_ids = [];
-    private static readonly Dictionary<int, IWebSocketConnection> plr_ws = [];
+    private static readonly ConcurrentDictionary<IWebSocketConnection, int> plr_ids = [];
+    private static readonly ConcurrentDictionary<int, IWebSocketConnection> plr_ws = [];
     private static int plr_counter = 10;
 
     public static void OnOpen(IWebSocketConnection ws) {
-        int id = plr_counter++;
+        int id = Interlocked.Increment(ref plr_counter);
+
         plr_ids[ws] = id;
         plr_ws[id] = ws;
+        
         ws.Send(JsonSerializer.Serialize(new InformId() {
             Id = id,
             Action = "informid"

@@ -3,7 +3,6 @@ namespace server.GameLogic.Entities;
 using server.GameLogic.Managers;
 using server.GameLogic.Interfaces;
 using server.GameLogic.GameStates;
-using server.GameLogic.Misc;
 using server.ServerLogic;
 using shared;
 
@@ -89,7 +88,7 @@ public class GameEntity {
 
         if (Game_State.CanPlayCard(card)) {
             updater.ChangeCardLocation(CardLocations.Board, CardLocations.Hand, data.CardId);
-            plr.PlayCard(data.CardId, data.Targets);
+            plr.PlayCard(data.CardId);
             updater.UpdateClients("played card");
         }
     }

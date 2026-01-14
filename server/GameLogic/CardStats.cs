@@ -1,6 +1,6 @@
-namespace server.GameLogic.Misc;
+namespace server.GameLogic;
 
-using server.GameLogic.Entities;
+using shared.DTOs;
 
 using System.Text.Json.Serialization;
 
@@ -11,7 +11,7 @@ public class CardStats {
     [JsonPropertyName("attack")] public int Attack { get; set; }
     [JsonPropertyName("passives")] public List<Passives> passives { get; set; }
 
-    public CardStats(CardData data) {
+    public CardStats(CardDataDTO data) {
         Cost = data.cost;
         Health = data.health;
         Attack = data.attack;

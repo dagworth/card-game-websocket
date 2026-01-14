@@ -1,36 +1,57 @@
 namespace server.GameLogic.Entities;
 
 using server.GameLogic.Interfaces;
-using server.GameLogic.Misc;
+using shared.DTOs;
 
 using System;
-using System.Text.Json.Serialization;
 
-public class CardEntity(GameEntity game, int plr_id, int card_id, string name, CardData data) : IDamageable {
-    private readonly GameEntity game = game;
+public class CardEntity : IDamageable {
+    private readonly GameEntity Game;
 
-    [JsonPropertyName("card_id")] public int Id { get; private set; } = card_id;
-    [JsonIgnore] public readonly int Plr_Id = plr_id; //temp readonly
+    public int Id;
+    public readonly int Plr_Id; //temp readonly
 
     private readonly List<Buff> buffs = [];
 
-    [JsonPropertyName("type")] public CardTypes Type { get; private set; } = data.type;
-    [JsonPropertyName("location")] public CardLocations Location { get; private set; } = CardLocations.Deck;
-    [JsonPropertyName("name")] public string Name { get; private set; } = name;
-    [JsonIgnore] public string Desc { get; private set; } = data.description;
+    public CardTypes Type;
+    public CardLocations Location;
+    public string Name;
 
-    public readonly List<Tribes> Tribes = [.. data.tribes];
+    public readonly List<Tribes> Tribes;
 
-    [JsonPropertyName("stats")] public CardStats Stats { get; private set; } = new();
-    private CardStats perm_stats = new(data);
+    public CardStats Stats; //stats after modifiers
+    private CardStats perm_stats; //the starter stats
 
-    public Action<GameEntity, PlayerEntity, CardEntity, List<int>>? OnPlay = data.OnPlay; //targetting part should be ignored for now
-    public Action<GameEntity, PlayerEntity, CardEntity>? OnSpawn = data.OnSpawn;
-    public Action<GameEntity, PlayerEntity, CardEntity>? OnDeath = data.OnDeath;
-    public Action<GameEntity, PlayerEntity, CardEntity>? OnAttack = data.OnAttack;
-    public Action<GameEntity, PlayerEntity, CardEntity>? OnDraw = data.OnDraw;
+    public Action<GameEntity, PlayerEntity, CardEntity>? OnPlay; 
+    public Action<GameEntity, PlayerEntity, CardEntity>? OnSpawn;
+    public Action<GameEntity, PlayerEntity, CardEntity>? OnDeath;
+    public Action<GameEntity, PlayerEntity, CardEntity>? OnAttack;
+    public Action<GameEntity, PlayerEntity, CardEntity>? OnDraw;
 
-    public Action<GameEntity, PlayerEntity, CardEntity>? custom_effects = data.custom_effects;
+    public Action<GameEntity, PlayerEntity, CardEntity>? custom_effects;
+
+    public CardEntity(GameEntity game, int plr_id, int card_id, string name, CardDataDTO data) {
+        Game = game;
+        Id = card_id;
+        Plr_Id = plr_id;
+        Type = data.type;
+        Location = CardLocations.Deck;
+        Name = name;
+        Tribes = [.. data.tribes];
+        Stats = new();
+        perm_stats = new(data);
+        BindLogic(CardLogicLoader.GetLogic(name));
+    }
+
+    public void BindLogic(CardEffect e) {
+        if (CardLogicLoader.HasEffect(Name, nameof(CardEffect.OnSpawn))) OnSpawn = e.OnSpawn;
+        if (CardLogicLoader.HasEffect(Name, nameof(CardEffect.OnDeath))) OnDeath = e.OnDeath;
+        if (CardLogicLoader.HasEffect(Name, nameof(CardEffect.OnAttack))) OnAttack = e.OnAttack;
+        if (CardLogicLoader.HasEffect(Name, nameof(CardEffect.OnPlay))){
+            Console.WriteLine("has on play");
+            OnPlay = e.OnPlay;
+        }
+    }
 
     public void UpdateStats() {
         int cost = perm_stats.Cost;
@@ -60,21 +81,21 @@ public class CardEntity(GameEntity game, int plr_id, int card_id, string name, C
 
     public Buff AddTempBuff(Buff buff) {
         buff.card = this;
-        game.updater.ChangeStats(buff, Id, 0);
+        Game.updater.ChangeStats(buff, Id, 0);
         buffs.Add(buff);
         UpdateStats();
         return buff;
     }
 
     public void RemoveTempBuff(Buff buff) {
-        game.updater.ChangeStats(buff, Id, 0);
+        Game.updater.ChangeStats(buff, Id, 0);
         buffs.Remove(buff);
         UpdateStats();
     }
 
     public void AddPermBuff(Buff buff) {
         buff.card = this;
-        game.updater.ChangeStats(buff, 0);
+        Game.updater.ChangeStats(buff, 0);
 
         //manually change stuff for buff, update if needed
         perm_stats.Cost += buff.Cost;
@@ -90,7 +111,7 @@ public class CardEntity(GameEntity game, int plr_id, int card_id, string name, C
     }
 
     public void TakeDamage(int damage) {
-        game.updater.TookDamage(damage, 0);
+        Game.updater.TookDamage(damage, 0);
         //Console.WriteLine($"{Name} took {damage} damage");
         Stats.Damaged += damage;
         UpdateStats();
@@ -98,7 +119,7 @@ public class CardEntity(GameEntity game, int plr_id, int card_id, string name, C
 
     public void CheckIfDead() {
         if (Stats.Damaged >= Stats.Health)
-            game.events.KillCard(Id);
+            Game.events.KillCard(Id);
     }
 
     public void SetLocation(CardLocations loc) {
@@ -107,7 +128,7 @@ public class CardEntity(GameEntity game, int plr_id, int card_id, string name, C
 
     //returns how much attack is left for future overwhelm
     public int AttackCard(CardEntity victim, int atk) {
-        game.events.InvokeOnAttack(Id); //idk if this will work but i dont think it matters for now
+        Game.events.InvokeOnAttack(Id); //idk if this will work but i dont think it matters for now
         TakeDamage(victim.Stats.Attack);
 
         if (victim.Stats.Health - atk >= 0) {

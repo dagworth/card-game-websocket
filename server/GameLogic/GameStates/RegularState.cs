@@ -35,7 +35,7 @@ public class RegularState(GameEntity game, bool attacked) : IGameState {
         return true;
     }
 
-    public void ToogleAttack(ToggleAttack data) {
+    public void ToogleAttack(ToggleAttackRequest data) {
         if (attacked) return;
         AttackingState a = new AttackingState(game);
         game.SetGameState(a);

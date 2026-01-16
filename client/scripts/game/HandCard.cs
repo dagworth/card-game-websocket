@@ -1,7 +1,8 @@
 using Godot;
+using shared.DTOs;
 
 public partial class HandCard : Control {
-    public CardEntity data;
+    public CardEntityDTO data;
 
     public HandCard() {
 

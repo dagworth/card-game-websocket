@@ -12,10 +12,10 @@ public class CardStats {
     [JsonPropertyName("passives")] public List<Passives> passives { get; set; }
 
     public CardStats(CardDataDTO data) {
-        Cost = data.cost;
-        Health = data.health;
-        Attack = data.attack;
-        passives = [.. data.passives];
+        Cost = data.Cost;
+        Health = data.Health;
+        Attack = data.Attack;
+        passives = [.. data.Passives];
     }
 
     public CardStats() {

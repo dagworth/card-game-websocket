@@ -7,10 +7,10 @@ using shared;
 public class DefendingState : IGameState {
     private readonly GameEntity game;
     private readonly int plr_defending;
-    private readonly Dictionary<int, List<int>> attacking_units;
+    private readonly Dictionary<int, HashSet<int>> attacking_units;
     private int defending_units = 0;
 
-    public DefendingState(GameEntity game, Dictionary<int, List<int>> attacking_units) {
+    public DefendingState(GameEntity game, Dictionary<int, HashSet<int>> attacking_units) {
         this.game = game;
         plr_defending = game.Plr_Turn;
         this.attacking_units = attacking_units;
@@ -47,24 +47,31 @@ public class DefendingState : IGameState {
         game.SetGameState(new RegularState(game, true));
     }
 
-    public void ToggleDefend(ToggleDefend data) {
+    public void ToggleDefend(ToggleDefendRequest data) {
+        if(data.UnitDefending == -1) {
+            CancelDefend(data);
+            return;
+        }
         if (plr_defending == data.PlayerId) return; //if ur the defender
 
         PlayerEntity plr = game.plrs.GetOtherPlayer(plr_defending);
-        if (!plr.Board.Contains(game.cards.GetCard(data.UnitDefending))) return; //check the unit is on board
+        if (!plr.Board.Contains(game.cards.GetCard(data.UnitDefending))) return; //check the defending unit is on board
         if (!attacking_units.ContainsKey(data.UnitAttacking)) return; //the specified unit getting defended is not attacking
 
-        defending_units++;
-
-        //check if unit is already defending anything
-        foreach (KeyValuePair<int, List<int>> pair in attacking_units) {
-            if (pair.Value.Contains(data.UnitDefending)) return;
+        //if already defending something, then no
+        foreach (KeyValuePair<int, HashSet<int>> pair in attacking_units) {
+            if (pair.Value.Remove(data.UnitDefending)) {
+                defending_units--;
+                break;
+            }
         }
+
+        defending_units++;
 
         attacking_units[data.UnitAttacking].Add(data.UnitDefending);
     }
 
-    public void CancelDefend(ToggleDefend data) {
+    public void CancelDefend(ToggleDefendRequest data) {
         if (game.Plr_Turn == data.PlayerId) return; //if ur the defender
 
         if (!attacking_units[data.UnitAttacking].Contains(data.UnitDefending)) return; //the unit is not defending the attacking unit
@@ -79,7 +86,7 @@ public class DefendingState : IGameState {
             plr_defending,
             null,
             () => {
-                foreach (KeyValuePair<int, List<int>> pair in attacking_units) {
+                foreach (KeyValuePair<int, HashSet<int>> pair in attacking_units) {
                     AttackEnemies(game.cards.GetCard(pair.Key), [.. pair.Value.Select(game.cards.GetCard)]);
                 }
             }

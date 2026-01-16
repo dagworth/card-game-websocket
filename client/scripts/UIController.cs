@@ -1,4 +1,5 @@
 using Godot;
+using shared.DTOs;
 using System;
 using System.Collections.Generic;
 
@@ -39,19 +40,20 @@ public partial class UIController : Node2D {
     }
 
 
-    public static void addCard(int index) {
-        //CardStatus card_stats = plr.hand[index];
+    public static void addCard(int card_id) {
+        CardEntityDTO card = CardHandler.GetCard(card_id);
+        CardDataDTO data = DataLoader.GetData(card.Name);
         //CardData base_stats = ResourceLoader.Load<CardData>($"{card_data_path}/{card_stats.name}.tres");
 
         PackedScene loaded_card = ResourceLoader.Load<PackedScene>(ui_card);
 
         Control clone = loaded_card.Instantiate() as Control;
-        // clone.GetNode<RichTextLabel>("NameLabel").Text = base_stats.name;
-        // clone.GetNode<RichTextLabel>("DescLabel").Text = base_stats.description;
-        // clone.GetNode<RichTextLabel>("AttackLabel").Text = card_stats.attack.ToString();
-        // clone.GetNode<RichTextLabel>("HealthLabel").Text = card_stats.health.ToString();
-        // clone.GetNode<RichTextLabel>("CostLabel").Text = card_stats.cost.ToString();
-        // clone.GetNode<TextureRect>("ImageLabel").Texture = base_stats.image;
+        clone.GetNode<RichTextLabel>("NameLabel").Text = card.Name;
+        clone.GetNode<RichTextLabel>("DescLabel").Text = data.Description;
+        clone.GetNode<RichTextLabel>("AttackLabel").Text = card.Stats.Attack.ToString();
+        clone.GetNode<RichTextLabel>("HealthLabel").Text = card.Stats.Health.ToString();
+        clone.GetNode<RichTextLabel>("CostLabel").Text = card.Stats.Cost.ToString();
+        //clone.GetNode<TextureRect>("ImageLabel").Texture = base_stats.image;
 
         ui_hand.AddChild(clone);
 
@@ -63,11 +65,6 @@ public partial class UIController : Node2D {
         clone.MouseExited += () => onHoverExit(clone);
         updateCardPosition();
     }
-
-    // public void linkPlayer(){
-    //     plr = gameHandler.player;
-    //     plr.OnDraw += addCard; //whenever the player draws a card, add one to the ui
-    // }
 
     private static int x_offset = default_x_offset;
     private static int y_offset = default_y_offset;

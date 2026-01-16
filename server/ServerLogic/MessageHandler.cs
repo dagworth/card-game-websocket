@@ -8,69 +8,56 @@ using Fleck;
 using System.Text.Json;
 
 public static class MessageHandler {
-    public static void ReadMessage(IWebSocketConnection ws, int plr_id, string message, string action) {
+    public static void ReadMessage(IWebSocketConnection ws, int plr_id, string message) {
         //this is very temporary, i need to make it so the server wont crash cus of this
         //we r trusting client requests arent stupid for now
-        
-        if(action.Equals("join_waiting_queue")){
+        var options = new JsonSerializerOptions {
+            PropertyNameCaseInsensitive = true
+        };
+
+        ClientRequest request = JsonSerializer.Deserialize<ClientRequest>(message,options)!;
+
+        if (request is JoinQueueRequest) {
             ServerHandler.AddPlayerToQueue(ws);
             return;
         }
 
         GameEntity game = GameManager.GetPlayer(plr_id).Game;
 
-        if(action.Equals("play_card")){
-            game.PlayerPlayCard(JsonSerializer.Deserialize<PlayCard>(message)!);
-        }
+        switch (request) {
+            case PlayCardRequest req:
+                game.PlayerPlayCard(req);
+                break;
 
-        else if(action.Equals("toggle_atk")){
-            if(game.Game_State is AttackingState a){
-                a.ToogleAttack(JsonSerializer.Deserialize<ToggleAttack>(message)!);
-            } else if(game.Game_State is RegularState b){
-                b.ToogleAttack(JsonSerializer.Deserialize<ToggleAttack>(message)!);
-            }
-        }
+            case ToggleAttackRequest req:
+                if (game.Game_State is AttackingState a) a.ToogleAttack(req);
+                else if (game.Game_State is RegularState b) b.ToogleAttack(req);
+                break;
 
-        else if(action.Equals("cancel_atk")){
-            if(game.Game_State is AttackingState a){
-                a.CancelAttack(JsonSerializer.Deserialize<ToggleAttack>(message)!);
-            }
-        }
+            case ToggleDefendRequest req:
+                if (game.Game_State is DefendingState c) c.ToggleDefend(req);
+                break;
 
-        else if(action.Equals("toggle_def")){
-            if(game.Game_State is DefendingState a){
-                a.ToggleDefend(JsonSerializer.Deserialize<ToggleDefend>(message)!);
-            }
-        }
+            case EndTurnRequest:
+                game.PlayerEndTurn();
+                break;
 
-        else if(action.Equals("cancel_def")){
-            if(game.Game_State is DefendingState a){
-                a.CancelDefend(JsonSerializer.Deserialize<ToggleDefend>(message)!);
-            }
-        }
-
-        else if(action.Equals("end_turn")){
-            game.PlayerEndTurn();
-        }
-
-        else if(action.Equals("targets_choice")){
-            if(game.Game_State is ChoosingState a){
-                a.GotTargets(JsonSerializer.Deserialize<TargetsChoice>(message)!);
-            }
+            case TargetsChoiceRequest req:
+                if (game.Game_State is ChoosingState d) d.GotTargets(req);
+                break;
         }
     }
 
     public static void AskForTargets(IWebSocketConnection ws, List<int> message){
         TargetOptions a = new(){
-            Targets = message,
-            Action = "targetoptions"
+            Targets = message
         };
 
-        ws.Send(JsonSerializer.Serialize(a));
+        ws.Send(JsonSerializer.Serialize<ServerEvent>(a));
     }
 
-    public static void UpdateClient(IWebSocketConnection ws, ClientUpdateMessage message)
+    public static void UpdateClient(IWebSocketConnection ws, GameUpdate message)
     {
-        ws.Send(JsonSerializer.Serialize(message));
+        ws.Send(JsonSerializer.Serialize<ServerEvent>(message));
     }
 }

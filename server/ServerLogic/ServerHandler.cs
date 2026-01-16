@@ -18,14 +18,13 @@ public static class ServerHandler {
         plr_ids[ws] = id;
         plr_ws[id] = ws;
         
-        ws.Send(JsonSerializer.Serialize(new InformId() {
-            Id = id,
-            Action = "informid"
+        ws.Send(JsonSerializer.Serialize<ServerEvent>(new InformId() {
+            PlayerId = id
         }));
     }
 
     public static void OnMessage(IWebSocketConnection ws, string message) {
-        ClientToServerMessage? data = JsonSerializer.Deserialize<ClientToServerMessage>(message);
+        ClientRequest? data = JsonSerializer.Deserialize<ClientRequest>(message);
 
         if (data == null) {
             Console.WriteLine($"message went wrong: {message}");
@@ -37,7 +36,7 @@ public static class ServerHandler {
             return;
         }
 
-        MessageHandler.ReadMessage(ws, data.PlayerId, message, data.Action);
+        MessageHandler.ReadMessage(ws, data.PlayerId, message);
     }
 
     public static void OnClose(IWebSocketConnection ws) {

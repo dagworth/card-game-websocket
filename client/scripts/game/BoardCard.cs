@@ -1,5 +1,6 @@
 using Godot;
+using shared.DTOs;
 
 public partial class BoardCard : Control {
-    public CardEntity data;
+    public CardEntityDTO data;
 }

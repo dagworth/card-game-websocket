@@ -1,0 +1,10 @@
+Name,Type,Cost,Attack,Health,Tribes,Passives,Description
+Alice,Unit,2,2,4,Skeleton,Deadly,"on attack: she buffs herself by +1/+3"
+Bob,Unit,1,1,1,Zombie,Charge,"on play: he buffs all minions on board by +1/+1"
+Carol,Unit,1,6,2,,Charge,"on play: buffs allied units by +1/+2 this turn"
+Dave,Unit,1,6,2,Creeper,Charge,"on enemy sacrifice: gain +1/+1"
+Eve,Unit,3,3,1,,,"on spawn: choose an allied unit to sacrifice to draw 2 cards"
+Freddy,Unit,3,3,1,Skeleton;Undead,,"on spawn: all enemy units get -2/-2 until the start of your next turn"
+Gary,Unit,3,3,1,Creeper,,"on spawn: choose an enemy to take 3 damage"
+Haunting Scream,Spell,3,0,0,,,"choose a unit that costs 5 or less from your void. Bring it back from the void and give it flying and charge. Sacrifice it at the end of the turn"
+Torch,Spell,1,0,0,,,"deal 3 damage to an enemy"

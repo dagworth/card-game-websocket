@@ -10,7 +10,6 @@ public partial class ClientHandler : Node {
 	public override void _Ready() {
 		client = new WebSocketPeer();
 		client.ConnectToUrl("ws://127.0.0.1:8181");
-		//UIController.addCard(1);
 	}
 
 	public override void _Process(double delta) {

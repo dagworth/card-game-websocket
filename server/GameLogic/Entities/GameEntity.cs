@@ -82,7 +82,7 @@ public class GameEntity {
         MessageHandler.AskForTargets(ServerHandler.GetWSConnection(plr_id), info.TargetList);
     }
 
-    public void PlayerPlayCard(PlayCard data) {
+    public void PlayerPlayCard(PlayCardRequest data) {
         PlayerEntity plr = plrs.GetPlayer(data.PlayerId);
         CardEntity card = cards.GetCard(data.CardId);
 

@@ -9,9 +9,7 @@ public class CardManager(GameEntity game) {
 
     public CardEntity CreateCard(string card_name, int plr_id) {
         int id = card_id_counter++;
-        CardEntity new_card = new(game, plr_id, id, card_name, new shared.DTOs.CardDataDTO() {
-            health = 10
-        });
+        CardEntity new_card = new(game, plr_id, id, card_name, DataLogicLoader.GetData(card_name));
         new_card.UpdateStats();
         Cards[id] = new_card;
         new_card.custom_effects?.Invoke(game, game.plrs.GetPlayer(plr_id), new_card);

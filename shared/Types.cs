@@ -1,13 +1,11 @@
 using System.Text.Json.Serialization;
 
-[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum Passives {
     Charge = 0,
     Flying = 1,
     Deadly = 2
 }
 
-[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum CardLocations {
     Hand = 0,
     Deck = 1,
@@ -15,7 +13,6 @@ public enum CardLocations {
     Board = 3
 }
 
-[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum CardTypes {
     Unit = 0,
     Spell = 1,

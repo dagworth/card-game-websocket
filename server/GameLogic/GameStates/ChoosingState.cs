@@ -19,7 +19,7 @@ public class ChoosingState(GameEntity game, int plr_id, IGameState old_state, Ac
         return false;
     }
 
-    public void GotTargets(TargetsChoice data) {
+    public void GotTargets(TargetsChoiceRequest data) {
         if (plr_choosing == data.PlayerId) {
             bool valid = true;
             foreach (int c in data.Targets) {

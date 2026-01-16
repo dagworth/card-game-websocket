@@ -16,7 +16,6 @@ public class UpdaterHandler(GameEntity game) {
         BuffDTO buffdto = new(buff.Cost, buff.Cost_Fixed, buff.Attack, buff.Attack_Fixed, buff.Health, buff.Health_Fixed, buff.passives);
         StatUpdater clone = new(card_id, buffdto, DupeBuff(buff));
         CardEntity card = buff.card!;
-        clone.Action = "card buff change";
         if (card.Location == CardLocations.Hand) {
             events[clone] = card.Plr_Id; //only person who has in hand can see change
         } else if (card.Location == CardLocations.Board || card.Location == CardLocations.Void) {
@@ -28,7 +27,6 @@ public class UpdaterHandler(GameEntity game) {
 
     public void TookDamage(int damage, int anim = 0) {
         DamageUpdater clone = new(damage);
-        clone.Action = "damage change";
         events[clone] = -1;
     }
 
@@ -38,13 +36,11 @@ public class UpdaterHandler(GameEntity game) {
         CardStatsDTO cardstatsdto = new(card.Stats.Cost, card.Stats.Health, card.Stats.Damaged, card.Stats.Attack, card.Stats.passives);
         CardEntityDTO cardentitydto = new(card.Id, card.Type, card.Location, card.Name,  cardstatsdto);
         NewCardUpdater clone = new(cardentitydto);
-        clone.Action = "new card";
         events[clone] = card.Plr_Id;
     }
 
     public void EndTurn(int plr_id, int anim = 0) {
         TurnUpdater clone = new(plr_id);
-        clone.Action = "turn ended";
         events[clone] = -1;
     }
 
@@ -59,7 +55,6 @@ public class UpdaterHandler(GameEntity game) {
 
     public void ChangeCardLocation(CardLocations new_loc, CardLocations start, int card_id, int anim = 0) {
         CardLocationUpdater clone = new(card_id, new_loc, start);
-        clone.Action = $"card location change for {card_id}";
         events[clone] = -1;
     }
 
@@ -75,12 +70,8 @@ public class UpdaterHandler(GameEntity game) {
 
     public void UpdateClients(string update_type = "none") {
         //print(update_type);
-        ClientUpdateMessage clone0 = new() {
-            Action = "clientupdate"
-        };
-        ClientUpdateMessage clone1 = new() {
-            Action = "clientupdate"
-        };
+        GameUpdate clone0 = new();
+        GameUpdate clone1 = new();
         foreach (KeyValuePair<ClientUpdater, int> updater in events) {
             if (updater.Value == -1) {
                 clone0.Events.Add(updater.Key);

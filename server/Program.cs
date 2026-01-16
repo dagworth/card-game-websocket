@@ -11,7 +11,7 @@ public static class Program {
     private static WebSocketServer server = new("ws://127.0.0.1:8181");
 
     static void Main() {
-        RuntimeHelpers.RunClassConstructor(typeof(CardLogicLoader).TypeHandle);
+        RuntimeHelpers.RunClassConstructor(typeof(DataLogicLoader).TypeHandle);
 
         server.Start(ws => {
             ws.OnOpen = () => ServerHandler.OnOpen(ws);
@@ -19,7 +19,7 @@ public static class Program {
             ws.OnClose = () => ServerHandler.OnClose(ws);
         });
 
-        Test().Wait();
+        //Test().Wait();
 
         while (true) {
             string? input = Console.ReadLine();
@@ -65,11 +65,11 @@ public static class Program {
                 string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
                 if (id == 0 && plr0_id == -1) {
                     InformId a = JsonSerializer.Deserialize<InformId>(message)!;
-                    plr0_id = a.Id;
+                    plr0_id = a.PlayerId;
                 }
                 if (id == 1 && plr1_id == -1) {
                     InformId a = JsonSerializer.Deserialize<InformId>(message)!;
-                    plr1_id = a.Id;
+                    plr1_id = a.PlayerId;
                 }
                 Console.WriteLine($"plr{id} recieved: {message}");
             }
@@ -78,24 +78,28 @@ public static class Program {
         _ = PrintMessages(plr0, 0);
         _ = PrintMessages(plr1, 1);
 
-        send(plr0, $"{{ \"action\": \"join_waiting_queue\", \"player_id\": {plr0_id} }}");
+        while (plr0_id == -1 || plr1_id == -1) {
+            await Task.Delay(10);
+        }
+
+        send(plr0, $"{{ \"$type\": \"joinqueue\", \"player_id\": {plr0_id} }}");
         await Task.Delay(100);
-        send(plr1, $"{{ \"action\": \"join_waiting_queue\", \"player_id\": {plr1_id} }}");
+        send(plr1, $"{{ \"$type\": \"joinqueue\", \"player_id\": {plr1_id} }}");
         await Task.Delay(100);
-        send(plr1, $"{{ \"action\": \"play_card\", \"player_id\": {plr1_id} , \"card_id\": 4 }}");
+        send(plr1, $"{{ \"$type\": \"playcard\", \"player_id\": {plr1_id} , \"card_id\": 4 }}");
         await Task.Delay(100);
-        send(plr1, $"{{ \"action\": \"end_turn\", \"player_id\": {plr1_id} }}");
+        send(plr1, $"{{ \"$type\": \"endturn\", \"player_id\": {plr1_id} }}");
         await Task.Delay(100);
-        send(plr0, $"{{ \"action\": \"play_card\", \"player_id\": {plr0_id} , \"card_id\": 19 }}");
+        send(plr0, $"{{ \"$type\": \"playcard\", \"player_id\": {plr0_id} , \"card_id\": 19 }}");
         await Task.Delay(100);
-        send(plr0, $"{{ \"action\": \"targets_choice\", \"player_id\": {plr0_id} , \"targets\": [4] }}");
+        send(plr0, $"{{ \"$type\": \"targetschoice\", \"player_id\": {plr0_id} , \"targets\": [4] }}");
         await Task.Delay(100);
-        send(plr0, $"{{ \"action\": \"end_turn\", \"player_id\": {plr0_id} }}");
+        send(plr0, $"{{ \"$type\": \"endturn\", \"player_id\": {plr0_id} }}");
         await Task.Delay(100);
-        send(plr1, $"{{ \"action\": \"play_card\", \"player_id\": {plr1_id} , \"card_id\": 0 }}");
+        send(plr1, $"{{ \"$type\": \"playcard\", \"player_id\": {plr1_id} , \"card_id\": 0 }}");
         await Task.Delay(100);
-        send(plr1, $"{{ \"action\": \"targets_choice\", \"player_id\": {plr1_id} , \"targets\": [4] }}");
+        send(plr1, $"{{ \"$type\": \"targetschoice\", \"player_id\": {plr1_id} , \"targets\": [4] }}");
         await Task.Delay(100);
-        send(plr1, $"{{ \"action\": \"end_turn\", \"player_id\": {plr1_id} }}");
+        send(plr1, $"{{ \"$type\": \"endturn\", \"player_id\": {plr1_id} }}");
     }
 }

@@ -34,23 +34,20 @@ public class CardEntity : IDamageable {
         Game = game;
         Id = card_id;
         Plr_Id = plr_id;
-        Type = data.type;
+        Type = data.Type;
         Location = CardLocations.Deck;
         Name = name;
-        Tribes = [.. data.tribes];
+        Tribes = [.. data.Tribes];
         Stats = new();
         perm_stats = new(data);
-        BindLogic(CardLogicLoader.GetLogic(name));
+        BindLogic(DataLogicLoader.GetLogic(name));
     }
 
     public void BindLogic(CardEffect e) {
-        if (CardLogicLoader.HasEffect(Name, nameof(CardEffect.OnSpawn))) OnSpawn = e.OnSpawn;
-        if (CardLogicLoader.HasEffect(Name, nameof(CardEffect.OnDeath))) OnDeath = e.OnDeath;
-        if (CardLogicLoader.HasEffect(Name, nameof(CardEffect.OnAttack))) OnAttack = e.OnAttack;
-        if (CardLogicLoader.HasEffect(Name, nameof(CardEffect.OnPlay))){
-            Console.WriteLine("has on play");
-            OnPlay = e.OnPlay;
-        }
+        if (DataLogicLoader.HasEffect(Name, nameof(CardEffect.OnSpawn))) OnSpawn = e.OnSpawn;
+        if (DataLogicLoader.HasEffect(Name, nameof(CardEffect.OnDeath))) OnDeath = e.OnDeath;
+        if (DataLogicLoader.HasEffect(Name, nameof(CardEffect.OnAttack))) OnAttack = e.OnAttack;
+        if (DataLogicLoader.HasEffect(Name, nameof(CardEffect.OnPlay))) OnPlay = e.OnPlay;
     }
 
     public void UpdateStats() {

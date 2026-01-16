@@ -3,15 +3,13 @@ namespace shared;
 using System.Text.Json.Serialization;
 using shared.DTOs;
 
-[JsonDerivedType(typeof(CardLocationUpdater), "cardlocationupdater")]
-[JsonDerivedType(typeof(StatUpdater), "statupdater")]
-[JsonDerivedType(typeof(TurnUpdater), "turnupdator")]
-[JsonDerivedType(typeof(DamageUpdater), "damageupdator")]
-[JsonDerivedType(typeof(NewCardUpdater), "newcardupdator")]
+[JsonDerivedType(typeof(CardLocationUpdater), "locationchange")]
+[JsonDerivedType(typeof(StatUpdater), "statchange")]
+[JsonDerivedType(typeof(TurnUpdater), "turnchange")]
+[JsonDerivedType(typeof(DamageUpdater), "damagechange")]
+[JsonDerivedType(typeof(NewCardUpdater), "newcard")]
 
-public class ClientUpdater {
-    [JsonPropertyName("action")] public string Action { get; set; } = "";
-}
+public class ClientUpdater { }
 
 public class CardLocationUpdater(int card_id, CardLocations new_loc, CardLocations starting_loc) : ClientUpdater {
     [JsonPropertyName("card_id")] public int Card_Id { get; set; } = card_id;

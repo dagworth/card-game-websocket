@@ -6,9 +6,11 @@
     <RootNamespace>client</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="33.1.0" />
     <PackageReference Include="WebSocketSharp" Version="1.0.3-rc11" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\shared\shared.csproj" />
+    <EmbeddedResource Include="..\shared\card_data.csv">
+      <Link>shared.card_data.csv</Link>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

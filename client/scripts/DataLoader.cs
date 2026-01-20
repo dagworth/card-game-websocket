@@ -9,7 +9,13 @@ using Godot;
 public partial class DataLoader : Node {
     private static readonly Dictionary<string, CardDataDTO> dataMap = [];
 
-    static DataLoader() {
+    public static CardDataDTO GetData(string name) {
+        if (dataMap.ContainsKey(name)) return dataMap[name];
+        GD.Print($"there is no data logic for {name}");
+        return new CardDataDTO();
+    }
+
+    public override void _Ready() {
         var assembly = Assembly.GetExecutingAssembly();
 
         Stream stream = assembly.GetManifestResourceStream("client.shared.card_data.csv")!;
@@ -20,13 +26,5 @@ public partial class DataLoader : Node {
             string name = csv.GetField("Name") ?? "";
             dataMap[name] = record;
         }
-    }
-
-    public static CardDataDTO GetData(string name) {
-        if (dataMap.TryGetValue(name, out CardDataDTO? value)) {
-            return value;
-        }
-        GD.Print($"there is no data logic for {name}");
-        return new CardDataDTO();
     }
 }

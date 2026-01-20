@@ -39,6 +39,11 @@ public class UpdaterHandler(GameEntity game) {
         events[clone] = card.Plr_Id;
     }
 
+    // public void EnemyHand(int plr_id, int change) {
+    //     EnemyCardUpdater clone = new(change);
+    //     events[clone] = game.plrs.GetOtherPlayer(plr_id).Id;
+    // }
+
     public void EndTurn(int plr_id, int anim = 0) {
         TurnUpdater clone = new(plr_id);
         events[clone] = -1;

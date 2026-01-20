@@ -16,10 +16,10 @@ config/features=PackedStringArray("4.5", "C#", "Forward Plus")
 
 [autoload]
 
-UiController="*res://scripts/UIController.cs"
 ClientHandler="*res://scripts/ClientHandler.cs"
 MessageHandler="*res://scripts/MessageHandler.cs"
 DataLoader="*res://scripts/DataLoader.cs"
+HandCardUpdater="*res://scripts/HandCardUpdater.cs"
 
 [display]
 

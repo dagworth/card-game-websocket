@@ -1,7 +1,9 @@
 namespace server.GameLogic.GameStates;
 
+using Microsoft.AspNetCore.Authentication;
 using server.GameLogic.Entities;
 using server.GameLogic.Interfaces;
+using shared;
 
 public readonly struct CardEffect(int plr_id, CardEntity? trigger, Action effect) {
     public readonly int plr_id = plr_id;
@@ -25,7 +27,8 @@ public class PriorityState : IGameState {
         CheckLegalPlays();
     }
 
-    public void EndTurn() {
+    public void EndTurn(EndTurnRequest? req) {
+        if(req != null && req.PlayerId != plr_priority) return;
         //if opponent did not respond to our effect (this is not optimal but good for now)
         if (on_hold_card_effects.Count == 0 || on_hold_card_effects.Last().plr_id != plr_priority) {
             game.SetGameState(next_state); //this is so that if a choosing comes up in the card effects, this wont effect it
@@ -66,7 +69,7 @@ public class PriorityState : IGameState {
             break;
         }
 
-        if (!can) EndTurn();
+        if (!can) EndTurn(null);
     }
 
     public void AddEffect(CardEffect effect, bool progress) {

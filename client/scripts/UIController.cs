@@ -7,7 +7,7 @@ public partial class UIController : Node2D {
     //card position
     private const int default_x_offset = 0;
     private const int default_y_offset = 0;
-    private const int default_spacing = 165;
+    private const int default_spacing = 195; //165
     private const float default_angle_increment = 3.5f;
     private const float default_card_scaling = 1.5f;
     private const int default_y_spread_increment = 10;
@@ -48,6 +48,7 @@ public partial class UIController : Node2D {
         PackedScene loaded_card = ResourceLoader.Load<PackedScene>(ui_card);
 
         Control clone = loaded_card.Instantiate() as Control;
+        (clone as HandCard).data = card;
         clone.GetNode<RichTextLabel>("NameLabel").Text = card.Name;
         clone.GetNode<RichTextLabel>("DescLabel").Text = data.Description;
         clone.GetNode<RichTextLabel>("AttackLabel").Text = card.Stats.Attack.ToString();
@@ -176,8 +177,9 @@ public partial class UIController : Node2D {
 
                         //play card
 
-                        // int card_id = (hover_card as HandCard).stats.card_id;
-                        // bool success = plr.playCard(card_id);
+                        int card_id = (hover_card as HandCard).data.Id;
+                        GD.Print(card_id);
+                        //bool success = plr.playCard(card_id);
 
                         // if(success){
                         //     ui_cards.Remove(hover_card);

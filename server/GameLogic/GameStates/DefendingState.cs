@@ -16,7 +16,7 @@ public class DefendingState : IGameState {
         this.attacking_units = attacking_units;
 
         PlayerEntity plr = game.plrs.GetPlayer(plr_defending);
-        if (plr.Board.Count == 0) EndTurn();
+        if (plr.Board.Count == 0) EndTurn(null);
 
         bool can_play_a_card = false;
         for (int i = 0; i < plr.Hand.Count; i++) {
@@ -26,7 +26,7 @@ public class DefendingState : IGameState {
             }
         }
 
-        if (!can_play_a_card) EndTurn();
+        if (!can_play_a_card) EndTurn(null);
     }
 
     public void StartState() { }
@@ -42,7 +42,8 @@ public class DefendingState : IGameState {
         return true;
     }
 
-    public void EndTurn() {
+    public void EndTurn(EndTurnRequest? req) {
+        if(req != null && req.PlayerId != plr_defending) return;
         HandleAttackPhase();
         game.SetGameState(new RegularState(game, true));
     }

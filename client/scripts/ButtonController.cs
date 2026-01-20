@@ -16,4 +16,9 @@ public partial class ButtonController : Node {
     public void endturn() {
         MessageHandler.SendEndTurn();
     }
+
+    public void updateid() {
+        Label label = GetNode<Label>("../UI/PlayerId");
+        label.Text = $"plr id: {ClientHandler.plr_id}";
+    }
 }

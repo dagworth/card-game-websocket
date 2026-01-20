@@ -92,8 +92,4 @@ public class GameEntity {
             updater.UpdateClients("played card");
         }
     }
-
-    public void PlayerEndTurn() {
-        Game_State.EndTurn();
-    }
 }

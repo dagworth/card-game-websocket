@@ -12,7 +12,8 @@ public class RegularState(GameEntity game, bool attacked) : IGameState {
 
     }
 
-    public void EndTurn() {
+    public void EndTurn(EndTurnRequest req) {
+        if(req.PlayerId != game.Plr_Turn) return;
         game.updater.EndTurn(game.Plr_Turn);
         game.delayed.DoEndTurnEffects(game.Plr_Turn);
         game.updater.UpdateClients("end turn");

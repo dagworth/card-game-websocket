@@ -13,7 +13,7 @@ public class ChoosingState(GameEntity game, int plr_id, IGameState old_state, Ac
     private Action<List<int>> plr_choice_effect = effect;
 
     public void StartState() { }
-    public void EndTurn() { }
+    public void EndTurn(EndTurnRequest req) { }
 
     public bool CanPlayCard(CardEntity card) {
         return false;

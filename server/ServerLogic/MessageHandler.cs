@@ -38,8 +38,8 @@ public static class MessageHandler {
                 if (game.Game_State is DefendingState c) c.ToggleDefend(req);
                 break;
 
-            case EndTurnRequest:
-                game.PlayerEndTurn();
+            case EndTurnRequest req:
+                game.Game_State.EndTurn(req);
                 break;
 
             case TargetsChoiceRequest req:

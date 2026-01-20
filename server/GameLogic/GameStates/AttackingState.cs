@@ -11,7 +11,8 @@ public class AttackingState(GameEntity game) : IGameState {
 
     public void StartState() { }
 
-    public void EndTurn() {
+    public void EndTurn(EndTurnRequest req) {
+        if(req.PlayerId != plr_attacking) return;
         game.MakeCounterableEffect(
             plr_attacking,
             null,

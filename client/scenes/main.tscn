@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://ynwxqahsy1g0"]
+[gd_scene load_steps=3 format=3 uid="uid://ynwxqahsy1g0"]
 
 [ext_resource type="Script" uid="uid://nehrbqh5jqav" path="res://scripts/ButtonController.cs" id="1_o5qli"]
+[ext_resource type="Texture2D" uid="uid://cqjodd16hk5ee" path="res://resources/example_board.png" id="2_0wfyh"]
 
 [node name="Main" type="Node2D"]
 
@@ -13,18 +14,50 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="EndTurn" type="Button" parent="UI"]
-offset_left = 1692.0
-offset_top = 619.0
-offset_right = 1819.0
-offset_bottom = 659.0
+offset_left = 1363.0
+offset_top = 823.0
+offset_right = 1530.0
+offset_bottom = 891.0
+theme_override_font_sizes/font_size = 36
 text = "end turn"
 
 [node name="JoinQueue" type="Button" parent="UI"]
-offset_left = 1459.0
-offset_top = 630.0
-offset_right = 1586.0
-offset_bottom = 670.0
+offset_left = 1691.0
+offset_top = 682.0
+offset_right = 1818.0
+offset_bottom = 722.0
 text = "join queue"
+
+[node name="PlayerId" type="Label" parent="UI"]
+offset_left = 1696.0
+offset_top = 570.0
+offset_right = 1736.0
+offset_bottom = 593.0
+text = "plr id:"
+
+[node name="Mana" type="Label" parent="UI"]
+offset_left = 479.0
+offset_top = 820.0
+offset_right = 524.0
+offset_bottom = 843.0
+text = "0/0"
+
+[node name="EnemyCards" type="Label" parent="UI"]
+offset_left = 1696.0
+offset_top = 542.0
+offset_right = 1741.0
+offset_bottom = 565.0
+text = "enemy cards:"
 
 [node name="ButtonController" type="Node" parent="."]
 script = ExtResource("1_o5qli")
+
+[node name="Screenshot20260119021919" type="Sprite2D" parent="."]
+position = Vector2(981, 424.5)
+scale = Vector2(1, 0.007882863)
+texture = ExtResource("2_0wfyh")
+
+[node name="reference" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(981, 460)
+texture = ExtResource("2_0wfyh")

@@ -35,3 +35,7 @@ public class TurnUpdater(int plr_id) : ClientUpdater {
     [JsonPropertyName("turn")] public string Turn { get; set; } = "";
     [JsonPropertyName("plr_id")] public int Plr_Id { get; set; } = plr_id;
 }
+
+// public class EnemyCardUpdater(int card_count) : ClientUpdater {
+//     [JsonPropertyName("card_count")] public int Card_Count { get; set; } = card_count;
+// }

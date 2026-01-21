@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://cesbfxio1ocm0"]
+[gd_scene load_steps=5 format=3 uid="uid://cesbfxio1ocm0"]
 
 [ext_resource type="Script" uid="uid://bogqeudhe55ot" path="res://scripts/game/BoardCard.cs" id="1_7tuvu"]
 [ext_resource type="Texture2D" uid="uid://bnphptrewitsn" path="res://resources/images/board_card.svg" id="2_7tuvu"]
 [ext_resource type="FontFile" uid="uid://c0xrbu1g0qlho" path="res://resources/fonts/Mirdane-Regular.otf" id="3_pagb4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7tuvu"]
+size = Vector2(72, 105.5)
 
 [node name="BoardCard" type="Node2D"]
 script = ExtResource("1_7tuvu")
@@ -69,3 +72,9 @@ scroll_active = false
 autowrap_mode = 0
 horizontal_alignment = 1
 text_direction = 1
+
+[node name="HoverArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HoverArea"]
+position = Vector2(48, 58.75)
+shape = SubResource("RectangleShape2D_7tuvu")

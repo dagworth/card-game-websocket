@@ -19,8 +19,7 @@ config/features=PackedStringArray("4.5", "C#", "Forward Plus")
 ClientHandler="*res://scripts/ClientHandler.cs"
 MessageHandler="*res://scripts/MessageHandler.cs"
 DataLoader="*res://scripts/DataLoader.cs"
-HandCardUpdater="*res://scripts/HandCardUpdater.cs"
-BoardCardUpdater="*res://scripts/BoardCardUpdater.cs"
+UiController="*res://scripts/UIController.cs"
 
 [display]
 

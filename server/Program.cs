@@ -19,7 +19,7 @@ public static class Program {
             ws.OnClose = () => ServerHandler.OnClose(ws);
         });
 
-        //Test().Wait();
+        Test().Wait();
 
         while (true) {
             string? input = Console.ReadLine();

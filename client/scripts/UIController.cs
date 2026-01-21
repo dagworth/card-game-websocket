@@ -33,8 +33,7 @@ public partial class UIController : Node2D {
 	private static HandCard drag_card;
 	private static HandCard preview_card;
 
-	public static void addHandCard(int card_id) {
-		CardEntityDTO card = CardHandler.GetCard(card_id);
+	public static void addHandCard(CardEntityDTO card) {
 		PackedScene loaded_card = ResourceLoader.Load<PackedScene>(base_hand_card);
 		HandCard clone = loaded_card.Instantiate() as HandCard;
 		
@@ -47,8 +46,7 @@ public partial class UIController : Node2D {
 		updateCardPositions();
 	}
 
-    public static void addBoardCard(int card_id) {
-		CardEntityDTO card = CardHandler.GetCard(card_id);
+    public static void addBoardCard(CardEntityDTO card) {
 		PackedScene loaded_card = ResourceLoader.Load<PackedScene>(base_board_card);
 		BoardCard clone = loaded_card.Instantiate() as BoardCard;
 		
@@ -58,17 +56,6 @@ public partial class UIController : Node2D {
  
 		clone.GetNode<Area2D>("HoverArea").MouseEntered += () => onHoverEnter(clone);
 		clone.GetNode<Area2D>("HoverArea").MouseExited += () => onHoverExit(clone);
-		updateCardPositions();
-	}
-
-	public static void removeHandCard(int card_id) {
-		for (int i = hand_cards.Count - 1; i >= 0; i--) {
-			if (hand_cards[i].card_entity.Id == card_id) {
-				hand_cards[i].QueueFree();
-				hand_cards.RemoveAt(i);
-				break;
-			}
-		}
 		updateCardPositions();
 	}
 
@@ -94,50 +81,70 @@ public partial class UIController : Node2D {
 		}
 	}
 
+	public static void removeHandCard(int card_id) {
+		for (int i = hand_cards.Count - 1; i >= 0; i--) {
+			if (hand_cards[i].card_entity.Id == card_id) {
+				hand_cards[i].QueueFree();
+				hand_cards.RemoveAt(i);
+				break;
+			}
+		}
+		updateCardPositions();
+	}
+
+	public static void removeBoardCard(int card_id) {
+		for (int i = your_board_cards.Count - 1; i >= 0; i--) {
+			if (your_board_cards[i].card_entity.Id == card_id) {
+				your_board_cards[i].QueueFree();
+				your_board_cards.RemoveAt(i);
+				break;
+			}
+		}
+
+		for (int i = enemy_board_cards.Count - 1; i >= 0; i--) {
+			if (enemy_board_cards[i].card_entity.Id == card_id) {
+				enemy_board_cards[i].QueueFree();
+				enemy_board_cards.RemoveAt(i);
+				break;
+			}
+		}
+		updateCardPositions();
+	}
+
 	public override void _Input(InputEvent @event) {
 		if (@event is InputEventMouseButton click && click.ButtonIndex == MouseButton.Left) {
 			if (click.IsEcho()) return;
 
 			if (click.IsPressed()) {
 				if (hover_card is HandCard) {
-					if (hover_card != null) {
-						drag_card = (hover_card as HandCard).Duplicate() as HandCard;
-						hand.GetParent().AddChild(drag_card);
+					drag_card = (hover_card as HandCard).Duplicate() as HandCard;
+					hand.GetParent().AddChild(drag_card);
 
-						dragging = true;
-						(hover_card as Control).Visible = false;
+					dragging = true;
+					(hover_card as Control).Visible = false;
 
-						Tween tween = CreateTween();
-						tween.TweenProperty(drag_card, "rotation_degrees", 0f, 0.2f).SetTrans(Tween.TransitionType.Linear);
+					if(preview_card != null) {
+						hand.RemoveChild(preview_card);
+						preview_card = null;
 					}
+
+					Tween tween = CreateTween();
+					tween.TweenProperty(drag_card, "rotation_degrees", 0f, 0.2f).SetTrans(Tween.TransitionType.Linear); //change angle to 0
+				} else if (hover_card is BoardCard) {
+					MessageHandler.ToggleAttack(hover_card.card_entity.Id);
 				}
 			} else {
+				//unclick
 				if (dragging) {
+					//place the card
 					if (click.Position.Y < place_minion_threshold) {
 						int card_id = hover_card.card_entity.Id;
-						GD.Print($"try to place {card_id}");
 						MessageHandler.PlayCard(card_id);
-						addBoardCard(card_id);
-						hand_cards.Remove(hover_card as HandCard);
-						(hover_card as HandCard).QueueFree();
-						if(preview_card != null) {
-							hand.RemoveChild(preview_card);
-							preview_card = null;
-						}
-					} else {
-						(hover_card as HandCard).Visible = true;
 					}
 					(hover_card as HandCard).Visible = true;
 					dragging = false;
 					hover_card = null;
 					drag_card.QueueFree();
-				}
-			}
-		} else if (@event is InputEventMouseMotion move) {
-			if (drag_card != null && !dragging) {
-				if (move.Position.Y < place_minion_threshold) {
-					drag_card = null;
-					updateCardPositions();
 				}
 			}
 		}

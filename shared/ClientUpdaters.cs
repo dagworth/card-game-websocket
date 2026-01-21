@@ -12,14 +12,14 @@ using shared.DTOs;
 public class ClientUpdater { }
 
 public class CardLocationUpdater(int card_id, CardLocations now, CardLocations prev) : ClientUpdater {
-    [JsonPropertyName("card_id")] public int Card_Id { get; set; } = card_id;
+    [JsonPropertyName("card_id")] public int CardId { get; set; } = card_id;
     [JsonPropertyName("now")] public CardLocations Now { get; set; } = now;
     [JsonPropertyName("prev")] public CardLocations Prev { get; set; } = prev;
 }
 
 public class StatUpdater(int card_id, BuffDTO buff, bool inverse) : ClientUpdater {
     [JsonPropertyName("buff")] public BuffDTO Buff { get; set; } = buff;
-    [JsonPropertyName("card_id")] public int Card_Id { get; set; } = card_id;
+    [JsonPropertyName("card_id")] public int CardId { get; set; } = card_id;
     [JsonPropertyName("inverse")] public bool Inverse { get; set; } = inverse;
 }
 
@@ -33,7 +33,7 @@ public class DamageUpdater(int damage) : ClientUpdater {
 
 public class TurnUpdater(int plr_id) : ClientUpdater {
     [JsonPropertyName("turn")] public string Turn { get; set; } = "";
-    [JsonPropertyName("plr_id")] public int Plr_Id { get; set; } = plr_id;
+    [JsonPropertyName("plr_id")] public int PlrId { get; set; } = plr_id;
 }
 
 // public class EnemyCardUpdater(int card_count) : ClientUpdater {

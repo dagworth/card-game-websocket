@@ -40,8 +40,10 @@ public class PlayerEntity(GameEntity game, int id) : IDamageable {
         ChangeMana(-card.Stats.Cost);
         Hand.Remove(card);
         if (card.Type == CardTypes.Unit) {
+            game.updater.ChangeCardLocation(CardLocations.Board, CardLocations.Hand, card_id);
             Game.events.SpawnCard(card_id);
         } else {
+            game.updater.ChangeCardLocation(CardLocations.Void, CardLocations.Hand, card_id);
             card.SetLocation(CardLocations.Void);
             Void.Add(card);
         }

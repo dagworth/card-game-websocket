@@ -87,7 +87,6 @@ public class GameEntity {
         CardEntity card = cards.GetCard(data.CardId);
 
         if (Game_State.CanPlayCard(card)) {
-            updater.ChangeCardLocation(CardLocations.Board, CardLocations.Hand, data.CardId);
             plr.PlayCard(data.CardId);
             updater.UpdateClients("played card");
         }

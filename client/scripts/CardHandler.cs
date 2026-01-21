@@ -8,7 +8,7 @@ public partial class CardHandler : Node {
     public static void AddCard(CardEntityDTO card) {
         GD.Print("added " + card.Id);
         cards[card.Id] = card;
-        UIController.addHandCard(card.Id);
+        UIController.addHandCard(card);
     }
 
     public static CardEntityDTO GetCard(int id) {

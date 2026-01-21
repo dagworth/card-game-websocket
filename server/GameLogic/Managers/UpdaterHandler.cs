@@ -58,8 +58,8 @@ public class UpdaterHandler(GameEntity game) {
         return false;
     }
 
-    public void ChangeCardLocation(CardLocations new_loc, CardLocations start, int card_id, int anim = 0) {
-        CardLocationUpdater clone = new(card_id, new_loc, start);
+    public void ChangeCardLocation(CardLocations now, CardLocations prev, int card_id, int anim = 0) {
+        CardLocationUpdater clone = new(card_id, now, prev);
         events[clone] = -1;
     }
 

@@ -11,10 +11,10 @@ using shared.DTOs;
 
 public class ClientUpdater { }
 
-public class CardLocationUpdater(int card_id, CardLocations new_loc, CardLocations starting_loc) : ClientUpdater {
+public class CardLocationUpdater(int card_id, CardLocations now, CardLocations prev) : ClientUpdater {
     [JsonPropertyName("card_id")] public int Card_Id { get; set; } = card_id;
-    [JsonPropertyName("now")] public CardLocations Now { get; set; } = new_loc;
-    [JsonPropertyName("prev")] public CardLocations Prev { get; set; } = starting_loc;
+    [JsonPropertyName("now")] public CardLocations Now { get; set; } = now;
+    [JsonPropertyName("prev")] public CardLocations Prev { get; set; } = prev;
 }
 
 public class StatUpdater(int card_id, BuffDTO buff, bool inverse) : ClientUpdater {

@@ -32,7 +32,6 @@ public partial class ClientHandler : Node {
 	public void GotMessage(string message) {
 		if (plr_id == -1) {
 			plr_id = MessageHandler.ExecuteMessage(message);
-			GD.Print($"this client's id: {plr_id}");
 			if(state == WebSocketPeer.State.Open) {
 				MessageHandler.SendJoinQueue();
 				GetTree().Root.GetNode<ButtonController>("Main/ButtonController").updateid();

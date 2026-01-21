@@ -20,6 +20,7 @@ ClientHandler="*res://scripts/ClientHandler.cs"
 MessageHandler="*res://scripts/MessageHandler.cs"
 DataLoader="*res://scripts/DataLoader.cs"
 HandCardUpdater="*res://scripts/HandCardUpdater.cs"
+BoardCardUpdater="*res://scripts/BoardCardUpdater.cs"
 
 [display]
 

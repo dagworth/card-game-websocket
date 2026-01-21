@@ -9,8 +9,9 @@ using System.Threading;
 
 public partial class MessageHandler : Node {
     //returns int if its the id and only then
+    private static Label logs;
     public static int ExecuteMessage(string message) {
-        GD.Print(message);
+        logs.Text += $"\n{message}";
         ServerEvent data = JsonSerializer.Deserialize<ServerEvent>(message);
         if (data is InformId a) {
             return a.PlayerId;
@@ -18,16 +19,17 @@ public partial class MessageHandler : Node {
 
         if (data is TargetOptions b) {
             List<int> targets = b.Targets; //just for reference
+            return 0;
         }
 
         if (data is GameUpdate c) {
+
             foreach (ClientUpdater updater in c.Events) {
-                if(updater is CardLocationUpdater cardlocaation) {
+                if(updater is CardLocationUpdater cardlocation) {
                     
                 } else if (updater is StatUpdater stat) {
 
                 } else if (updater is NewCardUpdater newcard) {
-                    GD.Print($"got card {newcard.card.Name}");
                     CardHandler.AddCard(newcard.card);
                 } else if (updater is DamageUpdater damage) {
 
@@ -35,12 +37,17 @@ public partial class MessageHandler : Node {
 
                 }
             }
+            return 0;
         }
 
 
 
-
+        GD.Print($"updater not handled {message}");
         return 0; //never should get here
+    }
+
+    public override void _Ready() {
+        logs = GetTree().Root.GetNode<Label>("Main/UI/logs");
     }
 
     public static void SendEndTurn() {
@@ -52,6 +59,13 @@ public partial class MessageHandler : Node {
     public static void SendJoinQueue() {
         JoinQueueRequest clone = new();
         clone.PlayerId = ClientHandler.plr_id;
+        ClientHandler.SendMessage(JsonSerializer.Serialize<ClientRequest>(clone));
+    }
+
+    public static void PlayCard(int card_id) {
+        PlayCardRequest clone = new();
+        clone.PlayerId = ClientHandler.plr_id;
+        clone.CardId = card_id;
         ClientHandler.SendMessage(JsonSerializer.Serialize<ClientRequest>(clone));
     }
 }

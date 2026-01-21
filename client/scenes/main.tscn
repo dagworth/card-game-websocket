@@ -49,6 +49,24 @@ offset_right = 1741.0
 offset_bottom = 565.0
 text = "enemy cards:"
 
+[node name="logs" type="Label" parent="UI"]
+offset_left = 71.0
+offset_top = 149.0
+offset_right = 294.0
+offset_bottom = 283.0
+text = "logs:"
+
+[node name="TargetChoice" type="HBoxContainer" parent="UI"]
+offset_left = 312.0
+offset_top = 63.0
+offset_right = 620.0
+offset_bottom = 103.0
+alignment = 1
+
+[node name="Choice" type="Button" parent="UI/TargetChoice"]
+layout_mode = 2
+text = "dvsvdsdv"
+
 [node name="ButtonController" type="Node" parent="."]
 script = ExtResource("1_o5qli")
 
@@ -61,3 +79,5 @@ texture = ExtResource("2_0wfyh")
 visible = false
 position = Vector2(981, 460)
 texture = ExtResource("2_0wfyh")
+
+[node name="Board" type="Node" parent="."]

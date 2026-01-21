@@ -7,7 +7,7 @@ public partial class CardHandler : Node {
 
     public static void AddCard(CardEntityDTO card) {
         cards[card.Id] = card;
-        HandCardUpdater.addCard(card.Id);
+        HandCardUpdater.addHandCard(card.Id);
     }
 
     public static CardEntityDTO GetCard(int id) {

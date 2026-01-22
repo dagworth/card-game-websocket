@@ -41,7 +41,7 @@ public class PriorityState : IGameState {
     public bool CanPlayCard(CardEntity card) {
         PlayerEntity plr = game.plrs.GetPlayer(plr_priority);
 
-        if (plr_priority != card.Plr_Id) return false;
+        if (plr_priority != card.PlrId) return false;
         if (plr.Hand.Contains(card)) return false;
         if (card.Type != CardTypes.FastSpell) return false;
         if (card.Stats.Cost > plr.Mana) return false;

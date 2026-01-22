@@ -30,7 +30,7 @@ public class RegularState(GameEntity game, bool attacked) : IGameState {
     public bool CanPlayCard(CardEntity card) {
         PlayerEntity plr = game.plrs.GetPlayer(game.Plr_Turn);
         if (!plr.Hand.Contains(card)) return false;
-        if (game.Plr_Turn != card.Plr_Id) return false;
+        if (game.Plr_Turn != card.PlrId) return false;
         if (card.Stats.Cost > plr.Mana) return false;
 
         return true;

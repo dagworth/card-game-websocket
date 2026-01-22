@@ -11,8 +11,8 @@ using shared.DTOs;
 
 public class ClientUpdater { }
 
-public class CardLocationUpdater(int card_id, CardLocations now, CardLocations prev) : ClientUpdater {
-    [JsonPropertyName("card_id")] public int CardId { get; set; } = card_id;
+public class CardLocationUpdater(int cardid, CardLocations now, CardLocations prev) : ClientUpdater {
+    [JsonPropertyName("card_id")] public int CardId { get; set; } = cardid;
     [JsonPropertyName("now")] public CardLocations Now { get; set; } = now;
     [JsonPropertyName("prev")] public CardLocations Prev { get; set; } = prev;
 }

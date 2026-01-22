@@ -25,7 +25,7 @@ public static class PrintState {
 
         Console.Write($"\n\n{game.plrs.Plr0.Id} hand: ");
         foreach (CardEntity card in game.plrs.Plr0.Hand) {
-            Console.Write($"({card.Name} {card.Stats.Attack}/{card.Stats.Health} id: {card.Id} plr id: {card.Plr_Id}) ");
+            Console.Write($"({card.Name} {card.Stats.Attack}/{card.Stats.Health} id: {card.Id} plr id: {card.PlrId}) ");
         }
 
         Console.Write($"\n{game.plrs.Plr0.Id} board: ");
@@ -40,7 +40,7 @@ public static class PrintState {
 
         Console.Write($"\n\n{game.plrs.Plr1.Id} hand: ");
         foreach (CardEntity card in game.plrs.Plr1.Hand) {
-            Console.Write($"({card.Name} {card.Stats.Attack}/{card.Stats.Health} id: {card.Id} plr id: {card.Plr_Id}) ");
+            Console.Write($"({card.Name} {card.Stats.Attack}/{card.Stats.Health} id: {card.Id} plr id: {card.PlrId}) ");
         }
 
         Console.Write($"\n{game.plrs.Plr1.Id} board: ");

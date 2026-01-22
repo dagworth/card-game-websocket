@@ -6,7 +6,7 @@ public partial class CardHandler : Node {
     public static Dictionary<int, CardEntityDTO> cards = [];
 
     public static void AddCard(CardEntityDTO card) {
-        GD.Print("added " + card.Id);
+        GD.Print(ClientHandler.plr_id + " added " + card.Id);
         cards[card.Id] = card;
         UIController.addHandCard(card);
     }

@@ -17,7 +17,7 @@ public class UpdaterHandler(GameEntity game) {
         StatUpdater clone = new(card_id, buffdto, DupeBuff(buff));
         CardEntity card = buff.card!;
         if (card.Location == CardLocations.Hand) {
-            events[clone] = card.Plr_Id; //only person who has in hand can see change
+            events[clone] = card.PlrId; //only person who has in hand can see change
         } else if (card.Location == CardLocations.Board || card.Location == CardLocations.Void) {
             events[clone] = -1; //both see board and void
         } else if (card.Location == CardLocations.Deck) {
@@ -32,11 +32,15 @@ public class UpdaterHandler(GameEntity game) {
 
     //this updater is different depending on where the change happens and who can see
     //plr_id is the player that needs this card information
-    public void NewCard(CardEntity card, int anim = 0) {
+    public void NewCard(CardEntity card, bool other = false, int anim = 0) {
         CardStatsDTO cardstatsdto = new(card.Stats.Cost, card.Stats.Health, card.Stats.Damaged, card.Stats.Attack, card.Stats.passives);
-        CardEntityDTO cardentitydto = new(card.Id, card.Type, card.Location, card.Name,  cardstatsdto);
+        CardEntityDTO cardentitydto = new(card.Id, card.PlrId, card.Type, card.Location, card.Name,  cardstatsdto);
         NewCardUpdater clone = new(cardentitydto);
-        events[clone] = card.Plr_Id;
+        if (other) {
+            events[clone] = game.plrs.GetOtherPlayer(card.PlrId).Id;
+        } else {
+            events[clone] = card.PlrId;
+        }
     }
 
     // public void EnemyHand(int plr_id, int change) {

@@ -23,7 +23,6 @@ public partial class MessageHandler : Node {
 		}
 
 		if (data is GameUpdate c) {
-
 			foreach (ClientUpdater updater in c.Events) {
 				if(updater is CardLocationUpdater cardlocation) {
 					if(cardlocation.Prev == CardLocations.Hand) {
@@ -35,10 +34,11 @@ public partial class MessageHandler : Node {
 					if(cardlocation.Now == CardLocations.Hand) {
 						UIController.addHandCard(CardHandler.GetCard(cardlocation.CardId));
 					} else if (cardlocation.Now == CardLocations.Board) {
+						GD.Print(ClientHandler.plr_id + " " + cardlocation.CardId);
 						UIController.addBoardCard(CardHandler.GetCard(cardlocation.CardId));
 					}
 				} else if (updater is StatUpdater stat) {
-					CardHandler.GetCard(stat.CardId);
+					//CardHandler.GetCard(stat.CardId);
 				} else if (updater is NewCardUpdater newcard) {
 					CardHandler.AddCard(newcard.card);
 				} else if (updater is DamageUpdater damage) {

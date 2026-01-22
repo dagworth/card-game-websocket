@@ -39,6 +39,7 @@ public class PlayerEntity(GameEntity game, int id) : IDamageable {
         Console.WriteLine($"plr {Id} played {card.Name}");
         ChangeMana(-card.Stats.Cost);
         Hand.Remove(card);
+        game.updater.NewCard(card,true);
         if (card.Type == CardTypes.Unit) {
             game.updater.ChangeCardLocation(CardLocations.Board, CardLocations.Hand, card_id);
             Game.events.SpawnCard(card_id);

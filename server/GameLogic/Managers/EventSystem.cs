@@ -14,7 +14,7 @@ public class EventSystem(GameEntity game) {
 
     public void SpawnCard(int card_id) {
         CardEntity card = game.cards.GetCard(card_id);
-        PlayerEntity plr = game.plrs.GetPlayer(card.Plr_Id);
+        PlayerEntity plr = game.plrs.GetPlayer(card.PlrId);
 
         card.SetLocation(CardLocations.Board);
         plr.Board.Add(card);
@@ -25,7 +25,7 @@ public class EventSystem(GameEntity game) {
 
     public void KillCard(int card_id) {
         CardEntity card = game.cards.GetCard(card_id);
-        PlayerEntity plr = game.plrs.GetPlayer(card.Plr_Id);
+        PlayerEntity plr = game.plrs.GetPlayer(card.PlrId);
 
         plr.Board.Remove(card);
 
@@ -44,7 +44,7 @@ public class EventSystem(GameEntity game) {
 
     public void SendToVoid(int card_id) {
         CardEntity card = game.cards.GetCard(card_id);
-        PlayerEntity plr = game.plrs.GetPlayer(card.Plr_Id);
+        PlayerEntity plr = game.plrs.GetPlayer(card.PlrId);
 
         game.updater.ChangeCardLocation(CardLocations.Void, card.Location, card_id, 0);
 
@@ -58,7 +58,7 @@ public class EventSystem(GameEntity game) {
 
     public CardEntity BringOutVoid(int card_id) {
         CardEntity card = game.cards.GetCard(card_id);
-        PlayerEntity plr = game.plrs.GetPlayer(card.Plr_Id);
+        PlayerEntity plr = game.plrs.GetPlayer(card.PlrId);
 
         game.updater.ChangeCardLocation(CardLocations.Board, CardLocations.Void, card_id, 0);
 

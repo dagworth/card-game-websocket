@@ -52,7 +52,11 @@ public partial class UIController : Node2D {
 		
         clone.SetUp(card); //set up the card
 		board.AddChild(clone); //put it in the world
-	    your_board_cards.Add(clone); //put it in the list
+		if(card.PlrId == ClientHandler.plr_id) {
+			your_board_cards.Add(clone);
+		} else {
+			enemy_board_cards.Add(clone);
+		}
  
 		clone.GetNode<Area2D>("HoverArea").MouseEntered += () => onHoverEnter(clone);
 		clone.GetNode<Area2D>("HoverArea").MouseExited += () => onHoverExit(clone);

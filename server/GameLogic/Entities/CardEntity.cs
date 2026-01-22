@@ -9,7 +9,7 @@ public class CardEntity : IDamageable {
     private readonly GameEntity Game;
 
     public int Id;
-    public readonly int Plr_Id; //temp readonly
+    public readonly int PlrId; //temp readonly
 
     private readonly List<Buff> buffs = [];
 
@@ -33,7 +33,7 @@ public class CardEntity : IDamageable {
     public CardEntity(GameEntity game, int plr_id, int card_id, string name, CardDataDTO data) {
         Game = game;
         Id = card_id;
-        Plr_Id = plr_id;
+        PlrId = plr_id;
         Type = data.Type;
         Location = CardLocations.Deck;
         Name = name;

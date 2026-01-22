@@ -33,7 +33,7 @@ public class DefendingState : IGameState {
 
     public bool CanPlayCard(CardEntity card) {
         PlayerEntity plr = game.plrs.GetPlayer(plr_defending);
-        if (plr_defending != card.Plr_Id) return false;
+        if (plr_defending != card.PlrId) return false;
         if (defending_units != 0) return false;
         if (card.Type != CardTypes.FastSpell) return false;
         if (card.Stats.Cost > plr.Mana) return false;
@@ -98,7 +98,7 @@ public class DefendingState : IGameState {
         int atk = card.Stats.Attack;
 
         if (victims.Count == 0) {
-            game.plrs.GetOtherPlayer(card.Plr_Id).ChangeHealth(-atk);
+            game.plrs.GetOtherPlayer(card.PlrId).ChangeHealth(-atk);
             return;
         }
 

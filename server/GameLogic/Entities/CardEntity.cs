@@ -125,6 +125,7 @@ public class CardEntity : IDamageable {
 
     //returns how much attack is left for future overwhelm
     public int AttackCard(CardEntity victim, int atk) {
+        Console.WriteLine($"{Name} attacked {victim.Name}");
         Game.events.InvokeOnAttack(Id); //idk if this will work but i dont think it matters for now
         TakeDamage(victim.Stats.Attack);
 

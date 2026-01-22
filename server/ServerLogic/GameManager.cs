@@ -19,7 +19,8 @@ public static class GameManager {
     }
 
     public static GameEntity GetGame(int game_id) {
-        return games[game_id];
+        return games.Values.Last();
+        //return games[game_id];
     }
 
     public static PlayerEntity GetPlayer(int plr_id) {

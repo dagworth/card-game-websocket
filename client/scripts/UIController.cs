@@ -11,6 +11,8 @@ public partial class UIController : Node2D {
 	private static List<BoardCard> enemy_board_cards = [];
 	private static List<BoardCard> your_board_cards = [];
 
+	private static int units_attacking = 0;
+
 	private const int hand_x_offset = 900;
 	private const int hand_y_offset = 925;
 	private const int hand_spacing = 160;
@@ -135,7 +137,18 @@ public partial class UIController : Node2D {
 					Tween tween = CreateTween();
 					tween.TweenProperty(drag_card, "rotation_degrees", 0f, 0.2f).SetTrans(Tween.TransitionType.Linear); //change angle to 0
 				} else if (hover_card is BoardCard) {
+					if((hover_card as BoardCard).card_entity.PlrId != ClientHandler.plr_id) return; //check if ur the right plr
+
 					MessageHandler.ToggleAttack(hover_card.card_entity.Id);
+
+					bool attacking = (hover_card as BoardCard).ToggleAttack();
+					units_attacking += attacking ? 1 : -1;
+
+					if(units_attacking > 0) {
+						GetTree().Root.GetNode<Button>("Main/UI/EndTurn").Text = "Attack";
+					} else {
+						GetTree().Root.GetNode<Button>("Main/UI/EndTurn").Text = "End Turn";
+					}
 				}
 			} else {
 				//unclick

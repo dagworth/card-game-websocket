@@ -12,7 +12,7 @@ public class DefendingState : IGameState {
 
     public DefendingState(GameEntity game, Dictionary<int, HashSet<int>> attacking_units) {
         this.game = game;
-        plr_defending = game.Plr_Turn;
+        plr_defending = game.plrs.GetOtherPlayer(game.Plr_Turn).Id;
         this.attacking_units = attacking_units;
 
         PlayerEntity plr = game.plrs.GetPlayer(plr_defending);
@@ -83,6 +83,7 @@ public class DefendingState : IGameState {
     }
 
     public void HandleAttackPhase() {
+        //make cards attack players too
         game.MakeCounterableEffect(
             plr_defending,
             null,

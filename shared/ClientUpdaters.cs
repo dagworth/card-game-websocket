@@ -17,9 +17,9 @@ public class CardLocationUpdater(int cardid, CardLocations now, CardLocations pr
     [JsonPropertyName("prev")] public CardLocations Prev { get; set; } = prev;
 }
 
-public class StatUpdater(int card_id, BuffDTO buff, bool inverse) : ClientUpdater {
+public class StatUpdater(int cardid, BuffDTO buff, bool inverse) : ClientUpdater {
     [JsonPropertyName("buff")] public BuffDTO Buff { get; set; } = buff;
-    [JsonPropertyName("card_id")] public int CardId { get; set; } = card_id;
+    [JsonPropertyName("card_id")] public int CardId { get; set; } = cardid;
     [JsonPropertyName("inverse")] public bool Inverse { get; set; } = inverse;
 }
 
@@ -31,9 +31,9 @@ public class DamageUpdater(int damage) : ClientUpdater {
     [JsonPropertyName("damage")] public int Damage { get; set; } = damage;
 }
 
-public class TurnUpdater(int plr_id) : ClientUpdater {
+public class TurnUpdater(int plrid) : ClientUpdater {
     [JsonPropertyName("turn")] public string Turn { get; set; } = "";
-    [JsonPropertyName("plr_id")] public int PlrId { get; set; } = plr_id;
+    [JsonPropertyName("plr_id")] public int PlrId { get; set; } = plrid;
 }
 
 // public class EnemyCardUpdater(int card_count) : ClientUpdater {

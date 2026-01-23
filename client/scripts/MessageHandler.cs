@@ -45,6 +45,8 @@ public partial class MessageHandler : Node {
 
 				} else if (updater is TurnUpdater turn) {
 
+				} else if (updater is ToggleAttackUpdater togatk) {
+					CardHandler.GetCard(togatk.CardId).board_card.ToggleAttack();
 				}
 			}
 			return 0;

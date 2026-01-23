@@ -1,29 +1,22 @@
 using Godot;
 using shared.DTOs;
 
-public partial class BoardCard : Node2D, Hoverable {
+public partial class BoardCard : Node2D, IHoverable {
 	private const string preview_card = "res://scenes/hand_card.tscn";
 
-	public CardEntityDTO card_entity { get; set; }
-	public HandCard hover_card { get; set; }
+	public CardEntity card_entity { get; set; }
 
 	private bool attacking = false;
 	private Sprite2D sprite;
 
-	public void SetUp(CardEntityDTO card) {
-		sprite = GetNode<Sprite2D>("Sprite");
-		card_entity = card;
-		
-		GetNode<RichTextLabel>("NameLabel").Text = card.Name;
-		GetNode<RichTextLabel>("AttackLabel").Text = card.Stats.Attack.ToString();
-		GetNode<RichTextLabel>("HealthLabel").Text = card.Stats.Health.ToString();
+    public override void _Ready() {
+        sprite = GetNode<Sprite2D>("Sprite");
+    }
 
-		PackedScene loaded_card = ResourceLoader.Load<PackedScene>(preview_card);
-		HandCard clone = loaded_card.Instantiate() as HandCard;
-		clone.SetUp(card);
-		clone.Position = new Vector2(1000,300);
-		clone.Scale = new Vector2(2f,2f);
-		hover_card = clone;
+	public void UpdateStats(CardEntity card) {
+		GetNode<RichTextLabel>("NameLabel").Text = card.name;
+		GetNode<RichTextLabel>("AttackLabel").Text = card.stats.Attack.ToString();
+		GetNode<RichTextLabel>("HealthLabel").Text = card.stats.Health.ToString();
 	}
 
 	public bool ToggleAttack() {

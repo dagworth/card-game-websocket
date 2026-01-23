@@ -26,57 +26,49 @@ public partial class UIController : Node2D {
 
 	private const int place_minion_threshold = 700;
 
-	private const string base_hand_card = "res://scenes/hand_card.tscn";
-    private const string base_board_card = "res://scenes/board_card.tscn";
-
-
 	private static bool dragging;
-	private static Hoverable hover_card;
+	private static IHoverable hover_card;
 	private static HandCard drag_card;
 	private static HandCard preview_card;
 
-	public static void addHandCard(CardEntityDTO card) {
-		PackedScene loaded_card = ResourceLoader.Load<PackedScene>(base_hand_card);
-		HandCard clone = loaded_card.Instantiate() as HandCard;
-		
-        clone.SetUp(card); //set up the card
-		hand.AddChild(clone); //put it in the world
-		hand_cards.Add(clone); //put it in the list
+	public static void addHandCard(CardEntity entity) {
+		HandCard card = entity.hand_card;
+
+		hand.AddChild(card); //put it in the world
+		hand_cards.Add(card); //put it in the list
  
-		clone.MouseEntered += () => onHoverEnter(clone);
-		clone.MouseExited += () => onHoverExit(clone);
+		card.MouseEntered += () => onHoverEnter(card);
+		card.MouseExited += () => onHoverExit(card);
 		updateCardPositions();
 	}
 
-    public static void addBoardCard(CardEntityDTO card) {
-		PackedScene loaded_card = ResourceLoader.Load<PackedScene>(base_board_card);
-		BoardCard clone = loaded_card.Instantiate() as BoardCard;
-		
-        clone.SetUp(card); //set up the card
-		board.AddChild(clone); //put it in the world
-		if(card.PlrId == ClientHandler.plr_id) {
-			your_board_cards.Add(clone);
+    public static void addBoardCard(CardEntity entity) {
+		BoardCard card = entity.board_card;
+
+		board.AddChild(card); //put it in the world
+		if(entity.plr_id == ClientHandler.plr_id) {
+			your_board_cards.Add(card);
 		} else {
-			enemy_board_cards.Add(clone);
+			enemy_board_cards.Add(card);
 		}
  
-		clone.GetNode<Area2D>("HoverArea").MouseEntered += () => onHoverEnter(clone);
-		clone.GetNode<Area2D>("HoverArea").MouseExited += () => onHoverExit(clone);
+		card.GetNode<Area2D>("HoverArea").MouseEntered += () => onHoverEnter(card);
+		card.GetNode<Area2D>("HoverArea").MouseExited += () => onHoverExit(card);
 		updateCardPositions();
 	}
 
-	public static void onHoverEnter(Hoverable card) {
+	public static void onHoverEnter(IHoverable card) {
 		if (hover_card == null && !dragging) {
 			hover_card = card;
 			if(preview_card == null) {
-				preview_card = card.hover_card;
+				preview_card = card.card_entity.preview_card;
 				hand.AddChild(preview_card);
 			}
 			updateCardPositions();
 		}
 	}
 
-	public static void onHoverExit(Hoverable card) {
+	public static void onHoverExit(IHoverable card) {
 		if (hover_card == card && !dragging) {
 			hover_card = null;
 			if(preview_card != null) {
@@ -89,7 +81,7 @@ public partial class UIController : Node2D {
 
 	public static void removeHandCard(int card_id) {
 		for (int i = hand_cards.Count - 1; i >= 0; i--) {
-			if (hand_cards[i].card_entity.Id == card_id) {
+			if (hand_cards[i].card_entity.id == card_id) {
 				hand_cards[i].QueueFree();
 				hand_cards.RemoveAt(i);
 				break;
@@ -100,7 +92,7 @@ public partial class UIController : Node2D {
 
 	public static void removeBoardCard(int card_id) {
 		for (int i = your_board_cards.Count - 1; i >= 0; i--) {
-			if (your_board_cards[i].card_entity.Id == card_id) {
+			if (your_board_cards[i].card_entity.id == card_id) {
 				your_board_cards[i].QueueFree();
 				your_board_cards.RemoveAt(i);
 				break;
@@ -108,7 +100,7 @@ public partial class UIController : Node2D {
 		}
 
 		for (int i = enemy_board_cards.Count - 1; i >= 0; i--) {
-			if (enemy_board_cards[i].card_entity.Id == card_id) {
+			if (enemy_board_cards[i].card_entity.id == card_id) {
 				enemy_board_cards[i].QueueFree();
 				enemy_board_cards.RemoveAt(i);
 				break;
@@ -137,9 +129,9 @@ public partial class UIController : Node2D {
 					Tween tween = CreateTween();
 					tween.TweenProperty(drag_card, "rotation_degrees", 0f, 0.2f).SetTrans(Tween.TransitionType.Linear); //change angle to 0
 				} else if (hover_card is BoardCard) {
-					if((hover_card as BoardCard).card_entity.PlrId != ClientHandler.plr_id) return; //check if ur the right plr
+					if((hover_card as BoardCard).card_entity.plr_id != ClientHandler.plr_id) return; //check if ur the right plr
 
-					MessageHandler.ToggleAttack(hover_card.card_entity.Id);
+					MessageHandler.ToggleAttack(hover_card.card_entity.id);
 
 					bool attacking = (hover_card as BoardCard).ToggleAttack();
 					units_attacking += attacking ? 1 : -1;
@@ -155,7 +147,7 @@ public partial class UIController : Node2D {
 				if (dragging) {
 					//place the card
 					if (click.Position.Y < place_minion_threshold) {
-						int card_id = hover_card.card_entity.Id;
+						int card_id = hover_card.card_entity.id;
 						MessageHandler.PlayCard(card_id);
 					}
 					(hover_card as HandCard).Visible = true;

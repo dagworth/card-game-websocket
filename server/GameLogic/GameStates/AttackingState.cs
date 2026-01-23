@@ -34,12 +34,16 @@ public class AttackingState(GameEntity game) : IGameState {
         PlayerEntity plr = game.plrs.GetPlayer(plr_attacking);
         if (!plr.Board.Contains(game.cards.GetCard(data.UnitAttacking))) return;
 
+        game.updater.ToggleAttack(data.UnitAttacking, true);
+        game.updater.UpdateClients();
         attacking_units[data.UnitAttacking] = [];
     }
 
     public void CancelAttack(ToggleAttackRequest data) {
         if (plr_attacking != data.PlayerId) return;
 
+        game.updater.ToggleAttack(data.UnitAttacking, false);
+        game.updater.UpdateClients();
         attacking_units.Remove(data.UnitAttacking);
 
         if (attacking_units.Count == 0) {

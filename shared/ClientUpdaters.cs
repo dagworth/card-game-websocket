@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 using shared.DTOs;
 
 [JsonDerivedType(typeof(CardLocationUpdater), "locationchange")]
+[JsonDerivedType(typeof(ToggleAttackUpdater), "toggleattack")]
 [JsonDerivedType(typeof(StatUpdater), "statchange")]
 [JsonDerivedType(typeof(TurnUpdater), "turnchange")]
 [JsonDerivedType(typeof(DamageUpdater), "damagechange")]
@@ -25,6 +26,11 @@ public class StatUpdater(int cardid, BuffDTO buff, bool inverse) : ClientUpdater
 
 public class NewCardUpdater(CardEntityDTO card) : ClientUpdater {
     [JsonPropertyName("card")] public CardEntityDTO card { get; set; } = card;
+}
+
+public class ToggleAttackUpdater(int cardid, bool status) : ClientUpdater {
+    [JsonPropertyName("card_id")] public int CardId { get; set; } = cardid;
+    [JsonPropertyName("status")] public bool Status { get; set; } = status;
 }
 
 public class DamageUpdater(int damage) : ClientUpdater {

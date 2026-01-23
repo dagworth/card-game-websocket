@@ -32,11 +32,11 @@ public class UpdaterHandler(GameEntity game) {
 
     //this updater is different depending on where the change happens and who can see
     //plr_id is the player that needs this card information
-    public void NewCard(CardEntity card, bool other = false, int anim = 0) {
+    public void NewCard(CardEntity card, bool inform_other = false, int anim = 0) {
         CardStatsDTO cardstatsdto = new(card.Stats.Cost, card.Stats.Health, card.Stats.Damaged, card.Stats.Attack, card.Stats.passives);
         CardEntityDTO cardentitydto = new(card.Id, card.PlrId, card.Type, card.Location, card.Name,  cardstatsdto);
         NewCardUpdater clone = new(cardentitydto);
-        if (other) {
+        if (inform_other) {
             events[clone] = game.plrs.GetOtherPlayer(card.PlrId).Id;
         } else {
             events[clone] = card.PlrId;
@@ -53,6 +53,7 @@ public class UpdaterHandler(GameEntity game) {
         events[clone] = -1;
     }
 
+    //helper
     private bool DupeBuff(Buff buff) {
         if (applied_buffs.Contains(buff)) {
             applied_buffs.Remove(buff);
@@ -60,6 +61,11 @@ public class UpdaterHandler(GameEntity game) {
         }
         applied_buffs.Add(buff);
         return false;
+    }
+
+    public void ToggleAttack(int card_id, bool status) {
+        ToggleAttackUpdater clone = new(card_id, status);
+        events[clone] = -1;
     }
 
     public void ChangeCardLocation(CardLocations now, CardLocations prev, int card_id, int anim = 0) {

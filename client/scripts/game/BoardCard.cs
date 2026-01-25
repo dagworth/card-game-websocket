@@ -9,9 +9,9 @@ public partial class BoardCard : Node2D, IHoverable {
 	private bool attacking = false;
 	private Sprite2D sprite;
 
-    public override void _Ready() {
-        sprite = GetNode<Sprite2D>("Sprite");
-    }
+	public override void _Ready() {
+		sprite = GetNode<Sprite2D>("Sprite");
+	}
 
 	public void UpdateStats(CardEntity card) {
 		GetNode<RichTextLabel>("NameLabel").Text = card.name;

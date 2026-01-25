@@ -3,26 +3,16 @@ using shared.DTOs;
 using System;
 using System.Collections.Generic;
 
-public partial class UIController : Node2D {
+public partial class HandCardController : Node2D {
 	private static Control hand;
-    private static Node board;
 
 	private static List<HandCard> hand_cards = [];
-	private static List<BoardCard> enemy_board_cards = [];
-	private static List<BoardCard> your_board_cards = [];
-
-	private static int units_attacking = 0;
 
 	private const int hand_x_offset = 900;
 	private const int hand_y_offset = 925;
 	private const int hand_spacing = 160;
 	private const float hand_angle_increment = 2.5f;
 	private const int hand_y_spread_increment = 5;
-
-    private const int board_spacing = 160;
-	private const int board_x_offset = 400;
-	private const int board_y_offset = 500;
-	private const int board_y_enemy_offset = 300;
 
 	private const int place_minion_threshold = 700;
 
@@ -39,21 +29,6 @@ public partial class UIController : Node2D {
  
 		card.MouseEntered += () => onHoverEnter(card);
 		card.MouseExited += () => onHoverExit(card);
-		updateCardPositions();
-	}
-
-    public static void addBoardCard(CardEntity entity) {
-		BoardCard card = entity.board_card;
-
-		board.AddChild(card); //put it in the world
-		if(entity.plr_id == ClientHandler.plr_id) {
-			your_board_cards.Add(card);
-		} else {
-			enemy_board_cards.Add(card);
-		}
- 
-		card.GetNode<Area2D>("HoverArea").MouseEntered += () => onHoverEnter(card);
-		card.GetNode<Area2D>("HoverArea").MouseExited += () => onHoverExit(card);
 		updateCardPositions();
 	}
 
@@ -90,25 +65,6 @@ public partial class UIController : Node2D {
 		updateCardPositions();
 	}
 
-	public static void removeBoardCard(int card_id) {
-		for (int i = your_board_cards.Count - 1; i >= 0; i--) {
-			if (your_board_cards[i].card_entity.id == card_id) {
-				your_board_cards[i].QueueFree();
-				your_board_cards.RemoveAt(i);
-				break;
-			}
-		}
-
-		for (int i = enemy_board_cards.Count - 1; i >= 0; i--) {
-			if (enemy_board_cards[i].card_entity.id == card_id) {
-				enemy_board_cards[i].QueueFree();
-				enemy_board_cards.RemoveAt(i);
-				break;
-			}
-		}
-		updateCardPositions();
-	}
-
 	public override void _Input(InputEvent @event) {
 		if (@event is InputEventMouseButton click && click.ButtonIndex == MouseButton.Left) {
 			if (click.IsEcho()) return;
@@ -128,19 +84,6 @@ public partial class UIController : Node2D {
 
 					Tween tween = CreateTween();
 					tween.TweenProperty(drag_card, "rotation_degrees", 0f, 0.2f).SetTrans(Tween.TransitionType.Linear); //change angle to 0
-				} else if (hover_card is BoardCard) {
-					if((hover_card as BoardCard).card_entity.plr_id != ClientHandler.plr_id) return; //check if ur the right plr
-
-					MessageHandler.ToggleAttack(hover_card.card_entity.id);
-
-					bool attacking = (hover_card as BoardCard).ToggleAttack();
-					units_attacking += attacking ? 1 : -1;
-
-					if(units_attacking > 0) {
-						GetTree().Root.GetNode<Button>("Main/UI/EndTurn").Text = "Attack";
-					} else {
-						GetTree().Root.GetNode<Button>("Main/UI/EndTurn").Text = "End Turn";
-					}
 				}
 			} else {
 				//unclick
@@ -161,7 +104,6 @@ public partial class UIController : Node2D {
 	
 	public override void _Ready() {
 		hand = GetTree().Root.GetNode<Control>("Main/UI/Hand");
-		board = GetTree().Root.GetNode<Node>("Main/Board");
 	}
 
 	public override void _Process(double delta) {
@@ -191,32 +133,6 @@ public partial class UIController : Node2D {
 
 			tween.TweenProperty(card, "position", pos, 0.3f).SetTrans(Tween.TransitionType.Quad);
 			tween.Parallel().TweenProperty(card, "rotation_degrees", angle, 0.3f).SetTrans(Tween.TransitionType.Quad);
-		}
-
-        for (int i = 0; i < your_board_cards.Count; i++) {
-			BoardCard card = your_board_cards[i];
-
-			float x = board_x_offset + i * board_spacing;
-			float y = board_y_offset;
-
-			Vector2 pos = new(x, y);
-
-			Tween tween = card.CreateTween();
-
-			tween.TweenProperty(card, "position", pos, 0.3f).SetTrans(Tween.TransitionType.Quad);
-		}
-
-        for (int i = 0; i < enemy_board_cards.Count; i++) {
-			BoardCard card = enemy_board_cards[i];
-
-			float x = board_x_offset + i * board_spacing;
-			float y = board_y_enemy_offset;
-
-			Vector2 pos = new(x, y);
-
-			Tween tween = card.CreateTween();
-
-			tween.TweenProperty(card, "position", pos, 0.3f).SetTrans(Tween.TransitionType.Quad);
 		}
 	}
 }

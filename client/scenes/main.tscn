@@ -1,7 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://ynwxqahsy1g0"]
+[gd_scene load_steps=8 format=3 uid="uid://ynwxqahsy1g0"]
 
 [ext_resource type="Script" uid="uid://nehrbqh5jqav" path="res://scripts/ButtonController.cs" id="1_o5qli"]
 [ext_resource type="Texture2D" uid="uid://cqjodd16hk5ee" path="res://resources/example_board.png" id="2_0wfyh"]
+[ext_resource type="Script" uid="uid://c6chfs0xe4vuv" path="res://scripts/GameEvents.cs" id="3_tbgi4"]
+[ext_resource type="Script" uid="uid://duf32gaj8mty1" path="res://scripts/UIManagers/HandCardManager.cs" id="4_tefeu"]
+[ext_resource type="Script" uid="uid://c3usv48br8r8l" path="res://scripts/UIManagers/BoardCardManager.cs" id="5_o6xl0"]
+[ext_resource type="Script" uid="uid://dprghh5th80cc" path="res://scripts/UIManagers/DragManager.cs" id="6_o6xl0"]
+[ext_resource type="Script" uid="uid://efy7bckk5316" path="res://scripts/UIManagers/AttackManager.cs" id="7_tipki"]
 
 [node name="Main" type="Node2D"]
 
@@ -10,8 +15,8 @@
 [node name="Hand" type="Control" parent="UI"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 
 [node name="EndTurn" type="Button" parent="UI"]
 offset_left = 1363.0
@@ -81,3 +86,20 @@ position = Vector2(981, 460)
 texture = ExtResource("2_0wfyh")
 
 [node name="Board" type="Node" parent="."]
+
+[node name="GameEvents" type="Node" parent="."]
+script = ExtResource("3_tbgi4")
+
+[node name="Managers" type="Node" parent="."]
+
+[node name="BoardCardManager" type="Node2D" parent="Managers"]
+script = ExtResource("5_o6xl0")
+
+[node name="HandCardManager" type="Node2D" parent="Managers"]
+script = ExtResource("4_tefeu")
+
+[node name="DragManager" type="Node2D" parent="Managers"]
+script = ExtResource("6_o6xl0")
+
+[node name="AttackManager" type="Node2D" parent="Managers"]
+script = ExtResource("7_tipki")

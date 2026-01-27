@@ -9,7 +9,7 @@ public partial class CardHandler : Node {
 		GD.Print(ClientHandler.plr_id + " added " + card.Id);
 		CardEntity clone = new(card);
 		cards[card.Id] = clone;
-		HandCardController.addHandCard(clone);
+		HandCardManager.Instance.addHandCard(clone);
 	}
 
 	public static CardEntity GetCard(int id) {

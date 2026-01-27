@@ -19,7 +19,7 @@ public static class Program {
             ws.OnClose = () => ServerHandler.OnClose(ws);
         });
 
-        //Test().Wait();
+        Test().Wait();
 
         while (true) {
             string? input = Console.ReadLine();
@@ -45,6 +45,7 @@ public static class Program {
         }
         int plr0_id = -1;
         int plr1_id = -1;
+        int delay = 100;
 
         await Task.Delay(250);
 
@@ -83,23 +84,23 @@ public static class Program {
         }
 
         send(plr0, $"{{ \"$type\": \"joinqueue\", \"player_id\": {plr0_id} }}");
-        await Task.Delay(100);
+        await Task.Delay(delay);
         send(plr1, $"{{ \"$type\": \"joinqueue\", \"player_id\": {plr1_id} }}");
-        await Task.Delay(100);
+        await Task.Delay(delay);
         send(plr1, $"{{ \"$type\": \"playcard\", \"player_id\": {plr1_id} , \"card_id\": 4 }}");
-        await Task.Delay(100);
+        await Task.Delay(delay);
         send(plr1, $"{{ \"$type\": \"endturn\", \"player_id\": {plr1_id} }}");
-        await Task.Delay(100);
+        await Task.Delay(delay);
         send(plr0, $"{{ \"$type\": \"playcard\", \"player_id\": {plr0_id} , \"card_id\": 19 }}");
-        await Task.Delay(100);
+        await Task.Delay(delay);
         send(plr0, $"{{ \"$type\": \"targetschoice\", \"player_id\": {plr0_id} , \"targets\": [4] }}");
-        await Task.Delay(100);
+        await Task.Delay(delay);
         send(plr0, $"{{ \"$type\": \"endturn\", \"player_id\": {plr0_id} }}");
-        await Task.Delay(100);
+        await Task.Delay(delay);
         send(plr1, $"{{ \"$type\": \"playcard\", \"player_id\": {plr1_id} , \"card_id\": 0 }}");
-        await Task.Delay(100);
+        await Task.Delay(delay);
         send(plr1, $"{{ \"$type\": \"targetschoice\", \"player_id\": {plr1_id} , \"targets\": [4] }}");
-        await Task.Delay(100);
-        send(plr1, $"{{ \"$type\": \"endturn\", \"player_id\": {plr1_id} }}");
+        await Task.Delay(delay);
+        // send(plr1, $"{{ \"$type\": \"endturn\", \"player_id\": {plr1_id} }}");
     }
 }

@@ -26,16 +26,16 @@ public partial class MessageHandler : Node {
 			foreach (ClientUpdater updater in c.Events) {
 				if(updater is CardLocationUpdater cardlocation) {
 					if(cardlocation.Prev == CardLocations.Hand) {
-						HandCardController.removeHandCard(cardlocation.CardId);
+						HandCardManager.Instance.removeHandCard(cardlocation.CardId);
 					} else if (cardlocation.Prev == CardLocations.Board) {
-						BoardCardController.removeBoardCard(cardlocation.CardId);
+						BoardCardManager.Instance.removeBoardCard(cardlocation.CardId);
 					}
 
 					if(cardlocation.Now == CardLocations.Hand) {
-						HandCardController.addHandCard(CardHandler.GetCard(cardlocation.CardId));
+						HandCardManager.Instance.addHandCard(CardHandler.GetCard(cardlocation.CardId));
 					} else if (cardlocation.Now == CardLocations.Board) {
 						GD.Print(ClientHandler.plr_id + " " + cardlocation.CardId);
-						BoardCardController.addBoardCard(CardHandler.GetCard(cardlocation.CardId));
+						BoardCardManager.Instance.addBoardCard(CardHandler.GetCard(cardlocation.CardId));
 					}
 				} else if (updater is StatUpdater stat) {
 					//CardHandler.GetCard(stat.CardId);

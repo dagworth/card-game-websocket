@@ -11,6 +11,8 @@ public partial class BoardCard : Node2D, IHoverable {
 
 	public override void _Ready() {
 		sprite = GetNode<Sprite2D>("Sprite");
+		// GetNode<Area2D>("HoverArea").MouseEntered += () => {GameEvents.Instance.EmitSignal(GameEvents.SignalName.BoardCardHover, this);GD.Print("in aaaa");};
+        // GetNode<Area2D>("HoverArea").MouseExited += () => GameEvents.Instance.EmitSignal(GameEvents.SignalName.BoardCardExit, this);
 	}
 
 	public void UpdateStats(CardEntity card) {

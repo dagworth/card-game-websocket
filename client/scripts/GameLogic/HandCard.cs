@@ -5,6 +5,11 @@ public partial class HandCard : Control, IHoverable {
     public CardEntity card_entity { get; set; }
     public HandCard hover_card { get; set; }
 
+    public override void _Ready() {
+        MouseEntered += () => GameEvents.Instance.EmitSignal(GameEvents.SignalName.HandCardHover, this);
+        MouseExited += () => GameEvents.Instance.EmitSignal(GameEvents.SignalName.HandCardExit, this);
+    }
+
     public void UpdateStats(CardEntity card) {
         CardDataDTO data = DataLoader.GetData(card.name);
 

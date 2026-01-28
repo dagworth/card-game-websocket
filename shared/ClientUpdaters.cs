@@ -7,8 +7,9 @@ using shared.DTOs;
 [JsonDerivedType(typeof(ToggleAttackUpdater), "toggleattack")]
 [JsonDerivedType(typeof(StatUpdater), "statchange")]
 [JsonDerivedType(typeof(TurnUpdater), "turnchange")]
-[JsonDerivedType(typeof(DamageUpdater), "damagechange")]
+[JsonDerivedType(typeof(AttackActionUpdater), "attackaction")]
 [JsonDerivedType(typeof(NewCardUpdater), "newcard")]
+[JsonDerivedType(typeof(DamageUpdater), "damagechange")]
 
 public class ClientUpdater { }
 
@@ -33,7 +34,14 @@ public class ToggleAttackUpdater(int cardid, bool status) : ClientUpdater {
     [JsonPropertyName("status")] public bool Status { get; set; } = status;
 }
 
-public class DamageUpdater(int damage) : ClientUpdater {
+public class AttackActionUpdater(int attacker, int defender, int damage) : ClientUpdater {
+    [JsonPropertyName("attacker")] public int Attacker { get; set; } = attacker;
+    [JsonPropertyName("defender")] public int Defender { get; set; } = defender;
+    [JsonPropertyName("damage")] public int Damage { get; set; } = damage;
+}
+
+public class DamageUpdater(int cardid, int damage) : ClientUpdater {
+    [JsonPropertyName("card_id")] public int CardId { get; set; } = cardid;
     [JsonPropertyName("damage")] public int Damage { get; set; } = damage;
 }
 

@@ -6,6 +6,8 @@ using System.Collections.Generic;
 public partial class GameEvents : Node {
     public static GameEvents Instance { get; private set; }
 
+    public GameStates game_state { get; set; } = GameStates.Regular;
+
     [Signal] public delegate void HandCardHoverEventHandler(HandCard card);
     [Signal] public delegate void HandCardExitEventHandler(HandCard card);
 
@@ -15,4 +17,12 @@ public partial class GameEvents : Node {
     public override void _Ready() {
         Instance = this;
     }
+}
+
+public enum GameStates {
+    Regular,
+    Attacking,
+    Defending,
+    Choosing,
+    Priority
 }

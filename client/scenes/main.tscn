@@ -17,6 +17,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
+mouse_filter = 2
 
 [node name="EndTurn" type="Button" parent="UI"]
 offset_left = 1363.0
@@ -85,7 +86,7 @@ visible = false
 position = Vector2(981, 460)
 texture = ExtResource("2_0wfyh")
 
-[node name="Board" type="Node" parent="."]
+[node name="Board" type="Node2D" parent="."]
 
 [node name="GameEvents" type="Node" parent="."]
 script = ExtResource("3_tbgi4")

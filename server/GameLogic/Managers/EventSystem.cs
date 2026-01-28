@@ -73,6 +73,6 @@ public class EventSystem(GameEntity game) {
     }
 
     public void InvokeOnAttack(int card_id) {
-        game.events.OnAttack?.Invoke(card_id);
+        OnAttack?.Invoke(card_id);
     }
 }

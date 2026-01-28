@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public partial class BoardCardManager : Node2D {
 	public static BoardCardManager Instance;
 	
-    private Node board;
+    private Node2D board;
 
 	private List<BoardCard> enemy_board_cards = [];
 	private List<BoardCard> your_board_cards = [];
@@ -20,17 +20,14 @@ public partial class BoardCardManager : Node2D {
 
 	public override void _Ready() {
 		Instance = this;
-		board = GetTree().Root.GetNode<Node>("Main/Board");
+		board = GetTree().Root.GetNode<Node2D>("Main/Board");
 		GameEvents.Instance.BoardCardHover += onHoverEnter;
 		GameEvents.Instance.BoardCardExit += onHoverExit;
 	}
 
     public void addBoardCard(CardEntity entity) {
 		BoardCard card = entity.board_card;
-
-		card.GetNode<Area2D>("HoverArea").MouseEntered += () => {GameEvents.Instance.EmitSignal(GameEvents.SignalName.BoardCardHover, card);GD.Print("in aaaa");};
-        card.GetNode<Area2D>("HoverArea").MouseExited += () => GameEvents.Instance.EmitSignal(GameEvents.SignalName.BoardCardExit, card);
-
+		
 		card.UpdateStats(entity);
 		board.AddChild(card);
 		if(entity.plr_id == ClientHandler.plr_id) {
@@ -57,7 +54,6 @@ public partial class BoardCardManager : Node2D {
 
 	public void onHoverEnter(BoardCard card) {
 		if (hover_card == null) {
-			GD.Print("in card");
 			hover_card = card;
 			//updateCardPositions();
 		}
@@ -65,7 +61,6 @@ public partial class BoardCardManager : Node2D {
 
 	public void onHoverExit(BoardCard card) {
 		if (hover_card == card) {
-			GD.Print("exit card");
 			hover_card = null;
 			//updateCardPositions();
 		}

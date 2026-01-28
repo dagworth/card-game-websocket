@@ -25,6 +25,7 @@ public partial class MessageHandler : Node {
 		if (data is GameUpdate c) {
 			foreach (ClientUpdater updater in c.Events) {
 				if(updater is CardLocationUpdater cardlocation) {
+					//There is a location change for a card
 					if(cardlocation.Prev == CardLocations.Hand) {
 						HandCardManager.Instance.removeHandCard(cardlocation.CardId);
 					} else if (cardlocation.Prev == CardLocations.Board) {
@@ -37,16 +38,32 @@ public partial class MessageHandler : Node {
 						GD.Print(ClientHandler.plr_id + " " + cardlocation.CardId);
 						BoardCardManager.Instance.addBoardCard(CardHandler.GetCard(cardlocation.CardId));
 					}
+
 				} else if (updater is StatUpdater stat) {
-					//CardHandler.GetCard(stat.CardId);
+					//There is a buff that was applied to a card
+					CardHandler.GetCard(stat.CardId).UpdateCard(stat.Buff, stat.Inverse);
+
 				} else if (updater is NewCardUpdater newcard) {
-					CardHandler.AddCard(newcard.card);
-				} else if (updater is DamageUpdater damage) {
+					GD.Print("do new card: " + newcard.card.Id);
+					//There is a new card that needs to be made or updated
+					CardEntity card = CardHandler.GetCard(newcard.card.Id);
+					if (card == null) {
+						GD.Print("new card" + newcard.card.Id);
+						CardHandler.AddCard(newcard.card);
+					}  else {
+						GD.Print("update card" + newcard.card.Id);
+						card.UpdateCard(newcard.card);
+					}
 
+				} else if (updater is AttackActionUpdater attack) {
+					//there is an attack that happened
+				} else if (updater is DamageUpdater dmg) {
+					//there is a card that took damage
 				} else if (updater is TurnUpdater turn) {
-
+					//there is a turn change
 				} else if (updater is ToggleAttackUpdater togatk) {
-					CardHandler.GetCard(togatk.CardId).board_card.ToggleAttack();
+					//a player toggled attack
+					AttackManager.Instance.ToggleAttack(togatk.CardId, togatk.Status);
 				}
 			}
 			return 0;

@@ -10,10 +10,13 @@ public partial class DragManager : Node2D {
     public override void _Input(InputEvent @event) {
 		if (@event is InputEventMouseButton click && click.ButtonIndex == MouseButton.Left) {
 			if (click.Pressed) {
-                if(HandCardManager.Instance.hover_card == null) return;
+                if(GameEvents.Instance.game_state == GameStates.Attacking) return;
+                if(HandCardManager.Instance.hover_card == null) return; //if hovering something
+                if(drag_card != null) return; //if already dragging
                 original = HandCardManager.Instance.hover_card;
 				OnDragStarted(original);
 			} else if (!click.Pressed) {
+                if(drag_card == null) return; //if not dragging
     			OnDragEnded(original,click.Position);
 			}
 		}

@@ -25,8 +25,13 @@ public class UpdaterHandler(GameEntity game) {
         }
     }
 
-    public void TookDamage(int damage, int anim = 0) {
-        DamageUpdater clone = new(damage);
+    public void AttackAction(int attacker, int defender, int damage, int anim = 0) {
+        AttackActionUpdater clone = new(attacker, defender, damage);
+        events[clone] = -1;
+    }
+
+    public void TookDamage(int card_id, int damage, int anim = 0) {
+        DamageUpdater clone = new(card_id, damage);
         events[clone] = -1;
     }
 

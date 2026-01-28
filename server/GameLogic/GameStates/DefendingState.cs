@@ -43,13 +43,13 @@ public class DefendingState : IGameState {
     }
 
     public void EndTurn(EndTurnRequest? req) {
-        if(req != null && req.PlayerId != plr_defending) return;
+        if (req != null && req.PlayerId != plr_defending) return;
         HandleAttackPhase();
         game.SetGameState(new RegularState(game, true));
     }
 
     public void ToggleDefend(ToggleDefendRequest data) {
-        if(data.UnitDefending == -1) {
+        if (data.UnitDefending == -1) {
             CancelDefend(data);
             return;
         }

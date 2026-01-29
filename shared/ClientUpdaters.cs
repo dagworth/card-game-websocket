@@ -9,7 +9,9 @@ using shared.DTOs;
 [JsonDerivedType(typeof(TurnUpdater), "turnchange")]
 [JsonDerivedType(typeof(AttackActionUpdater), "attackaction")]
 [JsonDerivedType(typeof(NewCardUpdater), "newcard")]
-[JsonDerivedType(typeof(DamageUpdater), "damagechange")]
+[JsonDerivedType(typeof(CardDamageUpdater), "carddamaged")]
+[JsonDerivedType(typeof(PlrDamageUpdater), "plrdamaged")]
+[JsonDerivedType(typeof(ManaUpdater), "manachange")]
 
 public class ClientUpdater { }
 
@@ -40,13 +42,23 @@ public class AttackActionUpdater(int attacker, int defender, int damage) : Clien
     [JsonPropertyName("damage")] public int Damage { get; set; } = damage;
 }
 
-public class DamageUpdater(int cardid, int damage) : ClientUpdater {
+public class CardDamageUpdater(int cardid, int damage) : ClientUpdater {
     [JsonPropertyName("card_id")] public int CardId { get; set; } = cardid;
     [JsonPropertyName("damage")] public int Damage { get; set; } = damage;
 }
 
+public class PlrDamageUpdater(int plrid, int damage) : ClientUpdater {
+    [JsonPropertyName("plr_id")] public int PlrId { get; set; } = plrid;
+    [JsonPropertyName("damage")] public int Damage { get; set; } = damage;
+}
+
+public class ManaUpdater(int plrid, int max, int value) : ClientUpdater {
+    [JsonPropertyName("plr_id")] public int PlrId { get; set; } = plrid;
+    [JsonPropertyName("max")] public int Max { get; set; } = max;
+    [JsonPropertyName("value")] public int Value { get; set; } = value;
+}
+
 public class TurnUpdater(int plrid) : ClientUpdater {
-    [JsonPropertyName("turn")] public string Turn { get; set; } = "";
     [JsonPropertyName("plr_id")] public int PlrId { get; set; } = plrid;
 }
 

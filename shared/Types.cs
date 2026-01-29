@@ -59,3 +59,12 @@ public enum Tribes {
     Skeleton = 2,
     Creeper = 3
 }
+
+//this is only used by the client as the server has no reason to use this. It can just look at the gamestate object
+public enum GameStates {
+    Regular,
+    Attacking,
+    Defending,
+    Choosing,
+    Priority
+}

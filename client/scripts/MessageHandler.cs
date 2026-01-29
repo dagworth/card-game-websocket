@@ -19,6 +19,7 @@ public partial class MessageHandler : Node {
 
 		if (data is TargetOptions b) {
 			List<int> targets = b.Targets; //just for reference
+			TargetChoosingManager.Instance.ShowChoices(targets);
 			return 0;
 		}
 
@@ -35,32 +36,38 @@ public partial class MessageHandler : Node {
 					if(cardlocation.Now == CardLocations.Hand) {
 						HandCardManager.Instance.addHandCard(CardHandler.GetCard(cardlocation.CardId));
 					} else if (cardlocation.Now == CardLocations.Board) {
-						GD.Print(ClientHandler.plr_id + " " + cardlocation.CardId);
 						BoardCardManager.Instance.addBoardCard(CardHandler.GetCard(cardlocation.CardId));
 					}
 
 				} else if (updater is StatUpdater stat) {
 					//There is a buff that was applied to a card
+					GD.Print("do buff");
+					GD.Print(CardHandler.GetCard(stat.CardId));
 					CardHandler.GetCard(stat.CardId).UpdateCard(stat.Buff, stat.Inverse);
 
 				} else if (updater is NewCardUpdater newcard) {
-					GD.Print("do new card: " + newcard.card.Id);
 					//There is a new card that needs to be made or updated
 					CardEntity card = CardHandler.GetCard(newcard.card.Id);
 					if (card == null) {
-						GD.Print("new card" + newcard.card.Id);
+						GD.Print("making new card " + newcard.card.Id);
 						CardHandler.AddCard(newcard.card);
 					}  else {
-						GD.Print("update card" + newcard.card.Id);
+						GD.Print("updating card " + newcard.card.Id);
 						card.UpdateCard(newcard.card);
 					}
 
 				} else if (updater is AttackActionUpdater attack) {
 					//there is an attack that happened
-				} else if (updater is DamageUpdater dmg) {
+				} else if (updater is CardDamageUpdater carddmg) {
 					//there is a card that took damage
+				} else if (updater is PlrDamageUpdater plrdmg) {
+					//there is a plr that took damage
+					PlayerHealthMana.Instance.TookDamage(plrdmg.PlrId, plrdmg.Damage);
 				} else if (updater is TurnUpdater turn) {
 					//there is a turn change
+				} else if (updater is ManaUpdater mana) {
+					//someone used mana
+					PlayerHealthMana.Instance.ChangeMana(mana.PlrId, mana.Max, mana.Value);
 				} else if (updater is ToggleAttackUpdater togatk) {
 					//a player toggled attack
 					AttackManager.Instance.ToggleAttack(togatk.CardId, togatk.Status);
@@ -102,6 +109,13 @@ public partial class MessageHandler : Node {
 		ToggleAttackRequest clone = new();
 		clone.PlayerId = ClientHandler.plr_id;
 		clone.UnitAttacking = card_id;
+		ClientHandler.SendMessage(JsonSerializer.Serialize<ClientRequest>(clone));
+	}
+
+	public static void TargetChosen(List<int> ids) {
+		TargetsChoiceRequest clone = new();
+		clone.PlayerId = ClientHandler.plr_id;
+		clone.Targets = ids;
 		ClientHandler.SendMessage(JsonSerializer.Serialize<ClientRequest>(clone));
 	}
 }

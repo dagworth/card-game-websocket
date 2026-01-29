@@ -1,12 +1,14 @@
-[gd_scene load_steps=8 format=3 uid="uid://ynwxqahsy1g0"]
+[gd_scene load_steps=10 format=3 uid="uid://ynwxqahsy1g0"]
 
 [ext_resource type="Script" uid="uid://nehrbqh5jqav" path="res://scripts/ButtonController.cs" id="1_o5qli"]
 [ext_resource type="Texture2D" uid="uid://cqjodd16hk5ee" path="res://resources/example_board.png" id="2_0wfyh"]
 [ext_resource type="Script" uid="uid://c6chfs0xe4vuv" path="res://scripts/GameEvents.cs" id="3_tbgi4"]
-[ext_resource type="Script" uid="uid://duf32gaj8mty1" path="res://scripts/UIManagers/HandCardManager.cs" id="4_tefeu"]
-[ext_resource type="Script" uid="uid://c3usv48br8r8l" path="res://scripts/UIManagers/BoardCardManager.cs" id="5_o6xl0"]
-[ext_resource type="Script" uid="uid://dprghh5th80cc" path="res://scripts/UIManagers/DragManager.cs" id="6_o6xl0"]
-[ext_resource type="Script" uid="uid://efy7bckk5316" path="res://scripts/UIManagers/AttackManager.cs" id="7_tipki"]
+[ext_resource type="Script" uid="uid://duf32gaj8mty1" path="res://scripts/Managers/HandCardManager.cs" id="4_tefeu"]
+[ext_resource type="Script" uid="uid://c3usv48br8r8l" path="res://scripts/Managers/BoardCardManager.cs" id="5_o6xl0"]
+[ext_resource type="Script" uid="uid://dprghh5th80cc" path="res://scripts/Managers/DragManager.cs" id="6_o6xl0"]
+[ext_resource type="Script" uid="uid://efy7bckk5316" path="res://scripts/Managers/AttackManager.cs" id="7_tipki"]
+[ext_resource type="Script" uid="uid://b7rrki5y01qcs" path="res://scripts/Managers/TargetChoosingManager.cs" id="8_85g3d"]
+[ext_resource type="Script" uid="uid://bq2ga0oyst2k5" path="res://scripts/Managers/PlayerHealthMana.cs" id="9_85g3d"]
 
 [node name="Main" type="Node2D"]
 
@@ -41,12 +43,33 @@ offset_right = 1736.0
 offset_bottom = 593.0
 text = "plr id:"
 
-[node name="Mana" type="Label" parent="UI"]
+[node name="YourMana" type="Label" parent="UI"]
 offset_left = 479.0
 offset_top = 820.0
 offset_right = 524.0
 offset_bottom = 843.0
 text = "0/0"
+
+[node name="EnemyMana" type="Label" parent="UI"]
+offset_left = 500.0
+offset_top = 96.0
+offset_right = 545.0
+offset_bottom = 119.0
+text = "0/0"
+
+[node name="YourHP" type="Label" parent="UI"]
+offset_left = 1250.0
+offset_top = 822.0
+offset_right = 1295.0
+offset_bottom = 845.0
+text = "35"
+
+[node name="EnemyHP" type="Label" parent="UI"]
+offset_left = 1214.0
+offset_top = 110.0
+offset_right = 1259.0
+offset_bottom = 132.33334
+text = "35"
 
 [node name="EnemyCards" type="Label" parent="UI"]
 offset_left = 1696.0
@@ -62,16 +85,27 @@ offset_right = 294.0
 offset_bottom = 283.0
 text = "logs:"
 
-[node name="TargetChoice" type="HBoxContainer" parent="UI"]
-offset_left = 312.0
-offset_top = 63.0
-offset_right = 620.0
-offset_bottom = 103.0
-alignment = 1
+[node name="TargetChoice" type="Panel" parent="UI"]
+visible = false
+offset_left = 822.0
+offset_top = 226.0
+offset_right = 1344.0
+offset_bottom = 311.0
 
-[node name="Choice" type="Button" parent="UI/TargetChoice"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/TargetChoice"]
+layout_mode = 0
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 542.0
+offset_bottom = 105.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="HBox" type="HBoxContainer" parent="UI/TargetChoice/MarginContainer"]
 layout_mode = 2
-text = "dvsvdsdv"
+alignment = 1
 
 [node name="ButtonController" type="Node" parent="."]
 script = ExtResource("1_o5qli")
@@ -104,3 +138,9 @@ script = ExtResource("6_o6xl0")
 
 [node name="AttackManager" type="Node2D" parent="Managers"]
 script = ExtResource("7_tipki")
+
+[node name="TargetChoosingManager" type="Node2D" parent="Managers"]
+script = ExtResource("8_85g3d")
+
+[node name="PlayerHealthMana" type="Node2D" parent="Managers"]
+script = ExtResource("9_85g3d")

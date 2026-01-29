@@ -27,6 +27,7 @@ public partial class HandCardManager : Node2D {
 
 	public void addHandCard(CardEntity entity) {
 		HandCard card = entity.hand_card;
+		card.card_entity = entity;
 		card.UpdateStats(entity);
 
 		hand.AddChild(card);

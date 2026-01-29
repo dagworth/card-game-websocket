@@ -30,8 +30,18 @@ public class UpdaterHandler(GameEntity game) {
         events[clone] = -1;
     }
 
-    public void TookDamage(int card_id, int damage, int anim = 0) {
-        DamageUpdater clone = new(card_id, damage);
+    public void CardTookDamage(int card_id, int damage, int anim = 0) {
+        CardDamageUpdater clone = new(card_id, damage);
+        events[clone] = -1;
+    }
+
+    public void PlrTookDamage(int plr_id, int damage, int anim = 0) {
+        PlrDamageUpdater clone = new(plr_id, damage);
+        events[clone] = -1;
+    }
+
+    public void ManaChange(int plr_id, int max_mana, int current_mana, int anim = 0) {
+        ManaUpdater clone = new(plr_id, max_mana, current_mana);
         events[clone] = -1;
     }
 

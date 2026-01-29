@@ -9,7 +9,7 @@ public class RegularState(GameEntity game, bool attacked) : IGameState {
     private bool attacked = attacked;
 
     public void StartState() {
-
+        Console.WriteLine("regular state");
     }
 
     public void EndTurn(EndTurnRequest req) {

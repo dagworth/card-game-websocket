@@ -9,11 +9,17 @@ public class DefendingState : IGameState {
     private readonly int plr_defending;
     private readonly Dictionary<int, HashSet<int>> attacking_units;
     private int defending_units = 0;
+    private bool ended = false;
 
     public DefendingState(GameEntity game, Dictionary<int, HashSet<int>> attacking_units) {
+        Console.WriteLine("defense init");
         this.game = game;
         plr_defending = game.plrs.GetOtherPlayer(game.Plr_Turn).Id;
         this.attacking_units = attacking_units;
+    }
+
+    public void StartState() {
+        Console.WriteLine("defense starts");
 
         PlayerEntity plr = game.plrs.GetPlayer(plr_defending);
         if (plr.Board.Count == 0) EndTurn(null);
@@ -29,8 +35,6 @@ public class DefendingState : IGameState {
         if (!can_play_a_card) EndTurn(null);
     }
 
-    public void StartState() { }
-
     public bool CanPlayCard(CardEntity card) {
         PlayerEntity plr = game.plrs.GetPlayer(plr_defending);
         if (plr_defending != card.PlrId) return false;
@@ -43,9 +47,23 @@ public class DefendingState : IGameState {
     }
 
     public void EndTurn(EndTurnRequest? req) {
+        if(ended) return;
+        ended = true;
+        Console.WriteLine("ended");
+        Console.WriteLine(game.Game_State);
         if (req != null && req.PlayerId != plr_defending) return;
-        HandleAttackPhase();
-        game.SetGameState(new RegularState(game, true));
+
+        game.MakeCounterableEffect(
+            plr_defending,
+            null,
+            () => {
+                Console.WriteLine("do priority action");
+                foreach (KeyValuePair<int, HashSet<int>> pair in attacking_units) {
+                    AttackEnemies(game.cards.GetCard(pair.Key), [.. pair.Value.Select(game.cards.GetCard)]);
+                }
+                game.SetGameState(new RegularState(game, true));
+            }
+        );
     }
 
     public void ToggleDefend(ToggleDefendRequest data) {
@@ -80,19 +98,6 @@ public class DefendingState : IGameState {
         defending_units--;
 
         attacking_units[data.UnitAttacking].Remove(data.UnitDefending);
-    }
-
-    public void HandleAttackPhase() {
-        //make cards attack players too
-        game.MakeCounterableEffect(
-            plr_defending,
-            null,
-            () => {
-                foreach (KeyValuePair<int, HashSet<int>> pair in attacking_units) {
-                    AttackEnemies(game.cards.GetCard(pair.Key), [.. pair.Value.Select(game.cards.GetCard)]);
-                }
-            }
-        );
     }
 
     public void AttackEnemies(CardEntity card, List<CardEntity> victims) {

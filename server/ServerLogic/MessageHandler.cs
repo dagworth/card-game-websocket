@@ -39,6 +39,7 @@ public static class MessageHandler {
                 break;
 
             case EndTurnRequest req:
+                Console.WriteLine("do end turn");
                 game.Game_State.EndTurn(req);
                 break;
 

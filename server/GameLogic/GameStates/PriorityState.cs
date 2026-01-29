@@ -24,6 +24,7 @@ public class PriorityState : IGameState {
     }
 
     public void StartState() {
+        Console.WriteLine("started priority");
         CheckLegalPlays();
     }
 
@@ -31,6 +32,7 @@ public class PriorityState : IGameState {
         if(req != null && req.PlayerId != plr_priority) return;
         //if opponent did not respond to our effect (this is not optimal but good for now)
         if (on_hold_card_effects.Count == 0 || on_hold_card_effects.Last().plr_id != plr_priority) {
+            Console.WriteLine("priority ends");
             game.SetGameState(next_state); //this is so that if a choosing comes up in the card effects, this wont effect it
             DoCardEffects();
         } else {

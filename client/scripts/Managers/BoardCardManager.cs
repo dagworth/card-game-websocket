@@ -27,6 +27,7 @@ public partial class BoardCardManager : Node2D {
 
     public void addBoardCard(CardEntity entity) {
 		BoardCard card = entity.board_card;
+		card.card_entity = entity;
 		
 		card.UpdateStats(entity);
 		board.AddChild(card);

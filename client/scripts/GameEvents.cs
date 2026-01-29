@@ -18,11 +18,3 @@ public partial class GameEvents : Node {
         Instance = this;
     }
 }
-
-public enum GameStates {
-    Regular,
-    Attacking,
-    Defending,
-    Choosing,
-    Priority
-}

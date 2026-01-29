@@ -79,6 +79,7 @@ public class CardEntity : IDamageable {
     public Buff AddTempBuff(Buff buff) {
         buff.card = this;
         Game.updater.ChangeStats(buff, Id, 0);
+        Game.updater.UpdateClients();
         buffs.Add(buff);
         UpdateStats();
         return buff;
@@ -86,6 +87,7 @@ public class CardEntity : IDamageable {
 
     public void RemoveTempBuff(Buff buff) {
         Game.updater.ChangeStats(buff, Id, 0);
+        Game.updater.UpdateClients();
         buffs.Remove(buff);
         UpdateStats();
     }
@@ -93,6 +95,7 @@ public class CardEntity : IDamageable {
     public void AddPermBuff(Buff buff) {
         buff.card = this;
         Game.updater.ChangeStats(buff, 0);
+        Game.updater.UpdateClients();
 
         //manually change stuff for buff, update if needed
         perm_stats.Cost += buff.Cost;
@@ -108,7 +111,7 @@ public class CardEntity : IDamageable {
     }
 
     public void TakeDamage(int damage) {
-        Game.updater.TookDamage(damage, 0);
+        Game.updater.CardTookDamage(damage, 0);
         //Console.WriteLine($"{Name} took {damage} damage");
         Stats.Damaged += damage;
         UpdateStats();

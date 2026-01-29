@@ -18,6 +18,7 @@ public class PlayerEntity(GameEntity game, int id) : IDamageable {
 
     public int Health { get; private set; } = 35;
     public int Mana { get; private set; } = 100;
+    public int MaxMana { get; private set; } = 100;
     public bool Attacked { get; private set; } = false;
 
     public CardEntity? DrawCard(int index = 0) {
@@ -39,12 +40,12 @@ public class PlayerEntity(GameEntity game, int id) : IDamageable {
         Console.WriteLine($"plr {Id} played {card.Name}");
         ChangeMana(-card.Stats.Cost);
         Hand.Remove(card);
-        game.updater.NewCard(card,true);
+        Game.updater.NewCard(card,true);
         if (card.Type == CardTypes.Unit) {
-            game.updater.ChangeCardLocation(CardLocations.Board, CardLocations.Hand, card_id);
+            Game.updater.ChangeCardLocation(CardLocations.Board, CardLocations.Hand, card_id);
             Game.events.SpawnCard(card_id);
         } else {
-            game.updater.ChangeCardLocation(CardLocations.Void, CardLocations.Hand, card_id);
+            Game.updater.ChangeCardLocation(CardLocations.Void, CardLocations.Hand, card_id);
             card.SetLocation(CardLocations.Void);
             Void.Add(card);
         }
@@ -54,13 +55,19 @@ public class PlayerEntity(GameEntity game, int id) : IDamageable {
 
     public void TakeDamage(int amount) {
         Health -= amount;
+        Game.updater.PlrTookDamage(Id, amount);
+        Game.updater.UpdateClients();
     }
 
     public void ChangeHealth(int amount) {
         Health += amount;
+        Game.updater.PlrTookDamage(Id, -amount);
+        Game.updater.UpdateClients();
     }
 
     public void ChangeMana(int amount) {
         Mana += amount;
+        Game.updater.ManaChange(Id, MaxMana, Mana);
+        Game.updater.UpdateClients();
     }
 }

@@ -2,7 +2,7 @@ using server.GameLogic.Entities;
 using server.GameLogic;
 
 public class C_Freddy : CardEffect {
-    public override void OnAttack(GameEntity game, PlayerEntity owner, CardEntity card) {
+    public override void OnSpawn(GameEntity game, PlayerEntity owner, CardEntity card) {
         Console.WriteLine("DEBUG, freddy spawned");
         List<CardEntity> other = game.plrs.GetOtherPlayer(owner).Board;
         for(int i = other.Count - 1; i >= 0; i--){

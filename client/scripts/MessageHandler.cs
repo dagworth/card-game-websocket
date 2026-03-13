@@ -41,18 +41,14 @@ public partial class MessageHandler : Node {
 
 				} else if (updater is StatUpdater stat) {
 					//There is a buff that was applied to a card
-					GD.Print("do buff");
-					GD.Print(CardHandler.GetCard(stat.CardId));
 					CardHandler.GetCard(stat.CardId).UpdateCard(stat.Buff, stat.Inverse);
 
 				} else if (updater is NewCardUpdater newcard) {
 					//There is a new card that needs to be made or updated
 					CardEntity card = CardHandler.GetCard(newcard.card.Id);
 					if (card == null) {
-						GD.Print("making new card " + newcard.card.Id);
 						CardHandler.AddCard(newcard.card);
 					}  else {
-						GD.Print("updating card " + newcard.card.Id);
 						card.UpdateCard(newcard.card);
 					}
 

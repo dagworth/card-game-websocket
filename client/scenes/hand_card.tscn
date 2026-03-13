@@ -1,10 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://cqp5633u3w30b"]
+[gd_scene format=3 uid="uid://cqp5633u3w30b"]
 
-[ext_resource type="Script" uid="uid://bts7pmrqc7qfu" path="res://scripts/game/HandCard.cs" id="1_me604"]
+[ext_resource type="Script" uid="uid://bts7pmrqc7qfu" path="res://scripts/GameLogic/HandCard.cs" id="1_me604"]
 [ext_resource type="FontFile" uid="uid://c0xrbu1g0qlho" path="res://resources/fonts/Mirdane-Regular.otf" id="2_c3hc1"]
 [ext_resource type="Texture2D" uid="uid://bnito54whfwfo" path="res://resources/images/drawing.svg" id="2_me604"]
 
-[node name="HandCard" type="Control"]
+[node name="HandCard" type="Control" unique_id=648421747 node_paths=PackedStringArray("NameLabel", "DescLabel", "AttackLabel", "HealthLabel", "CostLabel")]
 layout_mode = 3
 anchor_right = 0.060000002
 anchor_bottom = 0.17600001
@@ -12,20 +12,25 @@ offset_right = -0.20000458
 offset_bottom = -0.08001709
 scale = Vector2(1.25, 1.25)
 script = ExtResource("1_me604")
+NameLabel = NodePath("NameLabel")
+DescLabel = NodePath("DescLabel")
+AttackLabel = NodePath("AttackLabel")
+HealthLabel = NodePath("HealthLabel")
+CostLabel = NodePath("CostLabel")
 
-[node name="ImageLabel" type="TextureRect" parent="."]
+[node name="ImageLabel" type="TextureRect" parent="." unique_id=201692517]
 layout_mode = 0
 offset_left = 2.4000003
 offset_top = -10.4
 offset_right = 112.0
 offset_bottom = 186.0
 
-[node name="Sprite" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=361933175]
 position = Vector2(57, 93)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_me604")
 
-[node name="CostLabel" type="RichTextLabel" parent="."]
+[node name="CostLabel" type="RichTextLabel" parent="." unique_id=393370849]
 clip_contents = false
 layout_mode = 0
 offset_left = -13.0
@@ -41,7 +46,7 @@ fit_content = true
 autowrap_mode = 0
 horizontal_alignment = 1
 
-[node name="AttackLabel" type="RichTextLabel" parent="."]
+[node name="AttackLabel" type="RichTextLabel" parent="." unique_id=1238629703]
 clip_contents = false
 layout_mode = 0
 offset_left = -13.0
@@ -59,7 +64,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 text_direction = 2
 
-[node name="HealthLabel" type="RichTextLabel" parent="."]
+[node name="HealthLabel" type="RichTextLabel" parent="." unique_id=1638910857]
 clip_contents = false
 layout_mode = 0
 offset_left = 90.0
@@ -77,7 +82,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 text_direction = 1
 
-[node name="NameLabel" type="RichTextLabel" parent="."]
+[node name="NameLabel" type="RichTextLabel" parent="." unique_id=1762437023]
 clip_contents = false
 layout_mode = 0
 offset_left = 15.0
@@ -95,7 +100,7 @@ scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="DescLabel" type="RichTextLabel" parent="."]
+[node name="DescLabel" type="RichTextLabel" parent="." unique_id=2069889639]
 clip_contents = false
 layout_mode = 0
 offset_left = 8.0

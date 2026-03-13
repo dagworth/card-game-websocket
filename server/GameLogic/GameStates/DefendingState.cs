@@ -101,13 +101,12 @@ public class DefendingState : IGameState {
     }
 
     public void AttackEnemies(CardEntity card, List<CardEntity> victims) {
-        int atk = card.Stats.Attack;
-
         if (victims.Count == 0) {
-            game.plrs.GetOtherPlayer(card.PlrId).ChangeHealth(-atk);
+            card.AttackPlayer(game.plrs.GetOtherPlayer(card.PlrId));
             return;
         }
 
+        int atk = card.Stats.Attack;
         foreach (CardEntity victim in victims) {
             atk = card.AttackCard(victim, atk);
         }

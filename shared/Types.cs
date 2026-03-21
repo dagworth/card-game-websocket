@@ -61,7 +61,7 @@ public enum Tribes {
 }
 
 //this is only used by the client as the server has no reason to use this. It can just look at the gamestate object
-public enum GameStates {
+public enum GameStateEnum {
     Regular,
     Attacking,
     Defending,

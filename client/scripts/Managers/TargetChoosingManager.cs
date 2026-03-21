@@ -6,7 +6,7 @@ public partial class TargetChoosingManager : Node2D {
 
 	private Panel choice_panel;
 	private HBoxContainer option_box;
-	private GameStates old_state;
+	private GameStateEnum old_state;
 
 	public override void _Ready() {
 		Instance = this;
@@ -18,11 +18,12 @@ public partial class TargetChoosingManager : Node2D {
 	public void ShowChoices(List<int> targets) {
 		choice_panel.Visible = true;
 		old_state = GameEvents.Instance.game_state;
-		GameEvents.Instance.game_state = GameStates.Choosing;
+		GameEvents.Instance.game_state = GameStateEnum.Choosing;
 		foreach (int id in targets) {
-			var button = new Button();
-			button.Text = $"Click me {id}";
-			option_box.AddChild(button);
+            var button = new Button {
+                Text = $"click me {id}"
+            };
+            option_box.AddChild(button);
 			button.Pressed += () => ChooseChoice(id);
 		}
 	}

@@ -11,7 +11,7 @@ public partial class AttackManager : Node2D {
 				BoardCard card = BoardCardManager.Instance.hover_card;
 				if (card == null) return;
 				if(card.card_entity.plr_id != ClientHandler.plr_id) return; //not ur card
-				if(GameEvents.Instance.game_state != GameStates.Regular && GameEvents.Instance.game_state != GameStates.Attacking) return;
+				if(GameEvents.Instance.game_state != GameStateEnum.Regular && GameEvents.Instance.game_state != GameStateEnum.Attacking) return;
 
 				MessageHandler.ToggleAttack(card.card_entity.id);
 			}
@@ -27,10 +27,10 @@ public partial class AttackManager : Node2D {
 		//so that attack isnt on the defending player's button
 
 		if(units_attacking > 0) {
-			GameEvents.Instance.game_state = GameStates.Attacking;
+			GameEvents.Instance.game_state = GameStateEnum.Attacking;
 			end_turn_button.Text = "Attack";
 		} else {
-			GameEvents.Instance.game_state = GameStates.Regular;
+			GameEvents.Instance.game_state = GameStateEnum.Regular;
 			end_turn_button.Text = "End Turn";
 		}
 	}

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ynwxqahsy1g0"]
+[gd_scene format=3 uid="uid://ynwxqahsy1g0"]
 
 [ext_resource type="Script" uid="uid://nehrbqh5jqav" path="res://scripts/ButtonController.cs" id="1_o5qli"]
 [ext_resource type="Texture2D" uid="uid://cqjodd16hk5ee" path="res://resources/example_board.png" id="2_0wfyh"]
@@ -10,18 +10,18 @@
 [ext_resource type="Script" uid="uid://b7rrki5y01qcs" path="res://scripts/Managers/TargetChoosingManager.cs" id="8_85g3d"]
 [ext_resource type="Script" uid="uid://bq2ga0oyst2k5" path="res://scripts/Managers/PlayerHealthMana.cs" id="9_85g3d"]
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" unique_id=1427249492]
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="." unique_id=1400683924]
 
-[node name="Hand" type="Control" parent="UI"]
+[node name="Hand" type="Control" parent="UI" unique_id=1169547569]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
 
-[node name="EndTurn" type="Button" parent="UI"]
+[node name="EndTurn" type="Button" parent="UI" unique_id=499286493]
 offset_left = 1363.0
 offset_top = 823.0
 offset_right = 1530.0
@@ -29,70 +29,70 @@ offset_bottom = 891.0
 theme_override_font_sizes/font_size = 36
 text = "end turn"
 
-[node name="JoinQueue" type="Button" parent="UI"]
+[node name="JoinQueue" type="Button" parent="UI" unique_id=837950983]
 offset_left = 1691.0
 offset_top = 682.0
 offset_right = 1818.0
 offset_bottom = 722.0
 text = "join queue"
 
-[node name="PlayerId" type="Label" parent="UI"]
+[node name="PlayerId" type="Label" parent="UI" unique_id=191929885]
 offset_left = 1696.0
 offset_top = 570.0
 offset_right = 1736.0
 offset_bottom = 593.0
 text = "plr id:"
 
-[node name="YourMana" type="Label" parent="UI"]
+[node name="YourMana" type="Label" parent="UI" unique_id=305137028]
 offset_left = 479.0
 offset_top = 820.0
 offset_right = 524.0
 offset_bottom = 843.0
 text = "0/0"
 
-[node name="EnemyMana" type="Label" parent="UI"]
+[node name="EnemyMana" type="Label" parent="UI" unique_id=881869167]
 offset_left = 500.0
 offset_top = 96.0
 offset_right = 545.0
 offset_bottom = 119.0
 text = "0/0"
 
-[node name="YourHP" type="Label" parent="UI"]
+[node name="YourHP" type="Label" parent="UI" unique_id=1370081125]
 offset_left = 1250.0
 offset_top = 822.0
 offset_right = 1295.0
 offset_bottom = 845.0
 text = "35"
 
-[node name="EnemyHP" type="Label" parent="UI"]
+[node name="EnemyHP" type="Label" parent="UI" unique_id=1351639574]
 offset_left = 1214.0
 offset_top = 110.0
 offset_right = 1259.0
 offset_bottom = 132.33334
 text = "35"
 
-[node name="EnemyCards" type="Label" parent="UI"]
+[node name="EnemyCards" type="Label" parent="UI" unique_id=1132342108]
 offset_left = 1696.0
 offset_top = 542.0
 offset_right = 1741.0
 offset_bottom = 565.0
 text = "enemy cards:"
 
-[node name="logs" type="Label" parent="UI"]
+[node name="logs" type="Label" parent="UI" unique_id=1746582451]
 offset_left = 71.0
 offset_top = 149.0
 offset_right = 294.0
 offset_bottom = 283.0
 text = "logs:"
 
-[node name="TargetChoice" type="Panel" parent="UI"]
+[node name="TargetChoice" type="Panel" parent="UI" unique_id=1584777907]
 visible = false
 offset_left = 822.0
 offset_top = 226.0
 offset_right = 1344.0
 offset_bottom = 311.0
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/TargetChoice"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/TargetChoice" unique_id=872709676]
 layout_mode = 0
 offset_left = -20.0
 offset_top = -20.0
@@ -103,44 +103,44 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="HBox" type="HBoxContainer" parent="UI/TargetChoice/MarginContainer"]
+[node name="HBox" type="HBoxContainer" parent="UI/TargetChoice/MarginContainer" unique_id=1495649552]
 layout_mode = 2
 alignment = 1
 
-[node name="ButtonController" type="Node" parent="."]
+[node name="ButtonController" type="Node" parent="." unique_id=2037266843]
 script = ExtResource("1_o5qli")
 
-[node name="Screenshot20260119021919" type="Sprite2D" parent="."]
+[node name="Screenshot20260119021919" type="Sprite2D" parent="." unique_id=1477961834]
 position = Vector2(981, 424.5)
 scale = Vector2(1, 0.007882863)
 texture = ExtResource("2_0wfyh")
 
-[node name="reference" type="Sprite2D" parent="."]
+[node name="reference" type="Sprite2D" parent="." unique_id=587684630]
 visible = false
 position = Vector2(981, 460)
 texture = ExtResource("2_0wfyh")
 
-[node name="Board" type="Node2D" parent="."]
+[node name="Board" type="Node2D" parent="." unique_id=1917162060]
 
-[node name="GameEvents" type="Node" parent="."]
+[node name="GameEvents" type="Node" parent="." unique_id=1971554762]
 script = ExtResource("3_tbgi4")
 
-[node name="Managers" type="Node" parent="."]
+[node name="Managers" type="Node" parent="." unique_id=1446887377]
 
-[node name="BoardCardManager" type="Node2D" parent="Managers"]
+[node name="BoardCardManager" type="Node2D" parent="Managers" unique_id=5718820]
 script = ExtResource("5_o6xl0")
 
-[node name="HandCardManager" type="Node2D" parent="Managers"]
+[node name="HandCardManager" type="Node2D" parent="Managers" unique_id=700913727]
 script = ExtResource("4_tefeu")
 
-[node name="DragManager" type="Node2D" parent="Managers"]
+[node name="DragManager" type="Node2D" parent="Managers" unique_id=1088934593]
 script = ExtResource("6_o6xl0")
 
-[node name="AttackManager" type="Node2D" parent="Managers"]
+[node name="AttackManager" type="Node2D" parent="Managers" unique_id=634621286]
 script = ExtResource("7_tipki")
 
-[node name="TargetChoosingManager" type="Node2D" parent="Managers"]
+[node name="TargetChoosingManager" type="Node2D" parent="Managers" unique_id=1028887983]
 script = ExtResource("8_85g3d")
 
-[node name="PlayerHealthMana" type="Node2D" parent="Managers"]
+[node name="PlayerHealthMana" type="Node2D" parent="Managers" unique_id=2116382206]
 script = ExtResource("9_85g3d")

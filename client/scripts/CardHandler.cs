@@ -15,7 +15,7 @@ public partial class CardHandler : Node {
 		if (cards.TryGetValue(id, out CardEntity entity)) {
 			return entity;
 		}
-		GD.Print($"plr {ClientHandler.plr_id} does not know about card {id}");
+		//GD.Print($"plr {ClientHandler.plr_id} does not know about card {id}");
 		return null;
 	}
 }

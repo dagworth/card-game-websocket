@@ -28,9 +28,9 @@ public partial class HandCardManager : Node2D {
 	public void addHandCard(CardEntity entity) {
 		HandCard card = entity.hand_card;
 		card.card_entity = entity;
-		card.UpdateStats(entity);
 
 		hand.AddChild(card);
+		card.UpdateStats(entity);
 		hand_cards.Add(card);
  
 		updateCardPositions();
@@ -39,7 +39,7 @@ public partial class HandCardManager : Node2D {
 	public void removeHandCard(int card_id) {
 		for (int i = 0; i < hand_cards.Count; i++) {
 			if (hand_cards[i].card_entity.id == card_id) {
-				hand_cards[i].QueueFree();
+				hand.RemoveChild(hand_cards[i]);
 				hand_cards.RemoveAt(i);
 				break;
 			}

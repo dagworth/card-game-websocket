@@ -29,8 +29,9 @@ public partial class BoardCardManager : Node2D {
 		BoardCard card = entity.board_card;
 		card.card_entity = entity;
 		
-		card.UpdateStats(entity);
 		board.AddChild(card);
+		card.UpdateStats(entity);
+		
 		if(entity.plr_id == ClientHandler.plr_id) {
 			your_board_cards.Add(card);
 		} else {
@@ -45,7 +46,7 @@ public partial class BoardCardManager : Node2D {
 
 		for (int i = search.Count - 1; i >= 0; i--) {
 				if (search[i].card_entity.id == card_id) {
-					search[i].QueueFree();
+					board.RemoveChild(search[i]);
 					search.RemoveAt(i);
 					break;
 				}

@@ -94,7 +94,7 @@ public class CardEntity : IDamageable {
 
     public void AddPermBuff(Buff buff) {
         buff.card = this;
-        Game.updater.ChangeStats(buff, 0);
+        Game.updater.ChangeStats(buff, Id, 0);
         Game.updater.UpdateClients();
 
         //manually change stuff for buff, update if needed
@@ -129,6 +129,7 @@ public class CardEntity : IDamageable {
     //returns how much attack is left for future overwhelm
     public int AttackCard(CardEntity victim, int atk) {
         Console.WriteLine($"{Name} attacked {victim.Name}");
+        OnAttack?.Invoke(Game, Game.plrs.GetPlayer(PlrId), this);
         Game.events.InvokeOnAttack(Id); //idk if this will work but i dont think it matters for now
         TakeDamage(victim.Stats.Attack);
 
@@ -141,5 +142,12 @@ public class CardEntity : IDamageable {
         }
 
         return atk;
+    }
+
+    public void AttackPlayer(PlayerEntity plr) {
+        Console.WriteLine($"{Name} attacked plr {plr.Id}");
+        OnAttack?.Invoke(Game, Game.plrs.GetPlayer(PlrId), this);
+        Game.events.InvokeOnAttack(Id);
+        plr.TakeDamage(Stats.Attack);
     }
 }

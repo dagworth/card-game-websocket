@@ -1,20 +1,25 @@
+using System.ComponentModel;
 using Godot;
 using shared.DTOs;
 
 public partial class BoardCard : Node2D, IHoverable {
 	public CardEntity card_entity { get; set; }
-	private Sprite2D sprite;
+	
+	[Export] public Sprite2D sprite;
+	[Export] public Area2D HoverArea;
+	[Export] public RichTextLabel NameLabel;
+	[Export] public RichTextLabel AttackLabel;
+	[Export] public RichTextLabel HealthLabel;
 
 	public override void _Ready() {
-		sprite = GetNode<Sprite2D>("Sprite");
-		GetNode<Area2D>("HoverArea").MouseEntered += () => GameEvents.Instance.EmitSignal(GameEvents.SignalName.BoardCardHover, this);
-        GetNode<Area2D>("HoverArea").MouseExited += () => GameEvents.Instance.EmitSignal(GameEvents.SignalName.BoardCardExit, this);
+		HoverArea.MouseEntered += () => GameEvents.Instance.EmitSignal(GameEvents.SignalName.BoardCardHover, this);
+        HoverArea.MouseExited += () => GameEvents.Instance.EmitSignal(GameEvents.SignalName.BoardCardExit, this);
 	}
 
 	public void UpdateStats(CardEntity card) {
-		GetNode<RichTextLabel>("NameLabel").Text = card.name;
-		GetNode<RichTextLabel>("AttackLabel").Text = card.stats.Attack.ToString();
-		GetNode<RichTextLabel>("HealthLabel").Text = card.stats.Health.ToString();
+		NameLabel.Text = card.name;
+		AttackLabel.Text = card.stats.Attack.ToString();
+		HealthLabel.Text = card.stats.Health.ToString();
 	}
 
 	public void ToggleAttack(bool status) {

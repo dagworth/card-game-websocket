@@ -59,8 +59,11 @@ public class CardEntity {
         stats.Attack += buff.Attack * (inverse ? -1 : 1);
         stats.Health += buff.Health * (inverse ? -1 : 1);
         stats.Cost += buff.Cost * (inverse ? -1 : 1);
-        foreach (Passives passive in buff.passives) {
-            stats.passives.Add(passive);
+        
+        if(buff.passives != null) {
+            foreach (Passives passive in buff.passives) {
+                stats.passives.Add(passive);
+            }
         }
 
         if(buff.Attack_Fixed != -1) {
@@ -68,11 +71,11 @@ public class CardEntity {
         }
 
         if(buff.Health_Fixed != -1) {
-            stats.Attack = buff.Health_Fixed;
+            stats.Health = buff.Health_Fixed;
         }
 
         if(buff.Cost_Fixed != -1) {
-            stats.Attack = buff.Cost_Fixed;
+            stats.Cost = buff.Cost_Fixed;
         }
 
         hand_card.UpdateStats(this);

@@ -50,9 +50,7 @@ public static class MessageHandler {
     }
 
     public static void AskForTargets(IWebSocketConnection ws, List<int> message){
-        TargetOptions a = new(){
-            Targets = message
-        };
+        TargetOptions a = new(message);
 
         ws.Send(JsonSerializer.Serialize<ServerEvent>(a));
     }

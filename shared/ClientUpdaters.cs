@@ -65,3 +65,55 @@ public class TurnUpdater(int plrid) : ClientUpdater {
 // public class EnemyCardUpdater(int card_count) : ClientUpdater {
 //     [JsonPropertyName("card_count")] public int Card_Count { get; set; } = card_count;
 // }
+
+
+
+
+
+/*
+
+the names of each of these serverevents and stuff are only for the client to do animations and know what is happening, it does not effect anything else
+
+gameupdate, updatetype informcards, events:
+(
+    [drawcards events:
+        newcard 1
+        newcard 2
+        newcard 3
+    ]
+)
+
+(serverevent) gameupdate, updatetype attackphase, events:
+(
+    (client updater) [unitattack events:
+        (update event) plrdamaged, damage 10
+        unitdamaged 1 14
+        location change 1 4
+    ]
+
+    [unitattack  events:
+        plrdamaged, damage 10
+        unitdamaged 1 14
+        location change 1 4
+    ]
+)
+
+do the serverevent update right agameupdatefter the invoke of the cardeffect signal, like onsacrifice, so that it will bunch up all the new changes
+gameupdate, updatetype cardeffects, events:
+(
+    [cardeffect events:
+        buff, 1, 1 1
+        buff, 1, 1 1
+    ]
+
+    [cardeffect events:
+        plrdamaged, damage 10
+    ]
+)
+
+3 tiers
+gameupdate
+clientupdater
+updateevent
+
+*/

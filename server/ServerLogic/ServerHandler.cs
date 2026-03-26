@@ -18,9 +18,7 @@ public static class ServerHandler {
         plr_ids[ws] = id;
         plr_ws[id] = ws;
         
-        ws.Send(JsonSerializer.Serialize<ServerEvent>(new InformId() {
-            PlayerId = id
-        }));
+        ws.Send(JsonSerializer.Serialize<ServerEvent>(new InformId(id)));
     }
 
     public static void OnMessage(IWebSocketConnection ws, string message) {

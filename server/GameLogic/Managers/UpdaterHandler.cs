@@ -100,19 +100,26 @@ public class UpdaterHandler(GameEntity game) {
 
     public void UpdateClients(string update_type = "none") {
         //print(update_type);
-        GameUpdate clone0 = new();
-        GameUpdate clone1 = new();
+        List<ClientUpdater> list0 = [];
+        List<ClientUpdater> list1 = [];
+
         foreach (KeyValuePair<ClientUpdater, int> updater in events) {
             if (updater.Value == -1) {
-                clone0.Events.Add(updater.Key);
-                clone1.Events.Add(updater.Key);
+                list0.Add(updater.Key);
+                list1.Add(updater.Key);
             }
 
-            if (updater.Value == game.plrs.Plr0.Id) clone0.Events.Add(updater.Key);
-            if (updater.Value == game.plrs.Plr1.Id) clone1.Events.Add(updater.Key);
+            if (updater.Value == game.plrs.Plr0.Id) list0.Add(updater.Key);
+            if (updater.Value == game.plrs.Plr1.Id) list1.Add(updater.Key);
         }
+
+        GameUpdate clone0 = new(list0);
+        GameUpdate clone1 = new(list1);
+
         if (clone0.Events.Count > 0) MessageHandler.UpdateClient(ServerHandler.GetWSConnection(game.plrs.Plr0.Id), clone0);
         if (clone1.Events.Count > 0) MessageHandler.UpdateClient(ServerHandler.GetWSConnection(game.plrs.Plr1.Id), clone1);
+
         events = [];
     }
 }
+

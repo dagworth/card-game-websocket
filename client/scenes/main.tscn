@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://efy7bckk5316" path="res://scripts/Managers/AttackManager.cs" id="7_tipki"]
 [ext_resource type="Script" uid="uid://b7rrki5y01qcs" path="res://scripts/Managers/TargetChoosingManager.cs" id="8_85g3d"]
 [ext_resource type="Script" uid="uid://bq2ga0oyst2k5" path="res://scripts/Managers/PlayerHealthMana.cs" id="9_85g3d"]
+[ext_resource type="Script" uid="uid://bmnpfju4voa5" path="res://scripts/Managers/DefendManager.cs" id="10_choun"]
 
 [node name="Main" type="Node2D" unique_id=1427249492]
 
@@ -144,3 +145,6 @@ script = ExtResource("8_85g3d")
 
 [node name="PlayerHealthMana" type="Node2D" parent="Managers" unique_id=2116382206]
 script = ExtResource("9_85g3d")
+
+[node name="DefendManager" type="Node2D" parent="Managers" unique_id=1655619198]
+script = ExtResource("10_choun")

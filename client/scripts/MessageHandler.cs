@@ -83,35 +83,32 @@ public partial class MessageHandler : Node {
 	}
 
 	public static void SendEndTurn() {
-		EndTurnRequest clone = new();
-		clone.PlayerId = ClientHandler.plr_id;
+		EndTurnRequest clone = new(ClientHandler.plr_id);
 		ClientHandler.SendMessage(JsonSerializer.Serialize<ClientRequest>(clone));
 	}
 
 	public static void SendJoinQueue() {
-		JoinQueueRequest clone = new();
-		clone.PlayerId = ClientHandler.plr_id;
+		JoinQueueRequest clone = new(ClientHandler.plr_id);
 		ClientHandler.SendMessage(JsonSerializer.Serialize<ClientRequest>(clone));
 	}
 
 	public static void PlayCard(int card_id) {
-		PlayCardRequest clone = new();
-		clone.PlayerId = ClientHandler.plr_id;
-		clone.CardId = card_id;
+		PlayCardRequest clone = new(ClientHandler.plr_id, card_id, []);
 		ClientHandler.SendMessage(JsonSerializer.Serialize<ClientRequest>(clone));
 	}
 
 	public static void ToggleAttack(int card_id) {
-		ToggleAttackRequest clone = new();
-		clone.PlayerId = ClientHandler.plr_id;
-		clone.UnitAttacking = card_id;
+		ToggleAttackRequest clone = new(ClientHandler.plr_id, card_id);
+		ClientHandler.SendMessage(JsonSerializer.Serialize<ClientRequest>(clone));
+	}
+
+	public static void ToggleDefend(int defender_id, int attacker_id) {
+		ToggleDefendRequest clone = new(ClientHandler.plr_id, defender_id, attacker_id);
 		ClientHandler.SendMessage(JsonSerializer.Serialize<ClientRequest>(clone));
 	}
 
 	public static void TargetChosen(List<int> ids) {
-		TargetsChoiceRequest clone = new();
-		clone.PlayerId = ClientHandler.plr_id;
-		clone.Targets = ids;
+		TargetsChoiceRequest clone = new(ClientHandler.plr_id, ids);
 		ClientHandler.SendMessage(JsonSerializer.Serialize<ClientRequest>(clone));
 	}
 }
